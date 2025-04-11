@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/controller/login_controller.dart';
 
@@ -25,20 +27,13 @@ class _LoginPageState extends State<LoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 80),
-
-              // Logo
-              const Text(
-                'qualle control',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.0,
-                ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset('assets/ehoteste.png', height: 100),
               ),
 
               const SizedBox(height: 20),
 
-              // Entrar text
               const Text(
                 'Entrar',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -46,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 20),
 
-              // Login Card
               Card(
                 elevation: 1,
                 shape: RoundedRectangleBorder(
@@ -57,7 +51,6 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Username or email field
                       const Text(
                         'Nome de usuário ou e-mail',
                         style: TextStyle(
@@ -84,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 16),
 
-                      // Password field
                       const Text(
                         'Senha',
                         style: TextStyle(
@@ -125,7 +117,6 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 16),
 
-                      // Keep me connected
                       Row(
                         children: [
                           Checkbox(
@@ -140,13 +131,10 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
 
-                      // Forgot password
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TextButton(
-                          onPressed: () {
-                            // Forgot password functionality
-                          },
+                          onPressed: () {},
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: const Size(0, 30),
@@ -161,7 +149,6 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 16),
 
-                      // Enter button
                       ValueListenableBuilder<bool>(
                         valueListenable: _controller.inLoader,
                         builder:
@@ -175,12 +162,10 @@ class _LoginPageState extends State<LoginPage> {
                                           _controller.auth().then((result) {
                                             if (result) {
                                               Navigator.of(
-                                                // ignore: use_build_context_synchronously
                                                 context,
                                               ).pushReplacementNamed('/home');
                                             } else {
                                               ScaffoldMessenger.of(
-                                                // ignore: use_build_context_synchronously
                                                 context,
                                               ).showSnackBar(
                                                 const SnackBar(
@@ -227,7 +212,6 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 16),
 
-                      // Or enter with
                       const Center(
                         child: Text(
                           'Ou entre com',
@@ -237,12 +221,9 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 10),
 
-                      // Internal button
                       Center(
                         child: TextButton(
-                          onPressed: () {
-                            // Internal login functionality
-                          },
+                          onPressed: () {},
                           child: const Text(
                             'Interno',
                             style: TextStyle(
@@ -259,47 +240,60 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 30),
 
-              // Click here to learn more
               const Text('Clique aqui e saiba mais:'),
 
               const SizedBox(height: 16),
 
-              // Four circular icons
+              // Four circular images with onTap
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  4,
-                  (index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 4,
-                            offset: Offset(0, 2),
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:
+                    [
+                      'simbolo-azas.png',
+                      'simbolo-cond.png',
+                      'simbolo-hidro.png',
+                      'simbolo-sanea.png',
+                    ].map((imgName) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(0, 66, 79, 122),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: ClipOval(
+                              child: Padding(
+                                padding: const EdgeInsets.all(
+                                  12,
+                                ), // Adicionei um padding para diminuir o tamanho da imagem
+                                child: Image.asset(
+                                  'assets/$imgName',
+                                  fit:
+                                      BoxFit
+                                          .contain, // Alterei para contain para manter proporções
+                                ),
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      // You can add your specific icons here later
-                      child: const Center(
-                        child: Placeholder(
-                          fallbackHeight: 30,
-                          fallbackWidth: 30,
                         ),
-                      ),
-                    ),
-                  ),
-                ),
+                      );
+                    }).toList(),
               ),
 
               const SizedBox(height: 30),
 
-              // Developed by MKS
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
