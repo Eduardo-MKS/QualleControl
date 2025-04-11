@@ -1,217 +1,110 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  // Função para lidar com o logout
-  void _handleLogout(BuildContext context) {
-    // Exibe um diálogo de confirmação
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Logout'),
-            content: const Text('Deseja realmente sair?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancelar'),
-              ),
-              TextButton(
-                onPressed: () {
-                  // Fechar o diálogo
-                  Navigator.pop(context);
-
-                  // Implementação do logout
-                  // Aqui você pode adicionar a lógica de limpar sessão, tokens, etc.
-
-                  // Navegar para a tela de login
-                  Navigator.pushReplacementNamed(context, '/login');
-                },
-                child: const Text('Sair'),
-              ),
-            ],
-          ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
-              const Center(
-                child: Text(
-                  'qualle control',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Center(
-                child: Text(
-                  'Sistemas',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF3A3A3A),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildSystemCard(
-                          context: context,
-                          title: 'qualle control',
-                          subtitle: 'A-ZAS',
-                          color: Colors.green,
-                          route: '/azas',
-                        ),
-                        const SizedBox(height: 16),
-                        _buildSystemCard(
-                          context: context,
-                          title: 'qualle control',
-                          subtitle: 'Condomínios',
-                          color: Colors.red,
-                          route: '/condominios',
-                        ),
-                        const SizedBox(height: 16),
-                        _buildSystemCard(
-                          context: context,
-                          title: 'qualle control',
-                          subtitle: 'Hidrometeorologia',
-                          color: Colors.amber,
-                          route: '/hidrometeorologia',
-                        ),
-                        const SizedBox(height: 16),
-                        _buildSystemCard(
-                          context: context,
-                          title: 'qualle control',
-                          subtitle: 'Saneamento',
-                          color: Colors.lightBlue,
-                          route: '/saneamento',
-                        ),
-                      ],
+              SvgPicture.asset('assets/qualle_control.svg', height: 50),
+              const SizedBox(height: 32),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Card(
+                  child: ListTile(
+                    leading: Image.asset('assets/simbolo-azas.png', height: 40),
+                    title: Text(
+                      'qualle control',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Desenvolvido por ',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                    Text(
-                      'MKS',
+                    subtitle: Text(
+                      'A-ZAS',
                       style: TextStyle(
-                        fontSize: 14,
+                        color: Colors.green.shade600,
                         fontWeight: FontWeight.bold,
-                        color: Colors.grey[800],
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    // Ícone de usuário com ação de logout
-                    InkWell(
-                      onTap: () => _handleLogout(context),
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.grey[800],
-                        size: 20,
-                      ),
-                    ),
-                  ],
+                    trailing: Icon(Icons.arrow_right_alt_sharp),
+                    onTap: () {},
+                  ),
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSystemCard({
-    required BuildContext context,
-    required String title,
-    required String subtitle,
-    required Color color,
-    required String route,
-  }) {
-    return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, route);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  // Aqui você pode adicionar uma imagem futuramente
-                  // Image.asset('assets/images/icon_$subtitle.png', width: 40, height: 40),
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(4),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Card(
+                  child: ListTile(
+                    leading: Image.asset('assets/simbolo-cond.png', height: 40),
+                    title: Text(
+                      'qualle control',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    subtitle: Text(
+                      'Condomínios',
+                      style: TextStyle(
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: color,
-                        ),
-                      ),
-                    ],
+                    ),
+                    trailing: Icon(Icons.arrow_right_alt_sharp),
+                    onTap: () {},
                   ),
-                ],
+                ),
               ),
-              const Icon(Icons.arrow_forward, color: Colors.black),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Card(
+                  child: ListTile(
+                    title: Text(
+                      'qualle control',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      'Hidrometeorologia',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    leading: Image.asset(
+                      'assets/simbolo-hidro.png',
+                      height: 40,
+                    ),
+                    trailing: Icon(Icons.arrow_right_alt_sharp),
+                    onTap: () {},
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Card(
+                  child: ListTile(
+                    title: Text(
+                      'qualle control',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      'Saneamento',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    leading: Image.asset(
+                      'assets/simbolo-sanea.png',
+                      height: 40,
+                    ),
+                    trailing: Icon(Icons.arrow_right_alt_sharp),
+                    onTap: () {},
+                  ),
+                ),
+              ),
             ],
           ),
         ),

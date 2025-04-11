@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/views/home_page.dart';
 import 'package:flutter_mks_app/views/login_page.dart';
+import 'package:flutter_mks_app/views/teste_page.dart';
 
 main() {
   runApp(MyApp());
@@ -15,7 +16,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: const Color.fromARGB(255, 40, 73, 163)),
       initialRoute: '/login',
-      routes: {'/login': (_) => LoginPage(), '/home': (_) => const HomePage()},
+      routes: {
+        '/login': (_) => LoginPage(),
+        '/home': (_) => const HomePage(),
+        '/teste': (_) => const TestePage(),
+      },
     );
   }
 }
