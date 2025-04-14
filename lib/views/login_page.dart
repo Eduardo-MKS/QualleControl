@@ -275,14 +275,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             child: ClipOval(
                               child: Padding(
-                                padding: const EdgeInsets.all(
-                                  12,
-                                ), // Adicionei um padding para diminuir o tamanho da imagem
+                                padding: const EdgeInsets.all(12),
                                 child: Image.asset(
                                   'assets/$imgName',
-                                  fit:
-                                      BoxFit
-                                          .contain, // Alterei para contain para manter proporções
+                                  fit: BoxFit.contain,
                                 ),
                               ),
                             ),

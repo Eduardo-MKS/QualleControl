@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mks_app/views/azas/home_azas.dart';
+import 'package:flutter_mks_app/views/condominios/condominios_home.dart';
 import 'package:flutter_mks_app/views/home_page.dart';
 import 'package:flutter_mks_app/views/login_page.dart';
 import 'package:flutter_mks_app/views/teste_page.dart';
@@ -20,6 +22,8 @@ class MyApp extends StatelessWidget {
         '/login': (_) => LoginPage(),
         '/home': (_) => const HomePage(),
         '/teste': (_) => const TestePage(),
+        '/azas': (_) => const azazHome(),
+        '/condominios': (_) => const condoHome(),
       },
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +33,9 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     trailing: Icon(Icons.arrow_right_alt_sharp),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/azas');
+                    },
                   ),
                 ),
               ),
@@ -53,7 +56,9 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     trailing: Icon(Icons.arrow_right_alt_sharp),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/condominios');
+                    },
                   ),
                 ),
               ),
@@ -103,6 +108,32 @@ class HomePage extends StatelessWidget {
                     trailing: Icon(Icons.arrow_right_alt_sharp),
                     onTap: () {},
                   ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 32),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Desenvolvido por: '),
+                    Text(
+                      'MKS',
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 37, 58, 151),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Padding(padding: const EdgeInsets.all(8.0)),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(backgroundColor: null),
+                      onPressed: () {
+                        Navigator.of(
+                          context,
+                        ).pushNamedAndRemoveUntil('/login', (route) => false);
+                      },
+                      child: const Icon(Icons.exit_to_app),
+                    ),
+                  ],
                 ),
               ),
             ],
