@@ -155,9 +155,6 @@ class _azazHomeState extends State<azazHome> {
       _overlayEntry!.remove();
       _overlayEntry = null;
     }
-    setState(() {
-      isDropdownOpen = false;
-    });
   }
 
   // Create the dropdown overlay entry
