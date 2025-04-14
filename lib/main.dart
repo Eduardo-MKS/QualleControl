@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/views/azas/home_azas.dart';
 import 'package:flutter_mks_app/views/condominios/condominios_home.dart';
+import 'package:flutter_mks_app/views/hidrometeorologia/home_hidro.dart';
 import 'package:flutter_mks_app/views/home_page.dart';
 import 'package:flutter_mks_app/views/login_page.dart';
+import 'package:flutter_mks_app/views/saneamento/home_sanea.dart';
 import 'package:flutter_mks_app/views/teste_page.dart';
 
 main() {
@@ -24,6 +26,8 @@ class MyApp extends StatelessWidget {
         '/teste': (_) => const TestePage(),
         '/azas': (_) => const azazHome(),
         '/condominios': (_) => const condoHome(),
+        '/hidrometeorologia': (_) => const HomeHidro(),
+        '/saneamento': (_) => const SaneaScreen(),
       },
     );
   }

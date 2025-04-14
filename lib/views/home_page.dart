@@ -82,7 +82,9 @@ class HomePage extends StatelessWidget {
                       height: 40,
                     ),
                     trailing: Icon(Icons.arrow_right_alt_sharp),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/hidrometeorologia');
+                    },
                   ),
                 ),
               ),
@@ -106,7 +108,9 @@ class HomePage extends StatelessWidget {
                       height: 40,
                     ),
                     trailing: Icon(Icons.arrow_right_alt_sharp),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/saneamento');
+                    },
                   ),
                 ),
               ),

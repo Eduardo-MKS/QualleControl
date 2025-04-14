@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-// ignore: camel_case_types
-class condoHome extends StatelessWidget {
-  const condoHome({super.key});
+class SaneaScreen extends StatelessWidget {
+  const SaneaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
