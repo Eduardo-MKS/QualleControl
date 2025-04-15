@@ -24,11 +24,7 @@ class CondoCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
-                image: const AssetImage('assets/prédios_Prancheta.png'),
-                width: 300,
-                fit: BoxFit.contain,
-              ),
+              Image(image: AssetImage(condominio.imageCondo), height: 200),
               const SizedBox(height: 8),
               Text(
                 condominio.nome,
