@@ -1,0 +1,151 @@
+{
+    "condominios": [
+      {
+        "id": 1,
+        "nome": "Edifício Tailândia",
+        "ultimaAtualizacao": "2025-04-14T16:39:55",
+        "cisternas": [
+          {
+            "id": 1,
+            "nome": "Cisterna 1",
+            "nivelPercentual": 94.76,
+            "nivelM3": 9.57,
+            "nivelM": 2.01
+          },
+          {
+            "id": 2,
+            "nome": "Cisterna 2",
+            "nivelPercentual": 93.81,
+            "nivelM3": 9.48,
+            "nivelM": 1.99
+          }
+        ],
+        "reservatorio": {
+          "nivelPercentual": 75.71,
+          "nivelM3": 14.84,
+          "nivelM": 1.06
+        },
+        "painelCasaBombas": {
+          "energia": "220V",
+          "statusEnergia": "Normal",
+          "operacao": "Remota",
+          "porta": "Fechada",
+          "rodizio": "Habilitado"
+        },
+        "painelReservatorio": {
+          "energia": "220V",
+          "statusEnergia": "Normal",
+          "porta": "Fechada",
+          "bateria": "14.14V"
+        },
+        "bombas": [
+          {
+            "id": 1,
+            "nome": "Bomba 1",
+            "estado": "Desligada",
+            "controle": "CLP"
+          },
+          {
+            "id": 2,
+            "nome": "Bomba 2",
+            "estado": "Desligada",
+            "controle": "CLP"
+          }
+        ],
+        "historico24h": [
+          {
+            "data": "2025-04-14 16:00",
+            "cisterna1": 94.76,
+            "cisterna2": 93.81,
+            "reservatorio": 76.83
+          }
+        ]
+      },
+        {
+            "id": 2,
+            "nome": "Residencial Amazonas",
+            "ultimaAtualizacao": "2025-04-14T16:45:00",
+            "cisternas": [
+            {
+                "id": 1,
+                "nome": "Cisterna A",
+                "nivelPercentual": 87.23,
+                "nivelM3": 8.22,
+                "nivelM": 1.75
+            }
+            ],
+            "reservatorio": {
+            "nivelPercentual": 66.41,
+            "nivelM3": 12.35,
+            "nivelM": 0.92
+            },
+            "painelCasaBombas": {
+            "energia": "220V",
+            "statusEnergia": "Normal",
+            "operacao": "Manual",
+            "porta": "Aberta",
+            "rodizio": "Desabilitado"
+            },
+            "painelReservatorio": {
+            "energia": "220V",
+            "statusEnergia": "Normal",
+            "porta": "Fechada",
+            "bateria": "13.88V"
+            },
+            "bombas": [
+            {
+                "id": 1,
+                "nome": "Bomba Principal",
+                "estado": "Ligada",
+                "controle": "Manual"
+            }
+            ],
+            "historico24h": [
+            {
+                "data": "2025-04-14 16:00",
+                "cisterna1": 87.23,
+                "reservatorio": 66.41
+            }
+            ]
+        },
+      {
+        "id": 3,
+        "nome": "Condomínio Vale Azul",
+        "ultimaAtualizacao": "2025-04-14T16:50:00",
+        "cisternas": [],
+        "reservatorio": {
+          "nivelPercentual": 92.33,
+          "nivelM3": 18.10,
+          "nivelM": 1.45
+        },
+        "painelCasaBombas": {
+          "energia": "220V",
+          "statusEnergia": "Normal",
+          "operacao": "Remota",
+          "porta": "Fechada",
+          "rodizio": "Habilitado"
+        },
+        "painelReservatorio": {
+          "energia": "220V",
+          "statusEnergia": "Normal",
+          "porta": "Fechada",
+          "bateria": "14.22V"
+        },
+        "bombas": [
+          {
+            "id": 1,
+            "nome": "Bomba Central",
+            "estado": "Desligada",
+            "controle": "CLP"
+          }
+        ],
+        "historico24h": [
+          {
+            "data": "2025-04-14 16:00",
+            "reservatorio": 92.33
+          }
+        ]
+      }
+    ]
+  }
+  

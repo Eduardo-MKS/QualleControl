@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/home': (_) => const HomePage(),
         '/teste': (_) => const TestePage(),
         '/azas': (_) => const azazHome(),
-        '/condominios': (_) => const condoHome(),
+        '/condominios': (_) => CondoHome(),
         '/hidrometeorologia': (_) => const HomeHidro(),
         '/saneamento': (_) => const SaneaScreen(),
       },
