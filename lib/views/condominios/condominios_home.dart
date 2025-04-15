@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/controller/condominio_controller.dart';
 import 'package:flutter_mks_app/views/condominios/condo_detalhes_screen.dart';
 import 'package:flutter_mks_app/views/widgets/custom_bottom_nav_bar.dart';
-
 import 'components/condo_card.dart';
 
 class CondoHome extends StatelessWidget {

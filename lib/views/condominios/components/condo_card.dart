@@ -24,10 +24,10 @@ class CondoCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.home,
-                size: 55,
-                color: const Color.fromARGB(255, 49, 145, 148),
+              Image(
+                image: const AssetImage('assets/prédios_Prancheta.png'),
+                width: 300,
+                fit: BoxFit.contain,
               ),
               const SizedBox(height: 8),
               Text(

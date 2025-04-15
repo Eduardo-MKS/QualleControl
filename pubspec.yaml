@@ -69,6 +69,7 @@ flutter:
     - assets/simbolo-cond.png
     - assets/simbolo-hidro.png
     - assets/simbolo-sanea.png
+    - assets/prédios_Prancheta.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
