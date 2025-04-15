@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/condominio_model.dart';
 import '../../utils/formatters.dart';
-import '../widgets/custom_bottom_nav_bar.dart';
 import '../condominios/components/nav_button.dart';
 import 'components/reservatorio_chart.dart';
 
@@ -103,7 +102,10 @@ class CondominioDetalhesScreen extends StatelessWidget {
                   icon: Icons.notifications,
                   label: "Alarmes",
                   isSelected: false,
-                  onTap: () {},
+                  onTap: () {
+                    // Navegar para a tela de resumo
+                    Navigator.pushNamed(context, '/alarmescreen');
+                  },
                 ),
               ],
             ),
@@ -204,7 +206,6 @@ class CondominioDetalhesScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const CustomBottomNavBar(),
     );
   }
 }

@@ -7,12 +7,12 @@ class NavButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const NavButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     required this.isSelected,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,10 @@ class NavButton extends StatelessWidget {
         margin: const EdgeInsets.only(right: 16),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade50 : Colors.transparent,
+          color:
+              isSelected
+                  ? const Color.fromARGB(255, 28, 73, 105)
+                  : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected ? Colors.blue : Colors.grey.shade300,

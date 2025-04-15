@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/views/azas/home_azas.dart';
+import 'package:flutter_mks_app/views/condominios/alarmes_screen.dart';
 import 'package:flutter_mks_app/views/condominios/condominios_home.dart'; // Já importa o arquivo correto
 import 'package:flutter_mks_app/views/hidrometeorologia/home_hidro.dart';
 import 'package:flutter_mks_app/views/home_page.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/condominios': (_) => CondoHome(),
         '/hidrometeorologia': (_) => const HomeHidro(),
         '/saneamento': (_) => const SaneaScreen(),
+        '/alarmescreen': (_) => const AlarmesScreen(),
       },
     );
   }
