@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/views/azas/home_azas.dart';
-import 'package:flutter_mks_app/views/condominios/condominios_home.dart';
+import 'package:flutter_mks_app/views/condominios/condominios_home.dart'; // Já importa o arquivo correto
 import 'package:flutter_mks_app/views/hidrometeorologia/home_hidro.dart';
 import 'package:flutter_mks_app/views/home_page.dart';
 import 'package:flutter_mks_app/views/login_page.dart';
@@ -8,8 +8,8 @@ import 'package:flutter_mks_app/views/saneamento/home_sanea.dart';
 import 'package:flutter_mks_app/views/teste_page.dart';
 
 main() {
-  runApp(MyApp());
-} //o que este cara faz: chama a função MyApp que é a nossa aplicação
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
