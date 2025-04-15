@@ -27,14 +27,7 @@ class CondominioDetalhesScreen extends StatelessWidget {
         ),
         title: const Row(
           children: [
-            Text(
-              "quelle control",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
+            Image(image: AssetImage('assets/ehoteste.png'), height: 20),
           ],
         ),
         centerTitle: false,
