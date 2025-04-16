@@ -13,12 +13,12 @@ class CondominioController {
     ),
     CondominioModel(
       nome: "Condomínio Quinta das Palmeiras",
-      nivelReservatorioPercentual: 0, // Not showing reservoir for this property
+      nivelReservatorioPercentual: 23.10,
       nivelReservatorioMetros: 0,
       ultimaAtualizacao: DateTime.now().subtract(const Duration(hours: 1)),
       imageCondo: "assets/casas.png",
       hasCisterna: true,
-      nivelCisternaPercentual: 85.16,
+      nivelCisternaPercentual: 1.0,
       nivelCisternaMetros: 1.70,
       hasPressao: true,
       pressaoSaida: 116.2,

@@ -74,20 +74,27 @@ class CondominioDetalhesScreen extends StatelessWidget {
             height: 50,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               children: [
                 NavButton(
                   icon: Icons.home,
                   label: "Resumo",
-                  isSelected: true,
+                  isSelected: false,
                   onTap: () {
                     // Navegar para a tela de resumo
                     Navigator.pushNamed(context, '/condominios');
                   },
                 ),
                 NavButton(
-                  icon: Icons.settings,
-                  label: "Configurações",
+                  icon: Icons.analytics,
+                  label: "Analise",
+                  isSelected: false,
+                  onTap: () {},
+                ),
+                NavButton(
+                  icon: Icons.man_sharp,
+                  //beenhere,
+                  label: "Ações",
                   isSelected: false,
                   onTap: () {},
                 ),
@@ -99,6 +106,12 @@ class CondominioDetalhesScreen extends StatelessWidget {
                     // Navegar para a tela de resumo
                     Navigator.pushNamed(context, '/alarmescreen');
                   },
+                ),
+                NavButton(
+                  icon: Icons.settings,
+                  label: "Configurações",
+                  isSelected: false,
+                  onTap: () {},
                 ),
               ],
             ),

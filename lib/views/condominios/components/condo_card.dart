@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/condominio_model.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class CondoCard extends StatelessWidget {
