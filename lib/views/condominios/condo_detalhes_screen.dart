@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mks_app/views/condominios/detalhes/acoes_component.dart';
+import 'package:flutter_mks_app/views/condominios/detalhes/alarmes_component.dart';
+import 'package:flutter_mks_app/views/condominios/detalhes/analise_component.dart';
+import 'package:flutter_mks_app/views/condominios/detalhes/configuracoes_component.dart';
+import 'package:flutter_mks_app/views/condominios/detalhes/resumo_component.dart';
 import '../../models/condominio_model.dart';
 import '../../utils/formatters.dart';
-import '../condominios/components/nav_button.dart';
-import 'components/reservatorio_chart.dart';
+import 'components/nav_button.dart';
 
-class CondominioDetalhesScreen extends StatelessWidget {
+// Define the enum at the top level instead of inside the class
+enum NavTab { resumo, analise, acoes, alarmes, configuracoes }
+
+class CondominioDetalhesScreen extends StatefulWidget {
   final CondominioModel condominio;
 
   const CondominioDetalhesScreen({super.key, required this.condominio});
 
   @override
+  State<CondominioDetalhesScreen> createState() =>
+      _CondominioDetalhesScreenState();
+}
+
+class _CondominioDetalhesScreenState extends State<CondominioDetalhesScreen> {
+  // Default selected tab
+  NavTab _selectedTab = NavTab.resumo;
+
+  @override
   Widget build(BuildContext context) {
     // Formato de data e hora
     String dataFormatada = DateFormatter.formatarData(
-      condominio.ultimaAtualizacao,
+      widget.condominio.ultimaAtualizacao,
     );
 
     return Scaffold(
@@ -35,13 +51,14 @@ class CondominioDetalhesScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header section with condominium name and update time
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  condominio.nome,
+                  widget.condominio.nome,
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -69,7 +86,7 @@ class CondominioDetalhesScreen extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          // Menu de navegação
+          // Navigation menu
           SizedBox(
             height: 50,
             child: ListView(
@@ -79,39 +96,52 @@ class CondominioDetalhesScreen extends StatelessWidget {
                 NavButton(
                   icon: Icons.home,
                   label: "Resumo",
-                  isSelected: false,
+                  isSelected: _selectedTab == NavTab.resumo,
                   onTap: () {
-                    // Navegar para a tela de resumo
-                    Navigator.pushNamed(context, '/condominios');
+                    setState(() {
+                      _selectedTab = NavTab.resumo;
+                    });
                   },
                 ),
                 NavButton(
                   icon: Icons.analytics,
                   label: "Analise",
-                  isSelected: false,
-                  onTap: () {},
+                  isSelected: _selectedTab == NavTab.analise,
+                  onTap: () {
+                    setState(() {
+                      _selectedTab = NavTab.analise;
+                    });
+                  },
                 ),
                 NavButton(
                   icon: Icons.man_sharp,
-                  //beenhere,
                   label: "Ações",
-                  isSelected: false,
-                  onTap: () {},
+                  isSelected: _selectedTab == NavTab.acoes,
+                  onTap: () {
+                    setState(() {
+                      _selectedTab = NavTab.acoes;
+                    });
+                  },
                 ),
                 NavButton(
                   icon: Icons.notifications,
                   label: "Alarmes",
-                  isSelected: false,
+                  isSelected: _selectedTab == NavTab.alarmes,
                   onTap: () {
-                    // Navegar para a tela de resumo
-                    Navigator.pushNamed(context, '/alarmescreen');
+                    setState(() {
+                      _selectedTab = NavTab.alarmes;
+                    });
                   },
                 ),
                 NavButton(
                   icon: Icons.settings,
                   label: "Configurações",
-                  isSelected: false,
-                  onTap: () {},
+                  isSelected: _selectedTab == NavTab.configuracoes,
+                  onTap: () {
+                    setState(() {
+                      _selectedTab = NavTab.configuracoes;
+                    });
+                  },
                 ),
               ],
             ),
@@ -119,99 +149,26 @@ class CondominioDetalhesScreen extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // Card do reservatório
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-                side: BorderSide(color: Colors.grey.shade300, width: 1),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Reservatório",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-
-                    const SizedBox(height: 30),
-                    const Divider(color: Colors.grey),
-                    const SizedBox(height: 20),
-                    const Divider(color: Colors.grey),
-                    const SizedBox(height: 10),
-
-                    // Gráfico do reservatório
-                    SizedBox(
-                      height: 180,
-                      child: ReservatorioChart(
-                        nivelPercentual: condominio.nivelReservatorioPercentual,
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Informações de nível
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Nível (%)",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "${condominio.nivelReservatorioPercentual}%",
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(height: 50, width: 1, color: Colors.grey),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Nível (m)",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              "${condominio.nivelReservatorioMetros}m",
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          // Dynamic content area that changes based on selected tab
+          Expanded(child: _buildSelectedContent()),
         ],
       ),
     );
+  }
+
+  // Method to build the content based on selected tab
+  Widget _buildSelectedContent() {
+    switch (_selectedTab) {
+      case NavTab.resumo:
+        return ResumoScreen(condominio: widget.condominio);
+      case NavTab.analise:
+        return AnaliseComponent(condominio: widget.condominio);
+      case NavTab.acoes:
+        return AcoesComponent(condominio: widget.condominio);
+      case NavTab.alarmes:
+        return AlarmesComponent(condominio: widget.condominio);
+      case NavTab.configuracoes:
+        return ConfiguracoesComponent(condominio: widget.condominio);
+    }
   }
 }
