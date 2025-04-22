@@ -15,6 +15,93 @@ class CondoHome extends StatelessWidget {
     _scaffoldKey.currentState?.openDrawer();
   }
 
+  // Função para mostrar o diálogo de plantão
+  void _showPlantaoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          insetPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 24,
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Técnicos de Plantão',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+                const Text(
+                  '22/04/2025 08:00 - 25/04/2025 08:00',
+                  style: TextStyle(fontSize: 14),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Contatos - Suporte TI',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                _buildContactRow('Bruno Zanella', '(47) 99916-1025'),
+                _buildContactRow('Henrique Starosky (Web)', '(47) 99901-0434'),
+                const Divider(),
+                const SizedBox(height: 8),
+                const Text(
+                  'Contatos - Campo',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                _buildContactRow('Maicon Nunes', '(47) 99174-0588'),
+                _buildContactRow('Daniel Gaia', '(47) 99741-0544'),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildContactRow(String name, String phone) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(name, style: const TextStyle(fontSize: 14)),
+          Row(
+            children: [
+              Text(phone, style: const TextStyle(fontSize: 14)),
+              const SizedBox(width: 4),
+              const Icon(Icons.phone, color: Colors.green, size: 20),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Altura da seção superior com gradiente
@@ -85,8 +172,8 @@ class CondoHome extends StatelessWidget {
               leading: const Icon(Icons.phone_callback),
               title: const Text('Plantão'),
               onTap: () {
-                // Lógica de filtro por consumo
-                Navigator.pop(context);
+                // Mostrar o diálogo de plantão
+                _showPlantaoDialog(context);
               },
             ),
             ListTile(
@@ -100,6 +187,7 @@ class CondoHome extends StatelessWidget {
           ],
         ),
       ),
+      // Resto do código permanece igual
       body: Stack(
         children: [
           // Fundo com gradiente na parte superior
