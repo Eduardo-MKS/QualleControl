@@ -1,98 +1,185 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/controller/condominio_controller.dart';
+import 'package:flutter_mks_app/controller/plantao_controller.dart'; // Importe o PlantaoController
+import 'package:flutter_mks_app/models/plantao_model.dart'; // Importe o PlantaoModel
 import 'package:flutter_mks_app/views/condominios/condo_detalhes_screen.dart';
 import 'package:flutter_mks_app/views/widgets/custom_bottom_nav_bar.dart';
 import 'components/condo_card.dart';
+import 'package:intl/intl.dart';
 
-class CondoHome extends StatelessWidget {
+class CondoHome extends StatefulWidget {
   CondoHome({super.key});
 
-  final CondominioController _controller = CondominioController();
+  @override
+  State<CondoHome> createState() => _CondoHomeState();
+}
+
+class _CondoHomeState extends State<CondoHome> {
+  final CondominioController _condominioController = CondominioController();
+  final PlantaoController _plantaoController =
+      PlantaoController(); // Instancie o PlantaoController
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // Função para abrir o drawer
   void _openDrawer(BuildContext context) {
     _scaffoldKey.currentState?.openDrawer();
   }
 
-  // Função para mostrar o diálogo de plantão
   void _showPlantaoDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          insetPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 24,
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            if (_plantaoController.isLoading) {
+              return const AlertDialog(
+                content: Row(
                   children: [
-                    const Text(
-                      'Técnicos de Plantão',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
+                    CircularProgressIndicator(),
+                    SizedBox(width: 16),
+                    Text('Carregando dados do plantão...'),
                   ],
                 ),
-                const Text(
-                  '22/04/2025 08:00 - 25/04/2025 08:00',
-                  style: TextStyle(fontSize: 14),
+              );
+            } else if (_plantaoController.errorMessage != null) {
+              return AlertDialog(
+                title: const Text('Erro'),
+                content: Text(_plantaoController.errorMessage!),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Ok'),
+                  ),
+                ],
+              );
+            } else if (_plantaoController.plantaoAtual != null) {
+              final PlantaoAtual plantao = _plantaoController.plantaoAtual!;
+              final DateFormat formatter = DateFormat('dd/MM/yyyy HH:mm');
+              final String dataInicioFormatada = formatter.format(
+                plantao.dataInicio!,
+              );
+              final String dataFinalFormatada = formatter.format(
+                plantao.dataFinal!,
+              );
+
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Contatos - Suporte TI',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                insetPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 24,
                 ),
-                const SizedBox(height: 8),
-                _buildContactRow('Bruno Zanella', '(47) 99916-1025'),
-                _buildContactRow('Henrique Starosky (Web)', '(47) 99901-0434'),
-                const Divider(),
-                const SizedBox(height: 8),
-                const Text(
-                  'Contatos - Campo',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Técnicos de Plantão',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '$dataInicioFormatada - $dataFinalFormatada',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      const SizedBox(height: 16),
+                      if (plantao.contatoSuporte != null &&
+                          plantao.contatoSuporte!.isNotEmpty)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Contatos - Suporte TI',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            ...plantao.contatoSuporte!.map(
+                              (contato) => _buildContactRow(contato),
+                            ),
+                          ],
+                        ),
+                      if (plantao.contatoSuporte != null &&
+                          plantao.contatoSuporte!.isNotEmpty &&
+                          plantao.contatoCampo != null &&
+                          plantao.contatoCampo!.isNotEmpty)
+                        const Divider(),
+                      if (plantao.contatoCampo != null &&
+                          plantao.contatoCampo!.isNotEmpty)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Contatos - Campo',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            ...plantao.contatoCampo!.map(
+                              (contato) => _buildContactRow(contato),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 8),
-                _buildContactRow('Maicon Nunes', '(47) 99174-0588'),
-                _buildContactRow('Daniel Gaia', '(47) 99741-0544'),
-              ],
-            ),
-          ),
+              );
+            } else {
+              return AlertDialog(
+                content: const Text('Nenhum dado de plantão disponível.'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Ok'),
+                  ),
+                ],
+              );
+            }
+          },
         );
       },
     );
   }
 
-  Widget _buildContactRow(String name, String phone) {
+  Widget _buildContactRow(Contato contato) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(name, style: const TextStyle(fontSize: 14)),
+          Text(contato.nome ?? '', style: const TextStyle(fontSize: 14)),
           Row(
             children: [
-              Text(phone, style: const TextStyle(fontSize: 14)),
+              Text(
+                contato.telefone ?? '',
+                style: const TextStyle(fontSize: 14),
+              ),
               const SizedBox(width: 4),
               const Icon(Icons.phone, color: Colors.green, size: 20),
             ],
@@ -104,7 +191,6 @@ class CondoHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Altura da seção superior com gradiente
     final double topSectionHeight = MediaQuery.of(context).size.height * 0.25;
 
     return Scaffold(
@@ -120,15 +206,14 @@ class CondoHome extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color.fromARGB(255, 49, 145, 148), // Verde azulado
-                    Color.fromARGB(255, 86, 188, 190), // Verde claro
+                    Color.fromARGB(255, 49, 145, 148),
+                    Color.fromARGB(255, 86, 188, 190),
                   ],
                 ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Logo no cabeçalho do drawer
                   Container(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: Row(
@@ -159,20 +244,17 @@ class CondoHome extends StatelessWidget {
                 ],
               ),
             ),
-            // Adicione aqui as opções de filtro que você deseja
             ListTile(
               leading: const Icon(Icons.person_2),
               title: const Text('Admin'),
               onTap: () {
-                // Lógica de filtro por condomínio
-                Navigator.pop(context); // Fecha o drawer
+                Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.phone_callback),
               title: const Text('Plantão'),
               onTap: () {
-                // Mostrar o diálogo de plantão
                 _showPlantaoDialog(context);
               },
             ),
@@ -180,17 +262,14 @@ class CondoHome extends StatelessWidget {
               leading: const Icon(Icons.logout),
               title: const Text('Sair'),
               onTap: () {
-                // Lógica de sair
                 Navigator.pushNamed(context, '/home');
               },
             ),
           ],
         ),
       ),
-      // Resto do código permanece igual
       body: Stack(
         children: [
-          // Fundo com gradiente na parte superior
           Column(
             children: [
               Container(
@@ -200,8 +279,8 @@ class CondoHome extends StatelessWidget {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color.fromARGB(255, 49, 145, 148), // Verde azulado
-                      Color.fromARGB(255, 86, 188, 190), // Verde claro
+                      Color.fromARGB(255, 49, 145, 148),
+                      Color.fromARGB(255, 86, 188, 190),
                     ],
                   ),
                 ),
@@ -209,13 +288,10 @@ class CondoHome extends StatelessWidget {
               Expanded(child: Container(color: Colors.white)),
             ],
           ),
-
-          // Conteúdo
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Cabeçalho
                 Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: Row(
@@ -232,7 +308,6 @@ class CondoHome extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Logo no canto superior direito
                       Row(
                         children: [
                           const Image(
@@ -255,7 +330,6 @@ class CondoHome extends StatelessWidget {
               ],
             ),
           ),
-
           Positioned(
             top: topSectionHeight - 10,
             left: 0,
@@ -265,10 +339,10 @@ class CondoHome extends StatelessWidget {
               child: SizedBox(
                 height: 450,
                 child: PageView.builder(
-                  itemCount: _controller.condominios.length,
+                  itemCount: _condominioController.condominios.length,
                   controller: PageController(viewportFraction: 1.0),
                   itemBuilder: (context, index) {
-                    final condominio = _controller.condominios[index];
+                    final condominio = _condominioController.condominios[index];
                     return CondoCard(
                       condominio: condominio,
                       onTap: () {
