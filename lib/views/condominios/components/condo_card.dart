@@ -159,9 +159,9 @@ class CondoCard extends StatelessWidget {
   }
 
   Color _getColorByLevel(double level) {
-    if (level < 30) {
-      return Colors.red;
-    } else if (level < 60) {
+    if (level < 20) {
+      return const Color.fromARGB(255, 22, 152, 22);
+    } else if (level > 30) {
       return Colors.orange;
     } else {
       return Colors.green;
@@ -174,7 +174,7 @@ class CondoCard extends StatelessWidget {
     } else if (pressure > 140) {
       return Colors.orange;
     } else {
-      return Colors.green;
+      return const Color.fromARGB(255, 179, 13, 13);
     }
   }
 }
