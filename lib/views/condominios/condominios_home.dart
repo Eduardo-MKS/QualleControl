@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/controller/condominio_controller.dart';
-import 'package:flutter_mks_app/controller/plantao_controller.dart'; // Importe o PlantaoController
-import 'package:flutter_mks_app/models/plantao_model.dart'; // Importe o PlantaoModel
+import 'package:flutter_mks_app/controller/plantao_controller.dart';
+import 'package:flutter_mks_app/models/plantao_model.dart';
 import 'package:flutter_mks_app/views/condominios/condo_detalhes_screen.dart';
 import 'package:flutter_mks_app/views/widgets/custom_bottom_nav_bar.dart';
 import 'components/condo_card.dart';
 import 'package:intl/intl.dart';
 
 class CondoHome extends StatefulWidget {
-  CondoHome({super.key});
+  const CondoHome({super.key});
 
   @override
   State<CondoHome> createState() => _CondoHomeState();
@@ -16,9 +16,32 @@ class CondoHome extends StatefulWidget {
 
 class _CondoHomeState extends State<CondoHome> {
   final CondominioController _condominioController = CondominioController();
-  final PlantaoController _plantaoController =
-      PlantaoController(); // Instancie o PlantaoController
+  final PlantaoController _plantaoController = PlantaoController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    try {
+      await _condominioController.initialize();
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   void _openDrawer(BuildContext context) {
     _scaffoldKey.currentState?.openDrawer();
@@ -33,11 +56,7 @@ class _CondoHomeState extends State<CondoHome> {
             if (_plantaoController.isLoading) {
               return const AlertDialog(
                 content: Row(
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(width: 16),
-                    Text('Carregando dados do plantão...'),
-                  ],
+                  children: [CircularProgressIndicator(), SizedBox(width: 16)],
                 ),
               );
             } else if (_plantaoController.errorMessage != null) {
@@ -189,8 +208,58 @@ class _CondoHomeState extends State<CondoHome> {
     );
   }
 
+  Widget _buildSplashScreen() {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color.fromARGB(255, 49, 145, 148),
+            Color.fromARGB(255, 86, 188, 190),
+          ],
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Image(
+                  image: AssetImage('assets/ehoteste.png'),
+                  height: 40,
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  child: const Image(
+                    image: AssetImage('assets/simbolo-cond.png'),
+                    height: 80,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 40),
+
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              strokeWidth: 5,
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return _buildSplashScreen();
+    }
+
     final double topSectionHeight = MediaQuery.of(context).size.height * 0.25;
 
     return Scaffold(
@@ -255,6 +324,7 @@ class _CondoHomeState extends State<CondoHome> {
               leading: const Icon(Icons.phone_callback),
               title: const Text('Plantão'),
               onTap: () {
+                Navigator.pop(context);
                 _showPlantaoDialog(context);
               },
             ),
@@ -300,7 +370,7 @@ class _CondoHomeState extends State<CondoHome> {
                       const Padding(
                         padding: EdgeInsets.all(9.0),
                         child: Text(
-                          "Olá,\nEduardo!",
+                          "Olá,\nAdmin!",
                           style: TextStyle(
                             fontSize: 35,
                             fontWeight: FontWeight.bold,
@@ -338,27 +408,40 @@ class _CondoHomeState extends State<CondoHome> {
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SizedBox(
                 height: 450,
-                child: PageView.builder(
-                  itemCount: _condominioController.condominios.length,
-                  controller: PageController(viewportFraction: 1.0),
-                  itemBuilder: (context, index) {
-                    final condominio = _condominioController.condominios[index];
-                    return CondoCard(
-                      condominio: condominio,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => CondominioDetalhesScreen(
-                                  condominio: condominio,
-                                ),
+                child:
+                    _condominioController.condominios.isEmpty
+                        ? const Center(
+                          child: Text(
+                            "Nenhum condomínio encontrado",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                        )
+                        : PageView.builder(
+                          itemCount: _condominioController.condominios.length,
+                          controller: PageController(viewportFraction: 1.0),
+                          itemBuilder: (context, index) {
+                            final condominio =
+                                _condominioController.condominios[index];
+                            return CondoCard(
+                              condominio: condominio,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => CondominioDetalhesScreen(
+                                          condominio: condominio,
+                                        ),
+                                  ),
+                                );
+                              },
+                              reservatorioText: 'erer',
+                            );
+                          },
+                        ),
               ),
             ),
           ),

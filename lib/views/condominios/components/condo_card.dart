@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import '../../../models/condominio_model.dart';
-// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
 class CondoCard extends StatelessWidget {
   final CondominioModel condominio;
   final VoidCallback onTap;
 
-  // ignore: use_super_parameters
-  const CondoCard({Key? key, required this.condominio, required this.onTap})
-    : super(key: key);
+  const CondoCard({
+    Key? key,
+    required this.condominio,
+    required this.onTap,
+    required String reservatorioText,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // Format date for display
+    // Pega a hora atual do sistema
     final dateFormat = DateFormat('dd/MM/yy HH:mm:ss');
-    final formattedDate = dateFormat.format(condominio.ultimaAtualizacao);
+    final formattedDate = dateFormat.format(
+      DateTime.now(),
+    ); // Hora atual do sistema
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -30,7 +34,12 @@ class CondoCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(image: AssetImage(condominio.imageCondo), height: 180),
+              Image(
+                image: AssetImage(
+                  condominio.imageCondo ?? 'assets/default_condo.png',
+                ),
+                height: 180,
+              ),
               const SizedBox(height: 8),
               Text(
                 condominio.nome,
@@ -49,7 +58,7 @@ class CondoCard extends StatelessWidget {
                   Icon(Icons.update, size: 16, color: Colors.grey[600]),
                   const SizedBox(width: 4),
                   Text(
-                    formattedDate,
+                    formattedDate, // Exibe a hora atual
                     style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                   ),
                 ],
@@ -70,10 +79,12 @@ class CondoCard extends StatelessWidget {
   }
 
   Widget _buildMetricsRow(CondominioModel condominio) {
-    // First, let's determine what metrics this property has
-    final hasReservatorio = condominio.nivelReservatorioPercentual > 0;
-    final hasCisterna = condominio.hasCisterna == true;
-    final hasPressao = condominio.hasPressao == true;
+    final hasReservatorio = condominio.nivelReservatorioPercentual != null;
+    final hasCisterna =
+        condominio.hasCisterna == true &&
+        condominio.nivelCisternaPercentual != null;
+    final hasPressao =
+        condominio.hasPressao == true && condominio.pressaoSaida != null;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -81,22 +92,22 @@ class CondoCard extends StatelessWidget {
         if (hasReservatorio)
           _buildMetricItem(
             'Reservatório',
-            '${condominio.nivelReservatorioPercentual.toStringAsFixed(2)}%',
-            _getColorByLevel(condominio.nivelReservatorioPercentual),
+            '${(condominio.nivelReservatorioPercentual! * 100).toStringAsFixed(2)}%',
+            _getColorByLevel(condominio.nivelReservatorioPercentual!),
             Icons.water_drop,
           ),
         if (hasCisterna)
           _buildMetricItem(
             'Cisterna',
             '${condominio.nivelCisternaPercentual?.toStringAsFixed(2)}%',
-            _getColorByLevel(condominio.nivelCisternaPercentual ?? 0),
+            _getColorByLevel(condominio.nivelCisternaPercentual!),
             Icons.water,
           ),
         if (hasPressao)
           _buildMetricItem(
             'Pressão Saída',
             '${condominio.pressaoSaida?.toStringAsFixed(1)}mca',
-            _getColorByPressure(condominio.pressaoSaida ?? 0),
+            _getColorByPressure(condominio.pressaoSaida!),
             Icons.speed,
           ),
       ],

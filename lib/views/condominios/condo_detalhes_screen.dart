@@ -28,9 +28,10 @@ class _CondominioDetalhesScreenState extends State<CondominioDetalhesScreen> {
   @override
   Widget build(BuildContext context) {
     // Formato de data e hora
-    String dataFormatada = DateFormatter.formatarData(
-      widget.condominio.ultimaAtualizacao,
-    );
+    String dataFormatada =
+        widget.condominio.ultimaAtualizacao != null
+            ? DateFormatter.formatarData(widget.condominio.ultimaAtualizacao!)
+            : 'Não atualizado';
 
     return Scaffold(
       backgroundColor: Colors.white,

@@ -40,7 +40,8 @@ class ResumoScreen extends StatelessWidget {
               SizedBox(
                 height: 180,
                 child: ReservatorioChart(
-                  nivelPercentual: condominio.nivelReservatorioPercentual,
+                  nivelPercentual:
+                      (condominio.nivelReservatorioPercentual ?? 0.0) * 100,
                 ),
               ),
 
@@ -59,7 +60,7 @@ class ResumoScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        "${condominio.nivelReservatorioPercentual}%",
+                        "${((condominio.nivelReservatorioPercentual ?? 0.0) * 100).toStringAsFixed(1)}%",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -77,7 +78,7 @@ class ResumoScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        "${condominio.nivelReservatorioMetros}m",
+                        "${condominio.nivelReservatorioMetros ?? 'N/A'}m", // Exibe 'N/A' se for nulo
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

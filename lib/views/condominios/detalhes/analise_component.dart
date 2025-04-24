@@ -60,7 +60,7 @@ class AnaliseComponent extends StatelessWidget {
                       children: [
                         _buildStatItem(
                           "Mínimo",
-                          "${condominio.nivelReservatorioPercentual - 10}%",
+                          "${condominio.nivelReservatorioPercentual!}%",
                         ),
                         _buildStatItem(
                           "Médio",
@@ -68,7 +68,7 @@ class AnaliseComponent extends StatelessWidget {
                         ),
                         _buildStatItem(
                           "Máximo",
-                          "${condominio.nivelReservatorioPercentual + 10}%",
+                          "${condominio.nivelReservatorioPercentual!}%",
                         ),
                       ],
                     ),
