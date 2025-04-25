@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/controller/condominio_controller.dart';
 import 'package:flutter_mks_app/controller/plantao_controller.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_mks_app/views/condominios/condo_detalhes_screen.dart';
 import 'package:flutter_mks_app/views/widgets/custom_bottom_nav_bar.dart';
 import 'components/condo_card.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CondoHome extends StatefulWidget {
   const CondoHome({super.key});
@@ -200,7 +203,22 @@ class _CondoHomeState extends State<CondoHome> {
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(width: 4),
-              const Icon(Icons.phone, color: Colors.green, size: 20),
+              InkWell(
+                child: const Icon(Icons.phone, color: Colors.green, size: 20),
+                onTap: () async {
+                  // Remove all non-digit characters from the phone number
+                  final cleanPhone =
+                      contato.telefone?.replaceAll(RegExp(r'[^\d]'), '') ?? '';
+                  print('Clean phone: $cleanPhone');
+
+                  final Uri url = Uri.parse('https://wa.me/55$cleanPhone');
+                  print('URL: $url');
+
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $url');
+                  }
+                },
+              ),
             ],
           ),
         ],
