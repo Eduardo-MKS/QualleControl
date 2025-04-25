@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import '../models/condominio_model.dart';
 import 'package:dio/dio.dart';

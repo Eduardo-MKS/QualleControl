@@ -40,6 +40,11 @@ class CondominioModel {
         reservatorioList.isNotEmpty ? reservatorioList[0] : null;
     final cisterna = cisternaList.isNotEmpty ? cisternaList[0] : null;
 
+    String imageAsset = 'assets/prédios_Prancheta.png';
+    if (json["nome"] == 'Condomínio Quinta Das Palmeiras') {
+      imageAsset = 'assets/casas.png';
+    }
+
     return CondominioModel(
       nome: json['nome'] ?? '',
       ultimaAtualizacao: DateTime.tryParse(json['ultimaAtualizacao'] ?? ''),
@@ -50,7 +55,7 @@ class CondominioModel {
       nivelCisternaMetros: (cisterna?['nivelMetro'] as num?)?.toDouble(),
       nivelCisternaPercentual:
           (cisterna?['nivelPercentual'] as num?)?.toDouble(),
-      imageCondo: 'assets/prédios_Prancheta.png', // Imagem fixa
+      imageCondo: imageAsset, // Imagem fixa
       hasCisterna: cisterna != null,
       hasPressao: false, // Se não existir no JSON, setar como false
       pressaoSaida: null,
