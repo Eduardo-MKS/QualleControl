@@ -99,7 +99,7 @@ class CondoCard extends StatelessWidget {
         if (hasCisterna)
           _buildMetricItem(
             'Cisterna',
-            '${condominio.nivelCisternaPercentual?.toStringAsFixed(2)}%',
+            '${(condominio.nivelCisternaPercentual! * 100).toStringAsFixed(2)}%',
             _getColorByLevel(condominio.nivelCisternaPercentual!),
             Icons.water,
           ),
