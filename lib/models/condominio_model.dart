@@ -1,7 +1,7 @@
 class CondominioModel {
   final String nome;
   final double? nivelReservatorioPercentual;
-  final double? nivelReservatorioMetros;
+  final String? nivelReservatorioMetros;
   final DateTime? ultimaAtualizacao;
   final String? imageCondo;
   final bool hasCisterna;
@@ -49,7 +49,7 @@ class CondominioModel {
       nome: json['nome'] ?? '',
       ultimaAtualizacao: DateTime.tryParse(json['ultimaAtualizacao'] ?? ''),
       nivelReservatorioMetros:
-          (reservatorio?['nivelMetro'] as num?)?.toDouble(),
+          (reservatorio?['nivelMetro'] as num?)?.toStringAsFixed(2) ?? '',
       nivelReservatorioPercentual:
           (reservatorio?['nivelPercentual'] as num?)?.toDouble(),
       nivelCisternaMetros: (cisterna?['nivelMetro'] as num?)?.toDouble(),

@@ -9,7 +9,6 @@ class PlantaoService {
     try {
       final response = await _dio.get('$_baseUrl/sobreavisos/atual?json');
       if (response.statusCode == 200) {
-        print('Dados do plantão carregados com sucesso.');
         return PlantaoResponse.fromJson(response.data);
       } else {
         // ignore: avoid_print
