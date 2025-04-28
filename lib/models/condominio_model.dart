@@ -49,23 +49,32 @@ class CondominioModel {
       nome: json['nome'] ?? '',
       ultimaAtualizacao: DateTime.tryParse(json['ultimaAtualizacao'] ?? ''),
       nivelReservatorioMetros:
-          (reservatorio?['nivelMetro'] as num?)?.toStringAsFixed(2) ?? '',
+          reservatorio?['nivelMetro'] != null
+              ? (reservatorio['nivelMetro'] as num).toStringAsFixed(2)
+              : null,
       nivelReservatorioPercentual:
           (reservatorio?['nivelPercentual'] as num?)?.toDouble(),
       nivelCisternaMetros:
-          (cisterna?['nivelMetro'] as num?)?.toStringAsFixed(2) ?? '',
+          cisterna?['nivelMetro'] != null
+              ? (cisterna['nivelMetro'] as num).toStringAsFixed(2)
+              : null,
       nivelCisternaPercentual:
           (cisterna?['nivelPercentual'] as num?)?.toDouble(),
-      imageCondo: imageAsset, // Imagem fixa
+      imageCondo: imageAsset,
       hasCisterna: cisterna != null,
-      hasPressao: false, // Se não existir no JSON, setar como false
+      hasPressao: false,
       pressaoSaida: null,
-      energia: null, // Adapte se necessário
+      energia: null,
       boia: null,
       bateria:
-          (reservatorio?['painelReservatorio']?['bateria']?['tensao'] as num?)
-              ?.toString(),
-      operacao: null,
+          (reservatorio?['painelReservatorio']?['bateria']?['tensao']
+                      as num?) !=
+                  null
+              ? (reservatorio!['painelReservatorio']['bateria']['tensao']
+                      as num)
+                  .toStringAsFixed(2)
+              : null,
+      operacao: true.toString(),
     );
   }
 }

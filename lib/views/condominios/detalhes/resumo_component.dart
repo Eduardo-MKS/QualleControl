@@ -11,12 +11,13 @@ class ResumoScreen extends StatelessWidget {
     // Verificar se deve mostrar tanto reservatório quanto cisterna
     final bool hasReservatorio =
         condominio.nivelReservatorioPercentual != null ||
-        condominio.nivelReservatorioMetros != null;
-
+        (condominio.nivelReservatorioMetros != null &&
+            condominio.nivelReservatorioMetros!.isNotEmpty);
     final bool hasCisterna =
         condominio.hasCisterna &&
         (condominio.nivelCisternaPercentual != null ||
-            condominio.nivelCisternaMetros != null);
+            (condominio.nivelCisternaMetros != null &&
+                condominio.nivelCisternaMetros!.isNotEmpty));
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
