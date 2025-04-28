@@ -6,7 +6,7 @@ class CondominioModel {
   final String? imageCondo;
   final bool hasCisterna;
   final double? nivelCisternaPercentual;
-  final double? nivelCisternaMetros;
+  final String? nivelCisternaMetros;
   final bool hasPressao;
   final double? pressaoSaida;
   final String? energia;
@@ -52,7 +52,8 @@ class CondominioModel {
           (reservatorio?['nivelMetro'] as num?)?.toStringAsFixed(2) ?? '',
       nivelReservatorioPercentual:
           (reservatorio?['nivelPercentual'] as num?)?.toDouble(),
-      nivelCisternaMetros: (cisterna?['nivelMetro'] as num?)?.toDouble(),
+      nivelCisternaMetros:
+          (cisterna?['nivelMetro'] as num?)?.toStringAsFixed(2) ?? '',
       nivelCisternaPercentual:
           (cisterna?['nivelPercentual'] as num?)?.toDouble(),
       imageCondo: imageAsset, // Imagem fixa
