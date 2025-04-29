@@ -83,8 +83,6 @@ class CondoCard extends StatelessWidget {
     final hasCisterna =
         condominio.hasCisterna == true &&
         condominio.nivelCisternaPercentual != null;
-    final hasPressao =
-        condominio.hasPressao == true && condominio.pressaoSaida != null;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -102,13 +100,6 @@ class CondoCard extends StatelessWidget {
             '${(condominio.nivelCisternaPercentual! * 100).toStringAsFixed(2)}%',
             _getColorByLevel(condominio.nivelCisternaPercentual!),
             Icons.water,
-          ),
-        if (hasPressao)
-          _buildMetricItem(
-            'Pressão Saída',
-            '${condominio.pressaoSaida?.toStringAsFixed(1)}mca',
-            _getColorByPressure(condominio.pressaoSaida!),
-            Icons.speed,
           ),
       ],
     );
@@ -165,16 +156,6 @@ class CondoCard extends StatelessWidget {
       return Colors.orange;
     } else {
       return Colors.green;
-    }
-  }
-
-  Color _getColorByPressure(double pressure) {
-    if (pressure < 80) {
-      return Colors.red;
-    } else if (pressure > 140) {
-      return Colors.orange;
-    } else {
-      return const Color.fromARGB(255, 179, 13, 13);
     }
   }
 }

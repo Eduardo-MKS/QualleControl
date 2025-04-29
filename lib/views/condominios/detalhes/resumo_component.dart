@@ -43,7 +43,7 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Vazão (m³/h)",
                 vazaoValue: condominio.vazao ?? "0.0",
                 totalizadorValue: condominio.totalizador ?? "0.0",
-                color: const Color.fromARGB(255, 66, 143, 68),
+                color: const Color.fromARGB(255, 81, 236, 86),
               )
             else
               const SizedBox(height: 12),
@@ -57,8 +57,6 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Reservatório",
                 percentualValue: condominio.nivelReservatorioPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelReservatorioMetros ?? 'N/A'}m",
-                pressaoSaida:
-                    condominio.hasPressao ? condominio.pressaoSaida : null,
                 color: Colors.blue,
               ),
 
@@ -72,7 +70,13 @@ class ResumoScreen extends StatelessWidget {
                 metrosValue: "${condominio.nivelCisternaMetros ?? 'N/A'}m",
                 pressaoSaida:
                     null, // A cisterna geralmente não tem pressão de saída
-                color: const Color.fromARGB(255, 6, 20, 124),
+                color: const Color.fromARGB(255, 138, 71, 214),
+              ),
+            if (hasCisterna)
+              _buildCardPressao(
+                titulo: "Pressão de Saída mca",
+                cisterna: condominio.pressaoSaida ?? "0.0",
+                color: Colors.blueAccent,
               ),
           ],
         ),
@@ -199,7 +203,7 @@ class ResumoScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: color.withOpacity(0.8),
+                    color: Color.fromARGB(255, 0, 0, 0),
                   ),
                 ),
                 Text(
@@ -235,14 +239,17 @@ class ResumoScreen extends StatelessWidget {
                     children: [
                       Text(
                         "Nível (m³)",
-                        style: TextStyle(color: color, fontSize: 14),
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 14,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         pressaoSaida != null
                             ? ((pressaoSaida * 100)).toStringAsFixed(1)
                             : "N/A",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -259,14 +266,18 @@ class ResumoScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Nível (m)",
-                          style: TextStyle(color: color, fontSize: 14),
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontSize: 14,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           metrosValue,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            color: color,
                           ),
                         ),
                       ],
@@ -306,7 +317,7 @@ class ResumoScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: color.withOpacity(0.8),
+                    color: Color.fromARGB(255, 0, 0, 0),
                   ),
                 ),
                 Text(
@@ -334,7 +345,10 @@ class ResumoScreen extends StatelessWidget {
                     children: [
                       Text(
                         "Vazão (l/s)",
-                        style: TextStyle(color: color, fontSize: 14),
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 14,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -356,7 +370,10 @@ class ResumoScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Totalizador (m³)",
-                          style: TextStyle(color: color, fontSize: 14),
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontSize: 14,
+                          ),
                         ),
                         const SizedBox(height: 4),
                         Text(
@@ -373,6 +390,53 @@ class ResumoScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCardPressao({
+    required String titulo,
+    required Color color,
+    required String cisterna,
+  }) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Colors.grey.shade300, width: 1),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  titulo,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ),
+                Text(
+                  cisterna,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            const Divider(color: Colors.grey),
+            const SizedBox(height: 8),
           ],
         ),
       ),

@@ -8,7 +8,7 @@ class CondominioModel {
   final double? nivelCisternaPercentual;
   final String? nivelCisternaMetros;
   final bool hasPressao;
-  final double? pressaoSaida;
+  final String? pressaoSaida;
   final bool hasGeral;
   final String? energia;
   final String? boia;
@@ -78,7 +78,9 @@ class CondominioModel {
       imageCondo: imageAsset,
       hasCisterna: cisterna != null,
       hasPressao: cisterna?['pressao']?['saida'] != null,
-      pressaoSaida: (cisterna?['pressao']?['saida'] as num?)?.toDouble(),
+      pressaoSaida: (cisterna?['pressao']?['saida'] as num?)?.toStringAsFixed(
+        2,
+      ),
       hasGeral:
           energiaStatus != null ||
           remotoStatus != null ||
