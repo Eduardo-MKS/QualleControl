@@ -40,7 +40,7 @@ class ResumoScreen extends StatelessWidget {
             // Card de Vazão (se tiver dados)
             if (hasVazao)
               _buildCardVazao(
-                titulo: "Vazão",
+                titulo: "Vazão (m³/h)",
                 vazaoValue: condominio.vazao ?? "0.0",
                 totalizadorValue: condominio.totalizador ?? "0.0",
                 color: const Color.fromARGB(255, 66, 143, 68),
@@ -309,6 +309,14 @@ class ResumoScreen extends StatelessWidget {
                     color: color.withOpacity(0.8),
                   ),
                 ),
+                Text(
+                  vazaoValue,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -330,7 +338,7 @@ class ResumoScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "teste",
+                        "0.36",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

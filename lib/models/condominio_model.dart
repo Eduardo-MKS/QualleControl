@@ -86,14 +86,11 @@ class CondominioModel {
           boiaStatus != null,
       energia: energiaStatus?.toString(),
       boia: boiaStatus?.toString(),
-      bateria: bateriaValue?.toStringAsFixed(1),
+      bateria: bateriaValue?.toStringAsFixed(2),
       operacao: remotoStatus?.toString(),
       hasVazao: false,
       totalizador: (cisterna?["totalizador"] as num?)?.toStringAsFixed(2),
-      vazao:
-          cisterna?['vazao'] != null
-              ? (cisterna['vazao'] as num).toStringAsFixed(2)
-              : null,
+      vazao: (cisterna?["vazao"] as num?)?.toStringAsFixed(2),
     );
   }
 }
