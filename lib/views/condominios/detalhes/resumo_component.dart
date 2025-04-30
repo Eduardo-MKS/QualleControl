@@ -357,7 +357,10 @@ class ResumoScreen extends StatelessWidget {
 
             const Divider(color: Colors.grey),
             const SizedBox(height: 8),
-
+            SizedBox(
+              height: 140,
+              child: ReservatorioChart(nivelPercentual: 70),
+            ),
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -457,6 +460,11 @@ class ResumoScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
+
+            SizedBox(
+              height: 140,
+              child: ReservatorioChart(nivelPercentual: 70),
+            ),
 
             const Divider(color: Colors.grey),
             const SizedBox(height: 8),

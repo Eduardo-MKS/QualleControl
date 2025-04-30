@@ -19,7 +19,7 @@ class ReservatorioChart extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              color: Colors.purple.shade200,
+              color: const Color.fromARGB(255, 128, 128, 128),
               borderRadius: BorderRadius.circular(4),
             ),
           ),
@@ -31,7 +31,7 @@ class ReservatorioChart extends StatelessWidget {
               width: double.infinity,
               height: 160 * (nivelPercentual / 100),
               decoration: BoxDecoration(
-                color: Colors.blue.shade300,
+                color: const Color.fromARGB(76, 0, 60, 255),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(4),
                   topRight: Radius.circular(4),
@@ -41,7 +41,7 @@ class ReservatorioChart extends StatelessWidget {
           ),
 
           // Marcador de "Cota Bombeiros"
-          Positioned(
+          /* Positioned(
             top: 50,
             right: 0,
             child: Container(
@@ -55,7 +55,7 @@ class ReservatorioChart extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );
