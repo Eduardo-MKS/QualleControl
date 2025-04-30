@@ -74,7 +74,7 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Reservatório",
                 percentualValue: condominio.nivelReservatorioPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelReservatorioMetros ?? 'N/A'}m",
-                color: Colors.blue,
+                color: const Color.fromARGB(255, 0, 0, 0),
               ),
 
             if (hasReservatorio && hasCisterna) const SizedBox(height: 12),
@@ -513,16 +513,20 @@ class ResumoScreen extends StatelessWidget {
             if (condominio.painelLed != null)
               _buildInfoRow(
                 "LED",
-                condominio.painelLed == true ? "Ligado" : "Desligado",
-                condominio.painelLed == true ? Colors.green : Colors.grey,
+                condominio.painelLed == true ? "Desligado" : "Normal",
+                condominio.painelLed == true
+                    ? const Color.fromARGB(255, 233, 33, 33)
+                    : const Color.fromARGB(255, 60, 185, 35),
               ),
 
             // Sirene - Pega da API se disponível
             if (condominio.painelSirene != null)
               _buildInfoRow(
                 "Sirene",
-                condominio.painelSirene == true ? "Ativa" : "Inativa",
-                condominio.painelSirene == true ? Colors.red : Colors.grey,
+                condominio.painelSirene == true ? "Desligada" : "Normal",
+                condominio.painelSirene == true
+                    ? Colors.red
+                    : const Color.fromARGB(255, 53, 215, 21),
               ),
           ],
         ),
