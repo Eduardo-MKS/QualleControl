@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../models/condominio_model.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz_data;
 
 class CondoCard extends StatelessWidget {
   final CondominioModel condominio;
@@ -15,11 +17,17 @@ class CondoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Pega a hora atual do sistema
+    try {
+      tz_data.initializeTimeZones();
+    } catch (e) {
+      print('Erro ao inicializar timezone: $e');
+    }
+
+    final brasilTimeZone = tz.getLocation('America/Sao_Paulo');
+    final brasilTime = tz.TZDateTime.now(brasilTimeZone);
+
     final dateFormat = DateFormat('dd/MM/yy HH:mm:ss');
-    final formattedDate = dateFormat.format(
-      DateTime.now(),
-    ); // Hora atual do sistema
+    final formattedDate = dateFormat.format(brasilTime);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -58,7 +66,7 @@ class CondoCard extends StatelessWidget {
                   Icon(Icons.update, size: 16, color: Colors.grey[600]),
                   const SizedBox(width: 4),
                   Text(
-                    formattedDate, // Exibe a hora atual
+                    formattedDate,
                     style: TextStyle(fontSize: 13, color: Colors.grey[600]),
                   ),
                 ],
@@ -150,12 +158,14 @@ class CondoCard extends StatelessWidget {
   }
 
   Color _getColorByLevel(double level) {
-    if (level < 20) {
-      return const Color.fromARGB(255, 22, 152, 22);
-    } else if (level > 30) {
+    if (level < 0.2) {
+      // Corrigido para usar valores decimais (0.0 a 1.0)
+      return Colors.red;
+    } else if (level < 0.3) {
+      // 20% a 30%
       return Colors.orange;
     } else {
-      return Colors.green;
+      return const Color.fromARGB(255, 22, 152, 22); // Verde para nível bom
     }
   }
 }
