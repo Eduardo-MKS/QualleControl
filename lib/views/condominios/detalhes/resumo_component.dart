@@ -16,8 +16,16 @@ class ResumoScreen extends StatelessWidget {
     final bool hasCisterna =
         condominio.hasCisterna &&
         (condominio.nivelCisternaPercentual != null ||
+            (condominio.pressaoSaida != null &&
+                condominio.totalizador != null) ||
             (condominio.nivelCisternaMetros != null &&
                 condominio.nivelCisternaMetros!.isNotEmpty));
+
+    // Verificar se pressão de saída tem um valor válido e não-zero
+    final bool hasPressaoSaida =
+        condominio.pressaoSaida != null &&
+        condominio.pressaoSaida != "0.0" &&
+        condominio.pressaoSaida != "0";
 
     final bool hasVazao =
         condominio.vazao != null || condominio.totalizador != null;
@@ -77,11 +85,11 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Cisterna",
                 percentualValue: condominio.nivelCisternaPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelCisternaMetros ?? 'N/A'}m",
-                pressaoSaida:
-                    null, // A cisterna geralmente não tem pressão de saída
                 color: const Color.fromARGB(255, 0, 0, 0),
               ),
-            if (hasCisterna)
+
+            // Só mostrar o card de pressão de saída se tiver um valor válido e não-zero
+            if (hasCisterna && hasPressaoSaida)
               _buildCardPressao(
                 titulo: "Pressão de Saída mca",
                 cisterna: condominio.pressaoSaida ?? "0.0",
