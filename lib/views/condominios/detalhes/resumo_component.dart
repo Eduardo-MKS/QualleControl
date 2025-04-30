@@ -23,19 +23,28 @@ class ResumoScreen extends StatelessWidget {
         condominio.vazao != null || condominio.totalizador != null;
 
     // Verificar se deve mostrar as informações gerais
-    final bool hasGeral =
-        condominio.energia != null ||
-        condominio.boia != null ||
-        condominio.bateria != null ||
-        condominio.operacao != null;
+    final bool hasGeral = condominio.hasGeral;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: SingleChildScrollView(
         child: Column(
           children: [
+            // Card de Painel Reservatório (só mostrar se hasPainelReservatorio for true)
+            if (condominio.hasPainelReservatorio)
+              _buildCardPainelReservatorio(titulo: "Painel Reservatório"),
+
+            const SizedBox(height: 12),
+
             // Card de Informações Gerais (se tiver dados)
-            if (hasGeral) _buildInfoGeraisCard(),
+            if (hasGeral)
+              _buildInfoGeraisCard(
+                titulo: "Informações Gerais",
+                operacao: '${condominio.operacao}',
+                energia: '${condominio.energia}',
+                boia: '${condominio.boia}',
+                bateria: '${condominio.bateria}',
+              ),
 
             // Card de Vazão (se tiver dados)
             if (hasVazao)
@@ -43,7 +52,7 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Vazão (m³/h)",
                 vazaoValue: condominio.vazao ?? "0.0",
                 totalizadorValue: condominio.totalizador ?? "0.0",
-                color: const Color.fromARGB(255, 81, 236, 86),
+                color: const Color.fromARGB(255, 31, 31, 31),
               )
             else
               const SizedBox(height: 12),
@@ -70,13 +79,13 @@ class ResumoScreen extends StatelessWidget {
                 metrosValue: "${condominio.nivelCisternaMetros ?? 'N/A'}m",
                 pressaoSaida:
                     null, // A cisterna geralmente não tem pressão de saída
-                color: const Color.fromARGB(255, 138, 71, 214),
+                color: const Color.fromARGB(255, 0, 0, 0),
               ),
             if (hasCisterna)
               _buildCardPressao(
                 titulo: "Pressão de Saída mca",
                 cisterna: condominio.pressaoSaida ?? "0.0",
-                color: Colors.blueAccent,
+                color: const Color.fromARGB(255, 0, 0, 0),
               ),
           ],
         ),
@@ -84,7 +93,13 @@ class ResumoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoGeraisCard() {
+  Widget _buildInfoGeraisCard({
+    required String titulo,
+    required String energia,
+    required String boia,
+    required String bateria,
+    required String operacao,
+  }) {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -96,8 +111,8 @@ class ResumoScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "Informações Gerais",
+            Text(
+              titulo,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -437,6 +452,70 @@ class ResumoScreen extends StatelessWidget {
 
             const Divider(color: Colors.grey),
             const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCardPainelReservatorio({required String titulo}) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Colors.grey.shade300, width: 1),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              titulo,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Divider(color: Colors.grey),
+            const SizedBox(height: 8),
+
+            // Energia 220V - Pega da API
+            if (condominio.painelEnergia != null)
+              _buildInfoRow(
+                "Energia 220V",
+                condominio.painelEnergia == true ? "Normal" : "Falta",
+                condominio.painelEnergia == true ? Colors.green : Colors.red,
+              ),
+
+            // Porta - Por enquanto fixo, pode ser atualizado quando a API fornecer esse dado
+            _buildInfoRow(
+              "Porta",
+              "Fechada", // Valor fixo até que a API forneça esse campo
+              null,
+            ),
+
+            // Bateria - Pega da API se disponível
+            if (condominio.painelBateria != null)
+              _buildInfoRow("Bateria", "${condominio.painelBateria}", null),
+
+            // LED - Pega da API se disponível
+            if (condominio.painelLed != null)
+              _buildInfoRow(
+                "LED",
+                condominio.painelLed == true ? "Ligado" : "Desligado",
+                condominio.painelLed == true ? Colors.green : Colors.grey,
+              ),
+
+            // Sirene - Pega da API se disponível
+            if (condominio.painelSirene != null)
+              _buildInfoRow(
+                "Sirene",
+                condominio.painelSirene == true ? "Ativa" : "Inativa",
+                condominio.painelSirene == true ? Colors.red : Colors.grey,
+              ),
           ],
         ),
       ),

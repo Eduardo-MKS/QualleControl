@@ -17,6 +17,12 @@ class CondominioModel {
   final bool hasVazao;
   final String? vazao;
   final String? totalizador;
+  final bool hasPainelReservatorio;
+  final bool sirene;
+  final bool? painelEnergia; // Estado da energia do painel do reservatório
+  final String? painelBateria; // Bateria do painel do reservatório (se houver)
+  final bool? painelLed; // Estado do LED do painel do reservatório
+  final bool? painelSirene; // Estado da sirene do painel do reservatório
 
   CondominioModel({
     required this.nome,
@@ -37,6 +43,12 @@ class CondominioModel {
     this.hasGeral = false,
     this.hasVazao = false,
     this.totalizador,
+    this.hasPainelReservatorio = false,
+    this.sirene = false,
+    this.painelEnergia,
+    this.painelBateria,
+    this.painelLed,
+    this.painelSirene,
   });
 
   factory CondominioModel.fromJson(Map<String, dynamic> json) {
@@ -59,6 +71,14 @@ class CondominioModel {
     final bool? remotoStatus = casaDeBombas['remoto'];
     final num? bateriaValue = casaDeBombas['bateria']?['tensao'];
     final bool? boiaStatus = cisterna?['boia'];
+
+    // Dados do painel do reservatório
+    final painelReservatorio = reservatorio?['painelReservatorio'] ?? {};
+    final bool temPainelReservatorio = painelReservatorio.isNotEmpty;
+    final bool? painelEnergiaStatus = painelReservatorio['energia'];
+    final dynamic painelBateriaValue = painelReservatorio['bateria'];
+    final bool? painelLedStatus = painelReservatorio['led'];
+    final bool? painelSireneStatus = painelReservatorio['sirene'];
 
     return CondominioModel(
       nome: json['nome'] ?? '',
@@ -93,6 +113,17 @@ class CondominioModel {
       hasVazao: false,
       totalizador: (cisterna?["totalizador"] as num?)?.toStringAsFixed(2),
       vazao: (cisterna?["vazao"] as num?)?.toStringAsFixed(2),
+      hasPainelReservatorio: temPainelReservatorio,
+      sirene: painelSireneStatus ?? false,
+      painelEnergia: painelEnergiaStatus,
+      painelBateria:
+          painelBateriaValue != null
+              ? (painelBateriaValue is num
+                  ? painelBateriaValue.toStringAsFixed(2)
+                  : painelBateriaValue.toString())
+              : null,
+      painelLed: painelLedStatus,
+      painelSirene: painelSireneStatus,
     );
   }
 }
