@@ -31,7 +31,7 @@ class ResumoScreen extends StatelessWidget {
         condominio.vazao != null || condominio.totalizador != null;
 
     // Verificar se deve mostrar as informações gerais
-    final bool hasGeral = condominio.hasGeral;
+    final bool hasGeral = condominio.hasGeral && hasPressaoSaida;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -40,7 +40,13 @@ class ResumoScreen extends StatelessWidget {
           children: [
             // Card de Painel Reservatório (só mostrar se hasPainelReservatorio for true)
             if (condominio.hasPainelReservatorio)
-              _buildCardPainelReservatorio(titulo: "Painel Reservatório"),
+              _buildCardPainelReservatorio(
+                titulo: "Painel Reservatório",
+                bateria:
+                    condominio.painelBateria ??
+                    condominio.bateria ??
+                    'N/A', // Use painelBateria se disponível, senão use bateria normal
+              ),
 
             const SizedBox(height: 12),
 
@@ -143,7 +149,7 @@ class ResumoScreen extends StatelessWidget {
             if (condominio.boia != null)
               _buildInfoRow(
                 "Boia",
-                condominio.boia == "true" ? "Normal" : "Vazia",
+                condominio.boia == "true" ? "Normal" : "Cheia",
                 condominio.boia == "true" ? Colors.green : Colors.red,
               ),
 
@@ -474,7 +480,10 @@ class ResumoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCardPainelReservatorio({required String titulo}) {
+  Widget _buildCardPainelReservatorio({
+    required String titulo,
+    required String bateria,
+  }) {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -513,10 +522,6 @@ class ResumoScreen extends StatelessWidget {
               null,
             ),
 
-            // Bateria - Pega da API se disponível
-            if (condominio.painelBateria != null)
-              _buildInfoRow("Bateria", "${condominio.painelBateria}", null),
-
             // LED - Pega da API se disponível
             if (condominio.painelLed != null)
               _buildInfoRow(
@@ -536,6 +541,8 @@ class ResumoScreen extends StatelessWidget {
                     ? Colors.red
                     : const Color.fromARGB(255, 53, 215, 21),
               ),
+            // Bateria
+            _buildInfoRow("Bateria", bateria, null),
           ],
         ),
       ),
