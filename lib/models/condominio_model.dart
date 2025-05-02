@@ -19,10 +19,10 @@ class CondominioModel {
   final String? totalizador;
   final bool hasPainelReservatorio;
   final bool sirene;
-  final bool? painelEnergia; // Estado da energia do painel do reservatório
-  final String? painelBateria; // Bateria do painel do reservatório (se houver)
-  final bool? painelLed; // Estado do LED do painel do reservatório
-  final bool? painelSirene; // Estado da sirene do painel do reservatório
+  final bool? painelEnergia;
+  final String? painelBateria;
+  final bool? painelLed;
+  final bool? painelSirene;
 
   CondominioModel({
     required this.nome,
