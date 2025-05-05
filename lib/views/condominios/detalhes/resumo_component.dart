@@ -6,6 +6,7 @@ import 'package:flutter_mks_app/views/condominios/components/resumo/vazao_card.d
 import 'package:flutter_mks_app/views/condominios/components/resumo/pressao_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/painel_reservatorio_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/painel_cisterna_card.dart';
+import 'package:flutter_mks_app/views/condominios/components/resumo/casa_bombas_card.dart';
 
 class ResumoScreen extends StatelessWidget {
   final CondominioModel condominio;
@@ -36,15 +37,42 @@ class ResumoScreen extends StatelessWidget {
     final bool hasVazao =
         condominio.vazao != null || condominio.totalizador != null;
 
-    // Verificar se deve mostrar as informações gerais
+    bool shouldShowCasaDeBombas = condominio.hasCasaDeBombas;
+
+    List<String> excludedCondominiosForCasaDeBombas = [
+      'Condomínio Quinta Das Palmeiras',
+      'Parque Vila Germânica',
+    ];
+
+    if (excludedCondominiosForCasaDeBombas.contains(condominio.nome)) {
+      shouldShowCasaDeBombas = false;
+    }
+
     final bool hasGeral = condominio.hasGeral;
+
+    final bool hasCasaDeBombas =
+        shouldShowCasaDeBombas &&
+        (condominio.energia == 'true' ||
+            condominio.operacao == 'true' ||
+            condominio.rodizio == 'true' ||
+            condominio.porta == 'true' ||
+            (condominio.bombas?.any((b) => b['bombaLigada'] == true) ?? false));
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: SingleChildScrollView(
         child: Column(
           children: [
-            // Card de Painel Reservatório (só mostrar se hasPainelReservatorio for true)
+            if (hasCasaDeBombas)
+              CasaBombasCard(
+                titulo: "Painel Casa de Bombas",
+                condominio: condominio,
+                energia: condominio.energia ?? 'false',
+                operacao: condominio.operacao ?? 'false',
+                rodizio: condominio.rodizio ?? 'false',
+                porta: condominio.porta ?? 'false',
+              ),
+
             if (condominio.hasPainelReservatorio)
               PainelReservatorioCard(
                 titulo: "Painel Reservatório",
@@ -53,8 +81,6 @@ class ResumoScreen extends StatelessWidget {
                     condominio.painelBateria ?? condominio.bateria ?? '14.14V',
               ),
 
-            // Card de Painel Cisterna (só mostrar se hasPainelCisterna for true)
-            // Apenas o cond0007 (Residencial Lyon) possui este painel
             if (condominio.hasPainelCisterna)
               PainelCisternaCard(
                 titulo: "Painel Cisterna",
@@ -62,7 +88,6 @@ class ResumoScreen extends StatelessWidget {
                 bateria: condominio.painelCisternaBateria ?? '14.14V',
               ),
 
-            // Card de Informações Gerais (se tiver dados)
             if (hasGeral)
               InfoGeraisCard(
                 titulo: "Informações Gerais",
@@ -73,7 +98,6 @@ class ResumoScreen extends StatelessWidget {
                 bateria: '${condominio.bateria}',
               ),
 
-            // Card de Vazão (se tiver dados)
             if (hasVazao)
               VazaoCard(
                 titulo: "Vazão (m³/h)",
@@ -83,7 +107,6 @@ class ResumoScreen extends StatelessWidget {
             else
               const SizedBox(height: 12),
 
-            // Card do Reservatório (se tiver dados)
             if (hasReservatorio)
               ReservatorioCard(
                 titulo: "Reservatório",
@@ -93,7 +116,6 @@ class ResumoScreen extends StatelessWidget {
 
             if (hasReservatorio && hasCisterna) const SizedBox(height: 12),
 
-            // Card da Cisterna (se tiver dados)
             if (hasCisterna)
               ReservatorioCard(
                 titulo: "Cisterna",
@@ -101,7 +123,6 @@ class ResumoScreen extends StatelessWidget {
                 metrosValue: "${condominio.nivelCisternaMetros ?? 'N/A'}m",
               ),
 
-            // Só mostrar o card de pressão de saída se tiver um valor válido e não-zero
             if (hasCisterna && hasPressaoSaida)
               PressaoCard(
                 titulo: "Pressão de Saída mca",
