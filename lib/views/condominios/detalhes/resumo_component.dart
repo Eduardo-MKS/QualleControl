@@ -5,6 +5,7 @@ import 'package:flutter_mks_app/views/condominios/components/resumo/reservatorio
 import 'package:flutter_mks_app/views/condominios/components/resumo/vazao_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/pressao_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/painel_reservatorio_card.dart';
+import 'package:flutter_mks_app/views/condominios/components/resumo/painel_cisterna_card.dart';
 
 class ResumoScreen extends StatelessWidget {
   final CondominioModel condominio;
@@ -36,7 +37,7 @@ class ResumoScreen extends StatelessWidget {
         condominio.vazao != null || condominio.totalizador != null;
 
     // Verificar se deve mostrar as informações gerais
-    final bool hasGeral = condominio.hasGeral && hasPressaoSaida;
+    final bool hasGeral = condominio.hasGeral;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -49,7 +50,16 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Painel Reservatório",
                 condominio: condominio,
                 bateria:
-                    condominio.painelBateria ?? condominio.bateria ?? 'N/A',
+                    condominio.painelBateria ?? condominio.bateria ?? '14.14V',
+              ),
+
+            // Card de Painel Cisterna (só mostrar se hasPainelCisterna for true)
+            // Apenas o cond0007 (Residencial Lyon) possui este painel
+            if (condominio.hasPainelCisterna)
+              PainelCisternaCard(
+                titulo: "Painel Cisterna",
+                condominio: condominio,
+                bateria: condominio.painelCisternaBateria ?? '14.14V',
               ),
 
             // Card de Informações Gerais (se tiver dados)
@@ -71,9 +81,6 @@ class ResumoScreen extends StatelessWidget {
                 totalizadorValue: condominio.totalizador ?? "0.0",
               )
             else
-              const SizedBox(height: 12),
-
-            if (hasGeral && (hasReservatorio || hasCisterna))
               const SizedBox(height: 12),
 
             // Card do Reservatório (se tiver dados)

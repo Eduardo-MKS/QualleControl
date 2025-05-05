@@ -23,6 +23,10 @@ class CondominioModel {
   final String? painelBateria;
   final bool? painelLed;
   final bool? painelSirene;
+  final bool hasPainelCisterna;
+  final String? painelCisternaBateria;
+  final bool? painelCisternaLed;
+  final bool? painelCisternaSirene;
 
   CondominioModel({
     required this.nome,
@@ -49,6 +53,10 @@ class CondominioModel {
     this.painelBateria,
     this.painelLed,
     this.painelSirene,
+    this.hasPainelCisterna = false,
+    this.painelCisternaBateria,
+    this.painelCisternaLed,
+    this.painelCisternaSirene,
   });
 
   factory CondominioModel.fromJson(Map<String, dynamic> json) {
@@ -79,6 +87,13 @@ class CondominioModel {
     final dynamic painelBateriaValue = painelReservatorio['bateria'];
     final bool? painelLedStatus = painelReservatorio['led'];
     final bool? painelSireneStatus = painelReservatorio['sirene'];
+
+    // Dados do painel da cisterna - Nova implementação
+    final painelCisterna = cisterna?['PainelCisterna'] ?? {};
+    final bool temPainelCisterna = painelCisterna.isNotEmpty;
+    final dynamic painelCisternaBateriaValue = painelCisterna['bateria'];
+    final bool? painelCisternaLedStatus = painelCisterna['led'];
+    final bool? painelCisternaSireneStatus = painelCisterna['sirene'];
 
     return CondominioModel(
       nome: json['nome'] ?? '',
@@ -124,6 +139,13 @@ class CondominioModel {
               : null,
       painelLed: painelLedStatus,
       painelSirene: painelSireneStatus,
+      hasPainelCisterna: temPainelCisterna,
+      painelCisternaBateria:
+          painelCisternaBateriaValue?['tensao'] != null
+              ? (painelCisternaBateriaValue['tensao'] as num).toStringAsFixed(2)
+              : null,
+      painelCisternaLed: painelCisternaLedStatus,
+      painelCisternaSirene: painelCisternaSireneStatus,
     );
   }
 }

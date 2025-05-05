@@ -10,6 +10,7 @@ class InfoRow extends StatelessWidget {
     required this.label,
     required this.value,
     this.statusColor,
+    Color? valueBackground,
   });
 
   @override
