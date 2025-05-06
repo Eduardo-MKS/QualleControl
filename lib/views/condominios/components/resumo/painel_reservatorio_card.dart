@@ -17,11 +17,8 @@ class PainelReservatorioCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.grey.shade300, width: 1),
-      ),
+      margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -35,8 +32,9 @@ class PainelReservatorioCard extends StatelessWidget {
                 color: Colors.black87,
               ),
             ),
+
             const SizedBox(height: 12),
-            const Divider(color: Colors.grey),
+            const Divider(color: Color.fromARGB(255, 0, 0, 0)),
             const SizedBox(height: 8),
 
             // Energia 220V - Pega da API

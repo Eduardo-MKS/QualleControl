@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
+import 'package:flutter_mks_app/views/condominios/components/resumo/info_row.dart'; // Importe o InfoRow
 
 class CasaBombasCard extends StatelessWidget {
   final String titulo;
@@ -10,7 +11,7 @@ class CasaBombasCard extends StatelessWidget {
   final String porta;
 
   const CasaBombasCard({
-    Key? key,
+    super.key,
     required this.titulo,
     required this.condominio,
     required this.energia,
@@ -18,7 +19,7 @@ class CasaBombasCard extends StatelessWidget {
     required this.rodizio,
     required this.porta,
     List<Map<String, dynamic>>? bombas,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,91 +40,32 @@ class CasaBombasCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            // Primeira linha
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Energia 220V
-                Row(
-                  children: [
-                    const Text(
-                      'Energia 220V',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 0, 0, 0),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                // Status da Energia
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color:
-                        energia == 'true'
-                            ? const Color.fromARGB(255, 195, 74, 74)
-                            : const Color(0xFF8BC34A),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    energia == 'true' ? 'Falha' : 'Normal',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                // Operação
-                const Text(
-                  'Operação:',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                // Status da Operação
-                Text(
-                  operacao == 'true' ? 'Remota' : 'Local',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+            const Divider(color: Colors.grey),
+            const SizedBox(height: 8),
+
+            // Energia 220V
+            InfoRow(
+              label: "Energia 220V",
+              value: energia == 'true' ? 'Falha' : 'Normal',
+              statusColor: energia == 'true' ? Colors.red : Colors.green,
             ),
-            const SizedBox(height: 16),
-            // Segunda linha
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Porta
-                const Text(
-                  'Porta:',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                // Status da Porta
-                Text(
-                  porta == 'true' ? 'Aberta' : 'Fechada',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(width: 8),
-                // Rodízio
-                const Text(
-                  'Rodízio:',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                // Status do Rodízio
-                Text(
-                  rodizio == 'true' ? 'Habilitado' : 'Desabilitado',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+
+            // Operação
+            InfoRow(
+              label: "Operação",
+              value: operacao == 'true' ? 'Remota' : 'Local',
+            ),
+
+            // Porta
+            InfoRow(
+              label: "Porta",
+              value: porta == 'true' ? 'Aberta' : 'Fechada',
+            ),
+
+            // Rodízio
+            InfoRow(
+              label: "Rodízio",
+              value: rodizio == 'true' ? 'Habilitado' : 'Desabilitado',
             ),
           ],
         ),
