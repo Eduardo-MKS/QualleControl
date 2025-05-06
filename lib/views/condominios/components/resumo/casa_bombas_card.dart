@@ -78,9 +78,9 @@ class CasaBombasCard extends StatelessWidget {
                 ),
                 // Operação
                 const Text(
-                  'Operação',
+                  'Operação:',
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: Colors.black,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -98,7 +98,7 @@ class CasaBombasCard extends StatelessWidget {
               children: [
                 // Porta
                 const Text(
-                  'Porta',
+                  'Porta:',
                   style: TextStyle(
                     color: Color.fromARGB(255, 0, 0, 0),
                     fontWeight: FontWeight.w500,
@@ -112,9 +112,9 @@ class CasaBombasCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 // Rodízio
                 const Text(
-                  'Rodízio',
+                  'Rodízio:',
                   style: TextStyle(
-                    color: Colors.black54,
+                    color: Colors.black,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

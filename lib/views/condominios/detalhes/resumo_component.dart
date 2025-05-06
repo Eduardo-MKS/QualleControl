@@ -39,16 +39,24 @@ class ResumoScreen extends StatelessWidget {
 
     bool shouldShowCasaDeBombas = condominio.hasCasaDeBombas;
 
+    bool shouldShowInfosGerais = condominio.hasGeral;
+
     List<String> excludedCondominiosForCasaDeBombas = [
       'Condomínio Quinta Das Palmeiras',
       'Parque Vila Germânica',
     ];
 
+    List<String> excludedCondominiosForInfosGerais = ['Edifício Tailândia'];
+
     if (excludedCondominiosForCasaDeBombas.contains(condominio.nome)) {
       shouldShowCasaDeBombas = false;
     }
 
-    final bool hasGeral = condominio.hasGeral;
+    if (excludedCondominiosForInfosGerais.contains(condominio.nome)) {
+      shouldShowInfosGerais = false;
+    }
+
+    final bool hasGeral = shouldShowInfosGerais && condominio.hasGeral;
 
     final bool hasCasaDeBombas =
         shouldShowCasaDeBombas &&
