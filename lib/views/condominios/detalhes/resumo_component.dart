@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/info_gerais_card.dart';
-import 'package:flutter_mks_app/views/condominios/components/resumo/reservatorio_card.dart';
+import 'package:flutter_mks_app/views/condominios/components/resumo/gerais_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/vazao_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/pressao_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/painel_reservatorio_card.dart';
@@ -66,6 +66,12 @@ class ResumoScreen extends StatelessWidget {
             condominio.porta == 'true' ||
             (condominio.bombas?.any((b) => b['bombaLigada'] == true) ?? false));
 
+    // Obter histórico de dados se disponível
+    List<Map<String, dynamic>> historicoData = [];
+    if (condominio.historico != null) {
+      historicoData = List<Map<String, dynamic>>.from(condominio.historico!);
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: SingleChildScrollView(
@@ -120,6 +126,7 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Reservatório",
                 percentualValue: condominio.nivelReservatorioPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelReservatorioMetros ?? 'N/A'}m",
+                historicoData: historicoData,
               ),
 
             if (hasReservatorio && hasCisterna) const SizedBox(height: 12),
@@ -129,7 +136,11 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Cisterna",
                 percentualValue: condominio.nivelCisternaPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelCisternaMetros ?? 'N/A'}m",
+                historicoData:
+                    historicoData, // Passamos o histórico apenas para a cisterna
               ),
+
+            if (hasCisterna) const SizedBox(height: 16),
 
             if (hasCisterna && hasPressaoSaida)
               PressaoCard(

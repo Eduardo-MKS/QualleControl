@@ -34,6 +34,9 @@ class CondominioModel {
   final String? porta;
   final List<Map<String, dynamic>>? bombas;
 
+  // Adicionado o histórico
+  final List<Map<String, dynamic>>? historico;
+
   CondominioModel({
     required this.nome,
     this.nivelReservatorioPercentual,
@@ -68,6 +71,7 @@ class CondominioModel {
     this.rodizio,
     this.porta,
     this.bombas,
+    this.historico,
   });
 
   factory CondominioModel.fromJson(Map<String, dynamic> json) {
@@ -75,6 +79,13 @@ class CondominioModel {
     final reservatorioList = informacoes['reservatorio'] as List? ?? [];
     final cisternaList = informacoes['cisterna'] as List? ?? [];
     final casaDeBombas = informacoes['casaDeBombas'] ?? {};
+
+    // Obter o histórico de dados
+    final List<Map<String, dynamic>> historico =
+        (json['historico'] as List?)
+            ?.map((item) => Map<String, dynamic>.from(item))
+            .toList() ??
+        [];
 
     final reservatorio =
         reservatorioList.isNotEmpty ? reservatorioList[0] : null;
@@ -145,7 +156,7 @@ class CondominioModel {
       boia: boiaStatus?.toString(),
       bateria: bateriaValue?.toStringAsFixed(2),
       operacao: remotoStatus?.toString(),
-      hasVazao: false,
+      hasVazao: cisterna?["vazao"] != null || cisterna?["totalizador"] != null,
       totalizador: (cisterna?["totalizador"] as num?)?.toStringAsFixed(2),
       vazao: (cisterna?["vazao"] as num?)?.toStringAsFixed(2),
       hasPainelReservatorio: temPainelReservatorio,
@@ -166,11 +177,11 @@ class CondominioModel {
               : null,
       painelCisternaLed: painelCisternaLedStatus,
       painelCisternaSirene: painelCisternaSireneStatus,
-      // Inicializar novos campos para casa de bombas
       hasCasaDeBombas: casaDeBombas.isNotEmpty,
       rodizio: rodizioStatus?.toString(),
       porta: portaStatus?.toString(),
       bombas: bombasMapped,
+      historico: historico.isNotEmpty ? historico : null,
     );
   }
 }
