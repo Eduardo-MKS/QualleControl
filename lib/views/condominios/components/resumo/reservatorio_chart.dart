@@ -32,7 +32,9 @@ class ReservatorioChart extends StatelessWidget {
       return const SizedBox(
         height: 200,
         child: Center(
-          child: Text('Sem dados de nível da cisterna nas últimas 24 horas'),
+          child: Text(
+            'Sem dados de nível do reservatório nas últimas 24 horas',
+          ),
         ),
       );
     }
@@ -143,20 +145,25 @@ class ReservatorioChart extends StatelessWidget {
               spots: spots,
               isCurved: true,
               curveSmoothness: 0.2,
-              color: const Color.fromARGB(255, 49, 116, 216),
+              color: const Color.fromARGB(163, 130, 49, 216),
               barWidth: 3,
               isStrokeCapRound: true,
               dotData: FlDotData(show: false),
               belowBarData: BarAreaData(
                 show: true,
-                color: const Color.fromARGB(255, 25, 131, 230).withOpacity(0.2),
+                color: const Color.fromARGB(255, 169, 25, 230).withOpacity(0.2),
               ),
             ),
           ],
           // Adicionar ferramenta de tooltip para mostrar o valor exato ao tocar no gráfico
           lineTouchData: LineTouchData(
             touchTooltipData: LineTouchTooltipData(
-              tooltipBgColor: Colors.blueAccent.withOpacity(0.8),
+              tooltipBgColor: const Color.fromARGB(
+                255,
+                96,
+                33,
+                130,
+              ).withOpacity(0.8),
               getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
                 return touchedBarSpots.map((barSpot) {
                   final index = barSpot.x.toInt();
