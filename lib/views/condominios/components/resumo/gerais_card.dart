@@ -60,7 +60,7 @@ class ReservatorioCard extends StatelessWidget {
             // Adiciona o gráfico de histórico apenas se tivermos dados históricos
             if (historicoData != null && historicoData!.isNotEmpty)
               Padding(
-                padding: const EdgeInsets.only(top: 24.0),
+                padding: const EdgeInsets.only(top: 5.0),
                 child: CisternaChart(
                   historicoData: historicoData!,
                   title: "Histórico de Nível",

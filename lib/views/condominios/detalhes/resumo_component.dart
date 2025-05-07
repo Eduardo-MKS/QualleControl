@@ -144,8 +144,9 @@ class ResumoScreen extends StatelessWidget {
 
             if (hasCisterna && hasPressaoSaida)
               PressaoCard(
-                titulo: "Pressão de Saída mca",
+                titulo: "Pressão Saída",
                 cisterna: condominio.pressaoSaida ?? "0.0",
+                historicoData: historicoData,
               ),
           ],
         ),

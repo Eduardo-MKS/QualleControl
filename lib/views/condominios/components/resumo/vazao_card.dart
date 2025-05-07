@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mks_app/views/condominios/components/reservatorio_chart.dart';
 
 class VazaoCard extends StatelessWidget {
   final String titulo;
@@ -50,10 +49,7 @@ class VazaoCard extends StatelessWidget {
 
             const Divider(color: Colors.grey),
             const SizedBox(height: 8),
-            SizedBox(
-              height: 140,
-              child: ReservatorioChart(nivelPercentual: 70),
-            ),
+
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
