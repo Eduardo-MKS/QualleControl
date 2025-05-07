@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/info_gerais_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/cisterna_card.dart';
+import 'package:flutter_mks_app/views/condominios/components/resumo/reservatorio_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/vazao_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/pressao_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/painel_reservatorio_card.dart';
@@ -123,7 +124,7 @@ class ResumoScreen extends StatelessWidget {
               const SizedBox(height: 12),
 
             if (hasReservatorio)
-              CisternaCard(
+              ReservatorioCard(
                 titulo: "Reservatório",
                 percentualValue: condominio.nivelReservatorioPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelReservatorioMetros ?? 'N/A'}m",
