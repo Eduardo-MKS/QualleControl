@@ -9,7 +9,7 @@ class CisternaChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Filtrando dados das últimas 24 horas com nível da cisterna
+    // Filtrando dados das últimas 24 horas com nível de qualquer cisterna
     final now = DateTime.now();
     final last24Hours = now.subtract(const Duration(hours: 24));
 
@@ -17,9 +17,11 @@ class CisternaChart extends StatelessWidget {
     final filteredData =
         historicoData.where((data) {
             final dataTime = DateTime.tryParse(data['data_hora'] ?? '');
+            // Verificar se existe qualquer dado de cisterna (cisterna_nivel OU cisterna1_nivel)
             return dataTime != null &&
                 dataTime.isAfter(last24Hours) &&
-                data['cisterna_nivel'] != null;
+                (data['cisterna_nivel'] != null ||
+                    data['cisterna1_nivel'] != null);
           }).toList()
           ..sort((a, b) {
             final dateA =
@@ -28,30 +30,77 @@ class CisternaChart extends StatelessWidget {
                 DateTime.tryParse(b['data_hora'] ?? '') ?? DateTime(1970);
             return dateA.compareTo(dateB);
           });
+
     if (filteredData.isEmpty) {
       return const SizedBox(
         height: 200,
         child: Center(
-          child: Text('Sem dados de nível da cisterna nas últimas 24 horas'),
+          child: Text('Sem dados de nível das cisternas nas últimas 24 horas'),
         ),
       );
     }
 
-    final spots =
-        filteredData.asMap().entries.map((entry) {
-          final data = entry.value;
-          // Converter o valor decimal para percentual (multiplicar por 100)
-          final nivelCisterna =
-              (data['cisterna_nivel'] as num).toDouble() * 100;
-          return FlSpot(entry.key.toDouble(), nivelCisterna);
-        }).toList();
+    // Criar spots para cisterna_nivel (cisterna principal)
+    final spotsCisterna =
+        filteredData
+            .asMap()
+            .entries
+            .map((entry) {
+              final data = entry.value;
+              // Verificar se existe cisterna_nivel e converter para percentual
+              if (data['cisterna_nivel'] != null) {
+                final nivelCisterna =
+                    (data['cisterna_nivel'] as num).toDouble() * 100;
+                return FlSpot(entry.key.toDouble(), nivelCisterna);
+              }
+              return null; // Retorna null para pontos que não têm este dado
+            })
+            .where((spot) => spot != null)
+            .toList()
+            .cast<FlSpot>();
 
-    // Encontrar valor mínimo e máximo para dimensionar o gráfico
-    double minY = spots.map((spot) => spot.y).reduce((a, b) => a < b ? a : b);
-    double maxY = spots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b);
+    // Criar spots para cisterna1_nivel (cisterna secundária)
+    final spotsCisterna1 =
+        filteredData
+            .asMap()
+            .entries
+            .map((entry) {
+              final data = entry.value;
+              // Verificar se existe cisterna1_nivel e converter para percentual
+              if (data['cisterna1_nivel'] != null) {
+                final nivelCisterna1 =
+                    (data['cisterna1_nivel'] as num).toDouble() * 100;
+                return FlSpot(entry.key.toDouble(), nivelCisterna1);
+              }
+              return null; // Retorna null para pontos que não têm este dado
+            })
+            .where((spot) => spot != null)
+            .toList()
+            .cast<FlSpot>();
+
+    // Verificar se temos dados para pelo menos uma das cisternas
+    if (spotsCisterna.isEmpty && spotsCisterna1.isEmpty) {
+      return const SizedBox(
+        height: 200,
+        child: Center(
+          child: Text('Dados de nível das cisternas não disponíveis'),
+        ),
+      );
+    }
+
+    // Encontrar valores mínimos e máximos combinando ambas as cisternas
+    final allSpots = [...spotsCisterna, ...spotsCisterna1];
+    double minY = double.infinity;
+    double maxY = double.negativeInfinity;
+
+    for (var spot in allSpots) {
+      if (spot.y < minY) minY = spot.y;
+      if (spot.y > maxY) maxY = spot.y;
+    }
 
     // Adicionar margem de 10%
-    final range = maxY - minY;
+    final range =
+        maxY - minY > 0 ? maxY - minY : 10.0; // Evitar divisão por zero
     minY = minY - (range * 0.1);
     maxY = maxY + (range * 0.1);
 
@@ -139,19 +188,51 @@ class CisternaChart extends StatelessWidget {
           minY: minY,
           maxY: maxY,
           lineBarsData: [
-            LineChartBarData(
-              spots: spots,
-              isCurved: true,
-              curveSmoothness: 0.2,
-              color: const Color.fromARGB(255, 49, 116, 216),
-              barWidth: 3,
-              isStrokeCapRound: true,
-              dotData: FlDotData(show: false),
-              belowBarData: BarAreaData(
-                show: true,
-                color: const Color.fromARGB(255, 25, 131, 230).withOpacity(0.2),
+            // Dados da cisterna principal (se existirem)
+            if (spotsCisterna.isNotEmpty)
+              LineChartBarData(
+                spots: spotsCisterna,
+                isCurved: true,
+                curveSmoothness: 0.2,
+                color: const Color.fromARGB(255, 49, 116, 216),
+                barWidth: 3,
+                isStrokeCapRound: true,
+                dotData: FlDotData(show: false),
+                belowBarData: BarAreaData(
+                  show: true,
+                  color: const Color.fromARGB(
+                    255,
+                    25,
+                    131,
+                    230,
+                  ).withOpacity(0.2),
+                ),
               ),
-            ),
+            // Dados da cisterna secundária (se existirem)
+            if (spotsCisterna1.isNotEmpty)
+              LineChartBarData(
+                spots: spotsCisterna1,
+                isCurved: true,
+                curveSmoothness: 0.2,
+                color: const Color.fromARGB(
+                  255,
+                  49,
+                  116,
+                  216,
+                ), // Cor diferente para a segunda cisterna
+                barWidth: 3,
+                isStrokeCapRound: true,
+                dotData: FlDotData(show: false),
+                belowBarData: BarAreaData(
+                  show: true,
+                  color: const Color.fromARGB(
+                    255,
+                    25,
+                    97,
+                    230,
+                  ).withOpacity(0.2),
+                ),
+              ),
           ],
           // Adicionar ferramenta de tooltip para mostrar o valor exato ao tocar no gráfico
           lineTouchData: LineTouchData(
@@ -167,9 +248,18 @@ class CisternaChart extends StatelessWidget {
                         date != null
                             ? DateFormat('dd/MM HH:mm').format(date)
                             : '';
+
+                    // Identificar qual cisterna foi tocada baseada na cor
+                    final bool isPrimaryCisterna =
+                        barSpot.barIndex == 0 && spotsCisterna.isNotEmpty ||
+                        (spotsCisterna.isEmpty && barSpot.barIndex == 0);
+
+                    final cisternName =
+                        isPrimaryCisterna ? 'Cisterna 1' : 'Cisterna 2';
+
                     return LineTooltipItem(
-                      '$formattedDate\n${barSpot.y.toStringAsFixed(1)}%',
-                      const TextStyle(
+                      '$formattedDate\n$cisternName: ${barSpot.y.toStringAsFixed(1)}%',
+                      TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
