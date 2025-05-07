@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mks_app/views/condominios/components/resumo/vazao_chart.dart';
 
 class VazaoCard extends StatelessWidget {
   final String titulo;
   final String vazaoValue;
   final String totalizadorValue;
   final Color color;
+  final List<Map<String, dynamic>> historicoData;
 
   const VazaoCard({
     super.key,
@@ -12,6 +14,7 @@ class VazaoCard extends StatelessWidget {
     required this.vazaoValue,
     required this.totalizadorValue,
     this.color = const Color.fromARGB(255, 31, 31, 31),
+    required this.historicoData,
   });
 
   @override
@@ -50,6 +53,8 @@ class VazaoCard extends StatelessWidget {
             const Divider(color: Colors.grey),
             const SizedBox(height: 8),
 
+            VazaoChart(historicoData: historicoData),
+
             const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,10 +81,11 @@ class VazaoCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(height: 40, width: 1, color: Colors.grey),
+
+                // Gráfico de pressão
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
+                    padding: const EdgeInsets.only(left: 65.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

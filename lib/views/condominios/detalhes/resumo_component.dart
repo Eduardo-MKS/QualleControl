@@ -117,6 +117,7 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Vazão (m³/h)",
                 vazaoValue: condominio.vazao ?? "0.0",
                 totalizadorValue: condominio.totalizador ?? "0.0",
+                historicoData: historicoData,
               )
             else
               const SizedBox(height: 12),
