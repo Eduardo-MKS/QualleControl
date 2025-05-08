@@ -6,6 +6,7 @@ class ReservatorioCard extends StatelessWidget {
   final double percentualValue;
   final String metrosValue;
   final String? nivelCisternaPercentual;
+  final String? nivelVolumeReservatorio;
   final List<Map<String, dynamic>> historicoData;
 
   const ReservatorioCard({
@@ -15,6 +16,7 @@ class ReservatorioCard extends StatelessWidget {
     required this.metrosValue,
     required this.historicoData,
     this.nivelCisternaPercentual,
+    this.nivelVolumeReservatorio,
   });
 
   @override
@@ -74,7 +76,7 @@ class ReservatorioCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '0.0m³',
+                      nivelVolumeReservatorio!,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

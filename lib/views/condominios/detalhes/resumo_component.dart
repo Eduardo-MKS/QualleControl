@@ -128,6 +128,8 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Reservatório",
                 percentualValue: condominio.nivelReservatorioPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelReservatorioMetros ?? 'N/A'}m",
+                nivelVolumeReservatorio:
+                    condominio.nivelVolumeReservatorio ?? '0.0',
                 historicoData: historicoData,
               ),
 

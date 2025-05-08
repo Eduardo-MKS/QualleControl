@@ -2,6 +2,7 @@ class CondominioModel {
   final String nome;
   final double? nivelReservatorioPercentual;
   final String? nivelVolume;
+  final String? nivelVolumeReservatorio;
   final String? nivelReservatorioMetros;
   final DateTime? ultimaAtualizacao;
   final String? imageCondo;
@@ -46,6 +47,7 @@ class CondominioModel {
     this.imageCondo,
     this.hasCisterna = false,
     this.nivelVolume,
+    this.nivelVolumeReservatorio,
     this.nivelCisternaPercentual,
     this.nivelCisternaMetros,
     this.hasPressao = false,
@@ -145,6 +147,8 @@ class CondominioModel {
           (cisterna?['nivelPercentual'] as num?)?.toDouble(),
       imageCondo: imageAsset,
       nivelVolume: (cisterna?['nivelVolume'] as num?)?.toStringAsFixed(2),
+      nivelVolumeReservatorio: (reservatorio?['nivelVolume'] as num?)
+          ?.toStringAsFixed(2),
       hasCisterna: cisterna != null,
       hasPressao: cisterna?['pressao']?['saida'] != null,
       pressaoSaida: (cisterna?['pressao']?['saida'] as num?)?.toStringAsFixed(
