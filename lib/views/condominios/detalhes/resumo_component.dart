@@ -138,6 +138,7 @@ class ResumoScreen extends StatelessWidget {
                 titulo: "Cisterna",
                 percentualValue: condominio.nivelCisternaPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelCisternaMetros ?? 'N/A'}m",
+                nivelVolume: condominio.nivelVolume ?? '0.0',
                 historicoData:
                     historicoData, // Passamos o histórico apenas para a cisterna
               ),

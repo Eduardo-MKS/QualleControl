@@ -6,6 +6,7 @@ class CisternaCard extends StatelessWidget {
   final double percentualValue;
   final String metrosValue;
   final String? nivelCisternaPercentual;
+  final String nivelVolume;
   final List<Map<String, dynamic>> historicoData;
 
   const CisternaCard({
@@ -15,6 +16,7 @@ class CisternaCard extends StatelessWidget {
     required this.metrosValue,
     required this.historicoData,
     this.nivelCisternaPercentual,
+    required this.nivelVolume,
   });
 
   @override
@@ -74,7 +76,7 @@ class CisternaCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '0.0m³',
+                      nivelVolume,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
