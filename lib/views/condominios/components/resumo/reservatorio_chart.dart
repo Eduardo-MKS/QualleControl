@@ -9,7 +9,6 @@ class ReservatorioChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Filtrando dados das últimas 24 horas com nível da cisterna
     final now = DateTime.now();
     final last24Hours = now.subtract(const Duration(hours: 24));
 
@@ -17,9 +16,11 @@ class ReservatorioChart extends StatelessWidget {
     final filteredData =
         historicoData.where((data) {
             final dataTime = DateTime.tryParse(data['data_hora'] ?? '');
+            final temReservatorioNivel = data['reservatorio_nivel'] != null;
+            final temReservatorio1Nivel = data['reservatorio1_nivel'] != null;
             return dataTime != null &&
                 dataTime.isAfter(last24Hours) &&
-                data['reservatorio_nivel'] != null;
+                (temReservatorioNivel || temReservatorio1Nivel);
           }).toList()
           ..sort((a, b) {
             final dateA =
@@ -42,17 +43,23 @@ class ReservatorioChart extends StatelessWidget {
     final spots =
         filteredData.asMap().entries.map((entry) {
           final data = entry.value;
-          // Converter o valor decimal para percentual (multiplicar por 100)
-          final nivelCisterna =
-              (data['reservatorio_nivel'] as num).toDouble() * 100;
-          return FlSpot(entry.key.toDouble(), nivelCisterna);
+          double nivelReservatorio;
+          if (data['reservatorio_nivel'] != null) {
+            nivelReservatorio =
+                (data['reservatorio_nivel'] as num).toDouble() * 100;
+          } else if (data['reservatorio1_nivel'] != null) {
+            nivelReservatorio =
+                (data['reservatorio1_nivel'] as num).toDouble() * 100;
+          } else {
+            nivelReservatorio = 0.0;
+          }
+
+          return FlSpot(entry.key.toDouble(), nivelReservatorio);
         }).toList();
 
-    // Encontrar valor mínimo e máximo para dimensionar o gráfico
     double minY = spots.map((spot) => spot.y).reduce((a, b) => a < b ? a : b);
     double maxY = spots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b);
 
-    // Adicionar margem de 10%
     final range = maxY - minY;
     minY = minY - (range * 0.1);
     maxY = maxY + (range * 0.1);
@@ -174,8 +181,17 @@ class ReservatorioChart extends StatelessWidget {
                         date != null
                             ? DateFormat('dd/MM HH:mm').format(date)
                             : '';
+
+                    // Adicionar informação sobre qual reservatório está sendo mostrado
+                    String reservatorioInfo = '';
+                    if (data['reservatorio_nivel'] != null) {
+                      reservatorioInfo = 'Reservatório Principal';
+                    } else if (data['reservatorio1_nivel'] != null) {
+                      reservatorioInfo = 'Reservatório 1';
+                    }
+
                     return LineTooltipItem(
-                      '$formattedDate\n${barSpot.y.toStringAsFixed(1)}%',
+                      '$formattedDate\n$reservatorioInfo: ${barSpot.y.toStringAsFixed(1)}%',
                       const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
