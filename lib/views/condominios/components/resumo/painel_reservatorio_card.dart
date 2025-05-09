@@ -5,6 +5,7 @@ import 'package:flutter_mks_app/views/condominios/components/resumo/info_row.dar
 class PainelReservatorioCard extends StatelessWidget {
   final String titulo;
   final String bateria;
+  final String painelBateria;
   final CondominioModel condominio;
 
   const PainelReservatorioCard({
@@ -12,6 +13,7 @@ class PainelReservatorioCard extends StatelessWidget {
     required this.titulo,
     required this.bateria,
     required this.condominio,
+    required this.painelBateria,
   });
 
   @override
@@ -48,7 +50,13 @@ class PainelReservatorioCard extends StatelessWidget {
                         : Colors.red,
               ),
 
-            InfoRow(label: "Porta", value: "Fechada", statusColor: null),
+            if (condominio.faseEnergia != null)
+              InfoRow(
+                value: condominio.faseEnergia == true ? "Normal" : "Falta",
+                statusColor:
+                    condominio.faseEnergia == true ? Colors.green : Colors.red,
+                label: 'Energia 220V',
+              ),
 
             // LED - Pega da API se disponível
             if (condominio.painelLed != null)
@@ -57,6 +65,17 @@ class PainelReservatorioCard extends StatelessWidget {
                 value: condominio.painelLed == true ? "Desligado" : "Normal",
                 statusColor:
                     condominio.painelLed == true
+                        ? const Color.fromARGB(255, 233, 33, 33)
+                        : const Color.fromARGB(255, 60, 185, 35),
+              ),
+
+            if (condominio.portaReservatorio != null)
+              InfoRow(
+                label: "Porta",
+                value:
+                    condominio.portaReservatorio == true ? "Fechada" : "Aberta",
+                statusColor:
+                    condominio.portaReservatorio == true
                         ? const Color.fromARGB(255, 233, 33, 33)
                         : const Color.fromARGB(255, 60, 185, 35),
               ),
@@ -72,7 +91,7 @@ class PainelReservatorioCard extends StatelessWidget {
                         : const Color.fromARGB(255, 53, 215, 21),
               ),
             // Bateria
-            InfoRow(label: "Bateria", value: bateria, statusColor: null),
+            InfoRow(label: "Bateria", value: "${painelBateria}V"),
           ],
         ),
       ),

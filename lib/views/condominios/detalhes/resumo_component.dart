@@ -101,6 +101,8 @@ class ResumoScreen extends StatelessWidget {
               PainelReservatorioCard(
                 titulo: "Painel Reservatório",
                 condominio: condominio,
+                painelBateria:
+                    condominio.painelBateria ?? condominio.bateria ?? '14.14',
                 bateria:
                     condominio.painelBateria ?? condominio.bateria ?? '14.14V',
               ),
