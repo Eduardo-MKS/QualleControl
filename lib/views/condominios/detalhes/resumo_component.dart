@@ -8,6 +8,7 @@ import 'package:flutter_mks_app/views/condominios/components/resumo/pressao_card
 import 'package:flutter_mks_app/views/condominios/components/resumo/painel_reservatorio_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/painel_cisterna_card.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/casa_bombas_card.dart';
+import 'package:flutter_mks_app/views/condominios/components/resumo/bombas_card.dart';
 
 class ResumoScreen extends StatelessWidget {
   final CondominioModel condominio;
@@ -67,6 +68,12 @@ class ResumoScreen extends StatelessWidget {
             condominio.porta == 'true' ||
             (condominio.bombas?.any((b) => b['bombaLigada'] == true) ?? false));
 
+    // Verificar se há informações de bombas disponíveis
+    final bool hasBombas =
+        condominio.bombas != null &&
+        condominio.bombas!.isNotEmpty &&
+        condominio.hasCasaDeBombas;
+
     // Obter histórico de dados se disponível
     List<Map<String, dynamic>> historicoData = [];
     if (condominio.historico != null) {
@@ -87,6 +94,8 @@ class ResumoScreen extends StatelessWidget {
                 rodizio: condominio.rodizio ?? 'false',
                 porta: condominio.porta ?? 'false',
               ),
+
+            if (hasBombas) BombasCard(titulo: "Bombas", condominio: condominio),
 
             if (condominio.hasPainelReservatorio)
               PainelReservatorioCard(
@@ -141,8 +150,7 @@ class ResumoScreen extends StatelessWidget {
                 percentualValue: condominio.nivelCisternaPercentual ?? 0.0,
                 metrosValue: "${condominio.nivelCisternaMetros ?? 'N/A'}m",
                 nivelVolume: condominio.nivelVolume ?? '0.0',
-                historicoData:
-                    historicoData, // Passamos o histórico apenas para a cisterna
+                historicoData: historicoData,
               ),
 
             if (hasCisterna) const SizedBox(height: 16),

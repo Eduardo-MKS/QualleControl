@@ -29,14 +29,15 @@ class CondominioModel {
   final String? painelCisternaBateria;
   final bool? painelCisternaLed;
   final bool? painelCisternaSirene;
+  final String? corrente;
 
-  // Novas propriedades para Casa de Bombas
+  // Propriedades para Casa de Bombas
   final bool hasCasaDeBombas;
   final String? rodizio;
   final String? porta;
   final List<Map<String, dynamic>>? bombas;
 
-  // Adicionado o histórico
+  // Histórico
   final List<Map<String, dynamic>>? historico;
 
   CondominioModel({
@@ -76,6 +77,7 @@ class CondominioModel {
     this.porta,
     this.bombas,
     this.historico,
+    this.corrente,
   });
 
   factory CondominioModel.fromJson(Map<String, dynamic> json) {
@@ -109,11 +111,22 @@ class CondominioModel {
     // Novos campos para casa de bombas
     final bool? rodizioStatus = casaDeBombas['rodizio'];
     final bool? portaStatus = casaDeBombas['porta'];
+
+    // Processamento das bombas
     final List<dynamic>? bombasList = casaDeBombas['bombas'] as List?;
     final List<Map<String, dynamic>>? bombasMapped =
-        bombasList
-            ?.map((e) => {'id': e['id'], 'bombaLigada': e['bombaLigada']})
-            .toList();
+        bombasList?.map((e) {
+          return {
+            'id': e['id'],
+            'bombaLigada': e['bombaLigada'],
+            'rpm': e['rpm'],
+            'corrente': e['corrente'],
+            'consumo': e['consumo'],
+            'horimetro': e['horimetro'],
+            'modo': e['modo'],
+            'supervisorio': e['supervisorio'],
+          };
+        }).toList();
 
     // Dados do painel do reservatório
     final painelReservatorio = reservatorio?['painelReservatorio'] ?? {};
