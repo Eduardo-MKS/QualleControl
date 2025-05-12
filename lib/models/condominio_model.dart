@@ -32,6 +32,8 @@ class CondominioModel {
   final bool? painelCisternaSirene;
   final String? corrente;
   final bool? portaReservatorio;
+  final bool? portaReservatorioteste;
+  final bool? boiaStatusReservatorio;
 
   // Propriedades para Casa de Bombas
   final bool hasCasaDeBombas;
@@ -82,6 +84,8 @@ class CondominioModel {
     this.corrente,
     this.faseEnergia,
     this.portaReservatorio,
+    this.portaReservatorioteste = false,
+    this.boiaStatusReservatorio = false,
   });
 
   factory CondominioModel.fromJson(Map<String, dynamic> json) {
@@ -140,6 +144,8 @@ class CondominioModel {
     final bool? portaReservatorioStatus = painelReservatorio['remoto'];
     final dynamic painelBateriaValue = painelReservatorio['bateria'];
     final bool? painelLedStatus = painelReservatorio['led'];
+    final bool? painelPortaStatus = painelReservatorio['porta'];
+    final bool? painelBoiaStatus = painelReservatorio['boia'];
     final bool? painelSireneStatus = painelReservatorio['sirene'];
 
     // Dados do painel da cisterna - Nova implementação
@@ -189,6 +195,8 @@ class CondominioModel {
       sirene: painelSireneStatus ?? false,
       painelEnergia: painelEnergiaStatus,
       faseEnergia: painelEnergiaFase,
+      portaReservatorioteste: painelPortaStatus,
+      boiaStatusReservatorio: painelBoiaStatus,
       portaReservatorio: portaReservatorioStatus,
       painelBateria:
           painelBateriaValue?['tensao'] != null

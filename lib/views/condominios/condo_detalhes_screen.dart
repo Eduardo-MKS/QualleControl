@@ -64,6 +64,7 @@ class _CondominioDetalhesScreenState extends State<CondominioDetalhesScreen> {
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
+
                   ),
                 ),
                 Row(

@@ -18,6 +18,8 @@ class PainelReservatorioCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Boia: ${condominio.boiaStatusReservatorio}');
+    print('Porta: ${condominio.portaReservatorioteste}');
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -39,7 +41,6 @@ class PainelReservatorioCard extends StatelessWidget {
             const Divider(color: Color.fromARGB(255, 0, 0, 0)),
             const SizedBox(height: 8),
 
-            // Energia 220V - Pega da API
             if (condominio.painelEnergia != null)
               InfoRow(
                 label: "Energia 220V",
@@ -58,7 +59,6 @@ class PainelReservatorioCard extends StatelessWidget {
                 label: 'Energia 220V',
               ),
 
-            // LED - Pega da API se disponível
             if (condominio.painelLed != null)
               InfoRow(
                 label: "LED",
@@ -69,18 +69,6 @@ class PainelReservatorioCard extends StatelessWidget {
                         : const Color.fromARGB(255, 60, 185, 35),
               ),
 
-            if (condominio.portaReservatorio != null)
-              InfoRow(
-                label: "Porta",
-                value:
-                    condominio.portaReservatorio == true ? "Fechada" : "Aberta",
-                statusColor:
-                    condominio.portaReservatorio == true
-                        ? const Color.fromARGB(255, 233, 33, 33)
-                        : const Color.fromARGB(255, 60, 185, 35),
-              ),
-
-            // Sirene - Pega da API se disponível
             if (condominio.painelSirene != null)
               InfoRow(
                 label: "Sirene",
@@ -90,8 +78,26 @@ class PainelReservatorioCard extends StatelessWidget {
                         ? Colors.red
                         : const Color.fromARGB(255, 53, 215, 21),
               ),
-            // Bateria
+
             InfoRow(label: "Bateria", value: "${painelBateria}V"),
+
+            if (condominio.portaReservatorioteste != null)
+              InfoRow(
+                label: "Porta",
+                value:
+                    condominio.portaReservatorioteste == true
+                        ? "Fechada"
+                        : "Aberta",
+              ),
+
+            if (condominio.boiaStatusReservatorio != null)
+              InfoRow(
+                label: "Boia",
+                value:
+                    condominio.boiaStatusReservatorio == true
+                        ? "Ligada"
+                        : "Desligada",
+              ),
           ],
         ),
       ),
