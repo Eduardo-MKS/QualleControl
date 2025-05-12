@@ -34,6 +34,8 @@ class CondominioModel {
   final bool? portaReservatorio;
   final bool? portaReservatorioteste;
   final bool? boiaStatusReservatorio;
+  final bool? boiaStatusCisternaBomba;
+  final bool? faseStatusBomba;
 
   // Propriedades para Casa de Bombas
   final bool hasCasaDeBombas;
@@ -86,6 +88,8 @@ class CondominioModel {
     this.portaReservatorio,
     this.portaReservatorioteste = false,
     this.boiaStatusReservatorio = false,
+    this.boiaStatusCisternaBomba = false,
+    this.faseStatusBomba = false,
   });
 
   factory CondominioModel.fromJson(Map<String, dynamic> json) {
@@ -115,6 +119,8 @@ class CondominioModel {
     final bool? remotoStatus = casaDeBombas['remoto'];
     final num? bateriaValue = casaDeBombas['bateria']?['tensao'];
     final bool? boiaStatus = cisterna?['boia'];
+    final bool? portaStatusCasaDeBombas = casaDeBombas['porta'];
+    final bool? faseStatusBomba = casaDeBombas['fase'];
 
     // Novos campos para casa de bombas
     final bool? rodizioStatus = casaDeBombas['rodizio'];
@@ -198,6 +204,8 @@ class CondominioModel {
       portaReservatorioteste: painelPortaStatus,
       boiaStatusReservatorio: painelBoiaStatus,
       portaReservatorio: portaReservatorioStatus,
+      boiaStatusCisternaBomba: portaStatusCasaDeBombas,
+      faseStatusBomba: faseStatusBomba,
       painelBateria:
           painelBateriaValue?['tensao'] != null
               ? (painelBateriaValue['tensao'] as num).toStringAsFixed(2)
