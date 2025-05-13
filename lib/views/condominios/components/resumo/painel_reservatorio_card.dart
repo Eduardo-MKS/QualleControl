@@ -95,8 +95,12 @@ class PainelReservatorioCard extends StatelessWidget {
                 label: "Boia",
                 value:
                     condominio.boiaStatusReservatorio == true
-                        ? "Ligada"
-                        : "Desligada",
+                        ? "Normal"
+                        : "Vazia",
+                statusColor:
+                    condominio.painelSirene == true
+                        ? const Color.fromARGB(255, 76, 244, 54)
+                        : const Color.fromARGB(255, 215, 21, 21),
               ),
           ],
         ),
