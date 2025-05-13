@@ -151,7 +151,7 @@ class CondominioModel {
     final dynamic painelBateriaValue = painelReservatorio['bateria'];
     final bool? painelLedStatus = painelReservatorio['led'];
     final bool? painelPortaStatus = painelReservatorio['porta'];
-    final bool? painelBoiaStatus = painelReservatorio['boia'];
+    final bool? painelBoiaStatus = reservatorio['boia'];
     final bool? painelSireneStatus = painelReservatorio['sirene'];
 
     // Dados do painel da cisterna - Nova implementação
