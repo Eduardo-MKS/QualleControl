@@ -202,11 +202,6 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                           ),
                         ),
                         const Spacer(),
-                        TextButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.fullscreen),
-                          label: const Text("Ampliar"),
-                        ),
                       ],
                     ),
 
