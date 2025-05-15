@@ -9,9 +9,9 @@ class CondominioController extends ChangeNotifier {
   List<CondominioModel> _condominios = [];
   List<CondominioModel> get condominios => _condominios;
   // 'prod'
-  //final String baseUrl = 'http://192.168.5.97:5000/condos/';
+  final String baseUrl = 'http://192.168.5.97:5000/condos/';
   // 'dev'
-  final String baseUrl = 'http://10.0.0.34:5000/condos/';
+  //final String baseUrl = 'http://10.0.0.34:5000/condos/';
   final Dio _dio = Dio();
   bool _isLoading = false;
   bool get isLoading => _isLoading;

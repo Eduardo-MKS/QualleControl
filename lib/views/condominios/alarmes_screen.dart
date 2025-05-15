@@ -295,7 +295,7 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
           ],
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -328,77 +328,122 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildHeaderCell('Data', width: 0.25, showSort: true),
-                          _buildHeaderCell(
+                          Text(
+                            'Data',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          Text(
                             'Alarme',
-                            width: 0.35,
-                            showSort: true,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
                           ),
-                          _buildHeaderCell(
+                          Text(
                             'Valor Atual',
-                            width: 0.20,
-                            showSort: true,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
                           ),
-                          _buildHeaderCell('Setpoint', width: 0.20),
+                          Text(
+                            'Setpoint',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
 
                   // Registros da tabela
-                  Column(
-                    children: [
-                      _buildDataRow(
-                        '16/04/2025\n10:17:02',
-                        'Nível Baixo',
-                        '2.36',
-                        '6',
-                        false,
-                      ),
-                      _buildDataRow(
-                        '16/04/2025\n10:17:02',
-                        'Nível Baixo',
-                        '2.36',
-                        '6',
-                        false,
-                      ),
-                      _buildDataRow(
-                        '16/04/2025\n10:06:57',
-                        'Nível Baixo -\nNORMALIZADO',
-                        '3.22',
-                        '6',
-                        true,
-                      ),
-                      _buildDataRow(
-                        '16/04/2025\n10:06:22',
-                        'Nível Baixo -\nNORMALIZADO',
-                        '109.05',
-                        '120',
-                        false,
-                      ),
-                      _buildDataRow(
-                        '16/04/2025\n10:06:07',
-                        'Corrente Baixa -\nNORMALIZADO',
-                        '0.98',
-                        '9',
-                        true,
-                      ),
-                      _buildDataRow(
-                        '16/04/2025\n10:05:38',
-                        'Corrente Alta -\nNORMALIZADO',
-                        '0',
-                        '9',
-                        false,
-                      ),
-                      _buildDataRow(
-                        '16/04/2025\n10:05:38',
-                        'Corrente Alta -\nNORMALIZADO',
-                        '0',
-                        '9',
-                        false,
-                      ),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      children: [
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                        _buildDataRow(
+                          '16/04/2025\n10:17:02',
+                          'Nível Baixo',
+                          '2.36',
+                          '6',
+                          false,
+                        ),
+                      ],
+                    ),
                   ),
 
                   // Paginação
@@ -411,13 +456,6 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                     padding: const EdgeInsets.symmetric(
                       vertical: 8.0,
                       horizontal: 16.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildPaginationButton('1', isSelected: true),
-                        _buildPaginationButton('2'),
-                      ],
                     ),
                   ),
                 ],
@@ -502,7 +540,12 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                           // Lógica para buscar alarmes no período selecionado
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF2F5597),
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            34,
+                            25,
+                            112,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -511,7 +554,12 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                             vertical: 8.0,
                           ),
                         ),
-                        child: const Text('Buscar'),
+                        child: const Text(
+                          'Buscar',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -525,38 +573,6 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
         showLabels: true,
         currentIndex: 2,
         openDrawer: openDrawer,
-      ),
-    );
-  }
-
-  Widget _buildHeaderCell(
-    String text, {
-    required double width,
-    bool showSort = false,
-  }) {
-    return Expanded(
-      flex: (width * 100).toInt(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 14.0,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            if (showSort)
-              const Icon(
-                Icons.arrow_drop_down,
-                size: 16.0,
-                color: Colors.black54,
-              ),
-          ],
-        ),
       ),
     );
   }
@@ -612,32 +628,6 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPaginationButton(String text, {bool isSelected = false}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF2F5597) : Colors.white,
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: isSelected ? const Color(0xFF2F5597) : Colors.grey,
-          width: 1.0,
-        ),
-      ),
-      width: 28.0,
-      height: 28.0,
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 14.0,
-          ),
         ),
       ),
     );
