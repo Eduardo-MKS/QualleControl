@@ -35,48 +35,30 @@ class ConfiguracoesComponent extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    // Lista de configurações
-                    _buildSettingItem(
-                      "Intervalo de Leitura",
-                      "Definir tempo entre leituras de nível",
-                      Icons.timer,
-                      () {
-                        // Abrir configuração
-                      },
-                    ),
-
                     const Divider(),
 
                     _buildSettingItem(
                       "Notificações",
-                      "Configurar alertas e notificações",
-                      Icons.notifications_active,
+                      "Gerenciar notificações do sistema",
+                      Icons.notifications_on,
                       () {
-                        // Abrir configuração
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/notificacao_teste',
+                          (route) => false,
+                        );
                       },
                     ),
 
                     const Divider(),
 
                     _buildSettingItem(
-                      "Configurações de Bomba",
-                      "Definir parâmetros de acionamento",
-                      Icons.settings_applications,
-                      () {
-                        // Abrir configuração
-                      },
+                      "Usuarios",
+                      "Gerenciar usuários do sistema",
+                      Icons.person,
+                      () {},
                     ),
 
                     const Divider(),
-
-                    _buildSettingItem(
-                      "Usuários",
-                      "Gerenciar permissões de acesso",
-                      Icons.people,
-                      () {
-                        // Abrir configuração
-                      },
-                    ),
                   ],
                 ),
               ),

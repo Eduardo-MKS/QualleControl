@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mks_app/views/NotificationTestPage.dart';
 import 'package:flutter_mks_app/views/azas/home_azas.dart';
 import 'package:flutter_mks_app/views/condominios/alarmes_screen.dart';
 import 'package:flutter_mks_app/views/condominios/condominios_home.dart'; // Já importa o arquivo correto
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/hidrometeorologia': (_) => const HomeHidro(),
         '/saneamento': (_) => const SaneaScreen(),
         '/alarmescreen': (_) => const AlarmesScreen(),
+        '/notificacao_teste': (_) => const NotificationTestPage(),
       },
     );
   }
