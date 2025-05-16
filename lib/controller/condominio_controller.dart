@@ -114,7 +114,7 @@ class CondominioController extends ChangeNotifier {
     // Criar uma lista temporária para evitar atualizações parciais
     List<CondominioModel> tempCondominios = [];
 
-    for (int i = 0; i <= 7; i++) {
+    for (int i = 0; i <= 5; i++) {
       final stationCode = 'cond0000$i';
       final condominio = await buscarCondominio(stationCode);
       if (condominio != null) {
