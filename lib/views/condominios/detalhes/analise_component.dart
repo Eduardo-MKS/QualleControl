@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
@@ -19,22 +21,18 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
 
   // Controle de visibilidade das séries
   final Map<String, bool> _seriesVisibility = {
-    'cisterna_nivel': true,
-    'cisterna_metro': true,
-    'cisterna_volume': true,
     'reservatorio_nivel': true,
     'pressao_saida': true,
     'bomba1_li': true,
     'bomba2_li': true,
+    'cisterna_nivel': true,
     'bateria': true,
   };
 
   final Map<String, Color> _seriesColors = {
-    'cisterna_nivel': Colors.blue,
-    'cisterna_metro': Colors.teal,
-    'cisterna_volume': Colors.lightBlue,
     'reservatorio_nivel': const Color.fromARGB(255, 244, 111, 3),
     'pressao_saida': Colors.green,
+    'cisterna_nivel': Colors.blue,
     'bomba1_li': Colors.purple.withOpacity(0.5),
     'bomba2_li': Colors.deepPurple,
     'bateria': Colors.red,
@@ -43,13 +41,21 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
   // Labels para cada série
   final Map<String, String> _seriesLabels = {
     'cisterna_nivel': 'Cisterna 1',
-    'cisterna_metro': 'Cisterna 2',
-    'cisterna_volume': 'Cistern Volume',
     'reservatorio_nivel': 'Reservatório',
     'pressao_saida': 'Pressão',
     'bomba1_li': 'Bomba 1 Ligada',
     'bomba2_li': 'Bomba 2 Ligada',
     'bateria': 'Bateria',
+  };
+
+  // Valores máximos esperados para cada série (para evitar normalização excessiva)
+  final Map<String, double> _seriesMaxValues = {
+    'cisterna_nivel': 1.0,
+    'reservatorio_nivel': 1.0,
+    'pressao_saida': 10.0,
+    'bomba1_li': 1.0,
+    'bomba2_li': 1.0,
+    'bateria': 100.0,
   };
 
   DateTime _startDate = DateTime.now().subtract(const Duration(days: 1));
@@ -150,10 +156,12 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     }
   }
 
+  // Função para realizar a busca
   void _realizarBusca() {
     _filtrarHistorico();
   }
 
+  // Função para alternar a visibilidade de uma série do gráfico (serie, label, color)
   void _toggleSeries(String series) {
     setState(() {
       _seriesVisibility[series] = !(_seriesVisibility[series] ?? true);
@@ -189,7 +197,6 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Botão Ampliar (apenas visual)
                     Row(
                       children: [
                         const Icon(Icons.show_chart, color: Colors.blue),
@@ -208,25 +215,24 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                     const Divider(),
 
                     // Gráfico principal
-                    SizedBox(height: 300, child: _buildChart()),
+                    SizedBox(height: 350, child: _buildChart()),
 
                     const Divider(),
 
-                    // Legenda
+                    // Wrap com as séries visíveis na legenda
                     Wrap(
-                      spacing: 16,
-                      runSpacing: 8,
+                      spacing: 20,
+                      runSpacing: 12,
                       children:
-                          _seriesLabels.entries
-                              .where(
-                                (entry) =>
-                                    _getAvailableSeries().contains(entry.key),
-                              )
+                          _getAvailableSeries() // Mostrar todas as séries disponíveis na legenda
                               .map(
-                                (entry) => _buildLegendItem(
-                                  entry.key,
-                                  entry.value,
-                                  _seriesColors[entry.key] ?? Colors.grey,
+                                (seriesKey) => SizedBox(
+                                  width: 120,
+                                  child: _buildLegendItem(
+                                    seriesKey,
+                                    _seriesLabels[seriesKey] ?? seriesKey,
+                                    _seriesColors[seriesKey] ?? Colors.grey,
+                                  ),
                                 ),
                               )
                               .toList(),
@@ -333,33 +339,43 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
 
     return InkWell(
       onTap: () => _toggleSeries(series),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 16,
-            height: 16,
-            decoration: BoxDecoration(
-              color: isVisible ? color : Colors.grey.shade300,
-              shape:
-                  series.contains('bomba')
-                      ? BoxShape.rectangle
-                      : BoxShape.circle,
+      borderRadius: BorderRadius.circular(4),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                color: isVisible ? color : Colors.grey.shade300,
+                shape:
+                    series.contains('bomba')
+                        ? BoxShape.rectangle
+                        : BoxShape.circle,
+                border: Border.all(color: Colors.black26, width: 1),
+              ),
             ),
-          ),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: TextStyle(
-              color: isVisible ? Colors.black87 : Colors.grey,
-              decoration: isVisible ? null : TextDecoration.lineThrough,
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: isVisible ? Colors.black87 : Colors.grey,
+                  decoration: isVisible ? null : TextDecoration.lineThrough,
+                  fontSize: 12,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
+  // Mantemos esta função para identificar todas as séries disponíveis
   List<String> _getAvailableSeries() {
     final List<String> available = [];
 
@@ -368,23 +384,14 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     // Verificar quais séries estão disponíveis nos dados
     final firstRecord = _filteredHistorico.first;
 
-    if (firstRecord.containsKey('cisterna_nivel')) {
+    if (firstRecord.containsKey('cisterna_nivel'))
       available.add('cisterna_nivel');
-    }
-    if (firstRecord.containsKey('cisterna_metro')) {
-      available.add('cisterna_metro');
-    }
-    if (firstRecord.containsKey('cisterna_volume')) {
-      available.add('cisterna_volume');
-    }
-    if (firstRecord.containsKey('reservatorio_nivel')) {
+    if (firstRecord.containsKey('reservatorio_nivel'))
       available.add('reservatorio_nivel');
-    }
-    if (firstRecord.containsKey('pressao_saida')) {
+    if (firstRecord.containsKey('pressao_saida'))
       available.add('pressao_saida');
-    }
     if (firstRecord.containsKey('bomba1_li')) available.add('bomba1_li');
-
+    if (firstRecord.containsKey('bomba2_li')) available.add('bomba2_li');
     if (firstRecord.containsKey('bateria')) available.add('bateria');
 
     return available;
@@ -395,24 +402,62 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
       return const Center(
         child: Text(
           "Sem dados históricos para o período selecionado",
-          style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+          style: TextStyle(color: Colors.black54, fontStyle: FontStyle.italic),
         ),
       );
     }
 
+    // Obtemos todas as séries disponíveis primeiro
     final availableSeries = _getAvailableSeries();
 
-    // Preparar os valores originais para uso nos tooltips
+    // Preparamos os valores originais para todas as séries disponíveis
     _prepareOriginalValues(availableSeries);
+
+    // Filtramos apenas aquelas que estão marcadas como visíveis para o gráfico
+    final visibleSeries =
+        availableSeries
+            .where((series) => _seriesVisibility[series] == true)
+            .toList();
+
+    // Se não há nenhuma série visível, mostramos uma mensagem
+    if (visibleSeries.isEmpty) {
+      // Tornar todas visíveis para evitar que o gráfico fique em branco
+      for (final series in availableSeries) {
+        _seriesVisibility[series] = true;
+      }
+      // Atualizar a lista de séries visíveis
+      visibleSeries.addAll(availableSeries);
+    }
+
+    double minY = 0;
+    double maxY = 0.1; // Valor mínimo para o maxY para evitar gráfico em branco
+
+    for (final series in visibleSeries) {
+      for (final value in _originalValues[series] ?? []) {
+        // Normalizar o valor com base no valor máximo da série
+        final normalizedValue = value / (_seriesMaxValues[series] ?? 1.0);
+
+        if (normalizedValue > maxY) {
+          maxY = normalizedValue;
+        }
+        if (normalizedValue < minY) {
+          minY = normalizedValue;
+        }
+      }
+    }
+
+    maxY = (maxY * 1.1).clamp(0.0, 1.0);
 
     return LineChart(
       LineChartData(
         lineTouchData: LineTouchData(
           touchTooltipData: LineTouchTooltipData(
-            tooltipBgColor: Colors.white.withOpacity(0.8),
+            tooltipBgColor: Colors.white.withOpacity(0.9),
+            tooltipPadding: const EdgeInsets.all(8),
+            tooltipMargin: 8,
             getTooltipItems: (List<LineBarSpot> touchedSpots) {
               return touchedSpots.map((spot) {
-                final seriesName = availableSeries[spot.barIndex];
+                final seriesName = visibleSeries[spot.barIndex];
                 final label = _seriesLabels[seriesName] ?? seriesName;
 
                 // Obter o valor original para mostrar no tooltip
@@ -428,17 +473,24 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                     // Mostrar como percentual
                     valueDisplay =
                         "${(originalValue * 100).toStringAsFixed(0)}%";
+                  } else if (seriesName == 'bateria') {
+                    valueDisplay = "${originalValue.toStringAsFixed(0)}%";
+                  } else if (seriesName == 'pressao_saida') {
+                    valueDisplay = "${originalValue.toStringAsFixed(2)} bar";
                   } else {
                     // Mostrar com 2 casas decimais
                     valueDisplay = originalValue.toStringAsFixed(2);
                   }
                 } else {
-                  valueDisplay = spot.y.toStringAsFixed(2);
+                  valueDisplay = "N/A";
                 }
 
                 return LineTooltipItem(
                   '$label: $valueDisplay',
-                  TextStyle(color: _seriesColors[seriesName]),
+                  TextStyle(
+                    color: _seriesColors[seriesName] ?? Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 );
               }).toList();
             },
@@ -448,7 +500,22 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
           show: true,
           drawVerticalLine: true,
           drawHorizontalLine: true,
-          horizontalInterval: 0.2,
+          horizontalInterval: 0.1, // Grid a cada 10%
+          getDrawingHorizontalLine: (value) {
+            return FlLine(
+              color: Colors.grey.withOpacity(0.15), // Grid mais sutil
+              strokeWidth: 0.8,
+              dashArray:
+                  value % 0.2 == 0 ? null : [5, 5], // Linhas principais sólidas
+            );
+          },
+          getDrawingVerticalLine: (value) {
+            return FlLine(
+              color: Colors.grey.withOpacity(0.1), // Grid mais sutil
+              strokeWidth: 0.8,
+              dashArray: [5, 5],
+            );
+          },
         ),
         titlesData: FlTitlesData(
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -458,12 +525,21 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 // Mostrar os valores do eixo Y como percentuais
-                return Text(
-                  "${(value * 100).toInt()}%",
-                  style: const TextStyle(color: Colors.grey, fontSize: 10),
+                return Padding(
+                  padding: const EdgeInsets.only(right: 4.0),
+                  child: Text(
+                    "${(value * 100).toInt()}%",
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
                 );
               },
               reservedSize: 40,
+              interval: 0.2, // Mostrar a cada 20%
             ),
           ),
           bottomTitles: AxisTitles(
@@ -474,8 +550,9 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                   return const SizedBox.shrink();
                 }
 
-                // Mostrar apenas algumas datas para evitar sobreposição
-                if (value.toInt() % (_filteredHistorico.length ~/ 5) != 0) {
+                // Calcular quantos pontos mostrar baseado no tamanho dos dados
+                final interval = (_filteredHistorico.length / 5).ceil();
+                if (value.toInt() % interval != 0) {
                   return const SizedBox.shrink();
                 }
 
@@ -493,6 +570,7 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                         style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 10,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     );
@@ -505,12 +583,19 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
             ),
           ),
         ),
-        borderData: FlBorderData(show: true),
+        borderData: FlBorderData(
+          show: true,
+          border: Border.all(
+            color: Colors.grey.withOpacity(0.3),
+          ), // Borda mais sutil
+        ),
         minX: 0,
         maxX: _filteredHistorico.length - 1.0,
-        minY: 0,
-        maxY: 1, // Para normalizar valores
-        lineBarsData: _buildLineBarsData(availableSeries),
+        minY: minY,
+        maxY: maxY,
+        lineBarsData: _buildLineBarsData(
+          visibleSeries,
+        ), // Usar apenas séries visíveis
       ),
     );
   }
@@ -540,35 +625,22 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     }
   }
 
-  List<LineChartBarData> _buildLineBarsData(List<String> availableSeries) {
+  List<LineChartBarData> _buildLineBarsData(List<String> visibleSeries) {
     final List<LineChartBarData> result = [];
 
-    // Adicionar apenas séries visíveis
-    for (final series in availableSeries) {
-      if (_seriesVisibility[series] == true) {
-        result.add(_buildLineForSeries(series));
-      }
+    for (int i = 0; i < visibleSeries.length; i++) {
+      final series = visibleSeries[i];
+      result.add(_buildLineForSeries(series, i));
     }
 
     return result;
   }
 
-  LineChartBarData _buildLineForSeries(String series) {
+  LineChartBarData _buildLineForSeries(String series, int index) {
     final spots = <FlSpot>[];
 
-    // Normalizar valores para o gráfico
-    double maxValue = 1.0;
-    if (!series.contains('bomba') && !series.contains('li')) {
-      // Encontrar valor máximo para normalização (exceto para séries booleanas)
-      maxValue = _filteredHistorico.fold(0.0, (prev, item) {
-        final value =
-            item[series] is num ? (item[series] as num).toDouble() : 0.0;
-        return value > prev ? value : prev;
-      });
-
-      // Se o valor máximo for 0, use 1 para evitar divisão por zero
-      if (maxValue == 0) maxValue = 1.0;
-    }
+    // Usar o valor máximo pré-definido para normalização
+    final maxValue = _seriesMaxValues[series] ?? 1.0;
 
     // Criar spots para o gráfico
     for (int i = 0; i < _filteredHistorico.length; i++) {
@@ -582,7 +654,7 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
           // Valores booleanos vão para 0 (false) ou 1 (true)
           yValue = rawValue ? 1.0 : 0.0;
         } else if (rawValue is num) {
-          // Normalizar valores numéricos
+          // Normalizar valores numéricos com base no valor máximo pré-definido
           yValue = (rawValue / maxValue).clamp(0.0, 1.0);
         }
       }
@@ -590,16 +662,21 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
       spots.add(FlSpot(i.toDouble(), yValue));
     }
 
+    final bool isBomba = series.contains('bomba') || series.contains('li');
+
     return LineChartBarData(
       spots: spots,
-      isCurved: false,
+      isCurved: !isBomba, // Curvas suaves para tudo exceto bombas
+      curveSmoothness: 0.2,
       color: _seriesColors[series],
-      barWidth: series.contains('bomba') ? 8 : 2,
+      barWidth: isBomba ? 2 : 2.5, // Linha mais fina para bombas
       isStrokeCapRound: true,
-      dotData: FlDotData(show: false),
+      dotData: FlDotData(
+        show: false, // Não mostrar pontos
+      ),
       belowBarData: BarAreaData(
-        show: true,
-        color: _seriesColors[series]?.withOpacity(0.1),
+        show: false, // Remover área preenchida abaixo das linhas
+        spotsLine: BarAreaSpotsLine(show: false),
       ),
     );
   }
