@@ -1,7 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mks_app/controller/login_controller.dart';
+import 'package:provider/provider.dart';
+import '../controller/login_controller.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,12 +12,43 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final LoginController _controller = LoginController();
   bool _keepConnected = false;
   bool _obscureText = true;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Verificar se já está logado e redirecionar se necessário
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkLoginStatus();
+    });
+  }
+
+  Future<void> checkLoginStatus() async {
+    final loginController = Provider.of<LoginController>(
+      context,
+      listen: false,
+    );
+    final isLoggedIn = await loginController.checkLoggedIn();
+
+    if (isLoggedIn) {
+      Navigator.of(context).pushReplacementNamed('/home');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final loginController = Provider.of<LoginController>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -60,7 +92,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 8),
                       TextField(
-                        onChanged: _controller.setLogin,
+                        controller: _usernameController,
+                        onChanged: loginController.setLogin,
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.blue[50],
@@ -86,7 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 8),
                       TextField(
-                        onChanged: _controller.setSenha,
+                        controller: _passwordController,
+                        onChanged: loginController.setSenha,
                         obscureText: _obscureText,
                         decoration: InputDecoration(
                           filled: true,
@@ -124,6 +158,9 @@ class _LoginPageState extends State<LoginPage> {
                             onChanged: (value) {
                               setState(() {
                                 _keepConnected = value!;
+                                loginController.setKeepConnected(
+                                  _keepConnected,
+                                );
                               });
                             },
                           ),
@@ -134,7 +171,9 @@ class _LoginPageState extends State<LoginPage> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // TODO: Implement forgot password functionality
+                          },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: const Size(0, 30),
@@ -150,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 16),
 
                       ValueListenableBuilder<bool>(
-                        valueListenable: _controller.inLoader,
+                        valueListenable: loginController.inLoader,
                         builder:
                             (_, inLoader, __) => SizedBox(
                               width: double.infinity,
@@ -159,7 +198,15 @@ class _LoginPageState extends State<LoginPage> {
                                     inLoader
                                         ? null
                                         : () {
-                                          _controller.auth().then((result) {
+                                          // Tentar com credenciais fixas para teste se necessário
+                                          //loginController.setLogin("edecuss1");
+                                          //loginController.setSenha("0ecuss1170000!");
+
+                                          print(
+                                            'Tentando fazer login com: ${_usernameController.text}',
+                                          );
+
+                                          loginController.auth().then((result) {
                                             if (result) {
                                               Navigator.of(
                                                 context,
@@ -223,7 +270,9 @@ class _LoginPageState extends State<LoginPage> {
 
                       Center(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // TODO: Implement alternative login method
+                          },
                           child: const Text(
                             'Interno',
                             style: TextStyle(
@@ -258,7 +307,9 @@ class _LoginPageState extends State<LoginPage> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            // TODO: Implement info about each system
+                          },
                           child: Container(
                             width: 50,
                             height: 50,

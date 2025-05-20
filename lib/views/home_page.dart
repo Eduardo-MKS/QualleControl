@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../controller/login_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loginController = Provider.of<LoginController>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -16,104 +20,123 @@ class HomePage extends StatelessWidget {
             children: [
               SvgPicture.asset('assets/qualle_control.svg', height: 50),
               const SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Card(
-                  child: ListTile(
-                    leading: Image.asset('assets/simbolo-azas.png', height: 40),
-                    title: Text(
-                      'qualle control',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      'A-ZAS',
-                      style: TextStyle(
-                        color: Colors.green.shade600,
-                        fontWeight: FontWeight.bold,
+
+              // AZAS Card - Only show if user has access
+              if (loginController.hasAccessTo('azas'))
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Card(
+                    child: ListTile(
+                      leading: Image.asset(
+                        'assets/simbolo-azas.png',
+                        height: 40,
                       ),
+                      title: const Text(
+                        'qualle control',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        'A-ZAS',
+                        style: TextStyle(
+                          color: Colors.green.shade600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      trailing: const Icon(Icons.arrow_right_alt_sharp),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/azas');
+                      },
                     ),
-                    trailing: Icon(Icons.arrow_right_alt_sharp),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/azas');
-                    },
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Card(
-                  child: ListTile(
-                    leading: Image.asset('assets/simbolo-cond.png', height: 40),
-                    title: Text(
-                      'qualle control',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      'Condomínios',
-                      style: TextStyle(
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
+
+              // Condomínios Card - Only show if user has access
+              if (loginController.hasAccessTo('condominios'))
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Card(
+                    child: ListTile(
+                      leading: Image.asset(
+                        'assets/simbolo-cond.png',
+                        height: 40,
                       ),
+                      title: const Text(
+                        'qualle control',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text(
+                        'Condomínios',
+                        style: TextStyle(
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      trailing: const Icon(Icons.arrow_right_alt_sharp),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/condominios');
+                      },
                     ),
-                    trailing: Icon(Icons.arrow_right_alt_sharp),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/condominios');
-                    },
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Card(
-                  child: ListTile(
-                    title: Text(
-                      'qualle control',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      'Hidrometeorologia',
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.bold,
+
+              // Hidrometeorologia Card - Only show if user has access
+              if (loginController.hasAccessTo('hidrometeorologia'))
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Card(
+                    child: ListTile(
+                      title: const Text(
+                        'qualle control',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
+                      subtitle: const Text(
+                        'Hidrometeorologia',
+                        style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      leading: Image.asset(
+                        'assets/simbolo-hidro.png',
+                        height: 40,
+                      ),
+                      trailing: const Icon(Icons.arrow_right_alt_sharp),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/hidrometeorologia');
+                      },
                     ),
-                    leading: Image.asset(
-                      'assets/simbolo-hidro.png',
-                      height: 40,
-                    ),
-                    trailing: Icon(Icons.arrow_right_alt_sharp),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/hidrometeorologia');
-                    },
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Card(
-                  child: ListTile(
-                    title: Text(
-                      'qualle control',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      'Saneamento',
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
+
+              // Saneamento Card - Only show if user has access
+              if (loginController.hasAccessTo('saneamento'))
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Card(
+                    child: ListTile(
+                      title: const Text(
+                        'qualle control',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
+                      subtitle: const Text(
+                        'Saneamento',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      leading: Image.asset(
+                        'assets/simbolo-sanea.png',
+                        height: 40,
+                      ),
+                      trailing: const Icon(Icons.arrow_right_alt_sharp),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/saneamento');
+                      },
                     ),
-                    leading: Image.asset(
-                      'assets/simbolo-sanea.png',
-                      height: 40,
-                    ),
-                    trailing: Icon(Icons.arrow_right_alt_sharp),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/saneamento');
-                    },
                   ),
                 ),
-              ),
+
               Container(
                 margin: const EdgeInsets.only(top: 32),
                 child: Row(
@@ -127,10 +150,11 @@ class HomePage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Padding(padding: const EdgeInsets.all(8.0)),
+                    const Padding(padding: EdgeInsets.all(8.0)),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(backgroundColor: null),
-                      onPressed: () {
+                      onPressed: () async {
+                        await loginController.logout();
                         Navigator.of(
                           context,
                         ).pushNamedAndRemoveUntil('/login', (route) => false);
