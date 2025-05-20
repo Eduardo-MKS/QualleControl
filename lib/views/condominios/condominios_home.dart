@@ -3,12 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/controller/condominio_controller.dart';
 import 'package:flutter_mks_app/controller/plantao_controller.dart';
+import 'package:flutter_mks_app/controller/login_controller.dart'; // Added import for LoginController
 import 'package:flutter_mks_app/models/plantao_model.dart';
 import 'package:flutter_mks_app/views/condominios/condo_detalhes_screen.dart';
 import 'package:flutter_mks_app/views/widgets/custom_bottom_nav_bar.dart';
 import 'components/condo_card.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart'; // Added import for Provider
 
 class CondoHome extends StatefulWidget {
   const CondoHome({super.key});
@@ -22,11 +24,19 @@ class _CondoHomeState extends State<CondoHome> {
   final PlantaoController _plantaoController = PlantaoController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = true;
+  late LoginController _loginController; // Added LoginController
 
   @override
   void initState() {
     super.initState();
     _loadData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Initialize the LoginController from the Provider
+    _loginController = Provider.of<LoginController>(context, listen: false);
   }
 
   Future<void> _loadData() async {
@@ -279,6 +289,11 @@ class _CondoHomeState extends State<CondoHome> {
     }
 
     final double topSectionHeight = MediaQuery.of(context).size.height * 0.25;
+    // Get the user's name from LoginController
+    final String userName =
+        _loginController.currentUser?.name ??
+        _loginController.currentUser?.username ??
+        'Admin';
 
     return Scaffold(
       key: _scaffoldKey,
@@ -333,7 +348,7 @@ class _CondoHomeState extends State<CondoHome> {
             ),
             ListTile(
               leading: const Icon(Icons.person_2),
-              title: const Text('Admin'),
+              title: Text(userName), // Updated to show user's name
               onTap: () {
                 Navigator.pop(context);
               },
@@ -350,7 +365,10 @@ class _CondoHomeState extends State<CondoHome> {
               leading: const Icon(Icons.logout),
               title: const Text('Sair'),
               onTap: () {
-                Navigator.pushNamed(context, '/home');
+                // Call logout method before navigating
+                _loginController.logout().then((_) {
+                  Navigator.pushNamed(context, '/home');
+                });
               },
             ),
           ],
@@ -385,12 +403,12 @@ class _CondoHomeState extends State<CondoHome> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(9.0),
+                      Padding(
+                        padding: const EdgeInsets.all(9.0),
                         child: Text(
-                          "Olá,\nAdmin!",
-                          style: TextStyle(
-                            fontSize: 35,
+                          "Olá,\n$userName!", // Updated to show user's name
+                          style: const TextStyle(
+                            fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -399,17 +417,10 @@ class _CondoHomeState extends State<CondoHome> {
                       Row(
                         children: [
                           const Image(
-                            image: AssetImage('assets/ehoteste.png'),
-                            height: 20,
+                            image: AssetImage('assets/quallecond.png'),
+                            height: 60,
                           ),
                           const SizedBox(width: 4),
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            child: const Image(
-                              image: AssetImage('assets/simbolo-cond.png'),
-                              height: 50,
-                            ),
-                          ),
                         ],
                       ),
                     ],
