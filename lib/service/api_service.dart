@@ -92,4 +92,29 @@ class ApiService {
       return null;
     }
   }
+
+  // Método para obter lista de condomínios disponíveis
+  Future<List<String>?> getAvailableCondominios(String token) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/qualle/condos'),
+        headers: {'Content-Type': 'application/json', 'Authorization': token},
+      );
+
+      print('GetAvailableCondominios response: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.cast<String>();
+      } else {
+        print(
+          'Get condominios failed: ${response.statusCode} - ${response.body}',
+        );
+        return null;
+      }
+    } catch (e) {
+      print('Get condominios error: $e');
+      return null;
+    }
+  }
 }
