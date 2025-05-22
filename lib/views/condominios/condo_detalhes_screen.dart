@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_mks_app/views/condominios/detalhes/acoes_component.dart';
-import 'package:flutter_mks_app/views/condominios/detalhes/alarmes_component.dart';
 import 'package:flutter_mks_app/views/condominios/detalhes/analise_component.dart';
 import 'package:flutter_mks_app/views/condominios/detalhes/configuracoes_component.dart';
 import 'package:flutter_mks_app/views/condominios/detalhes/resumo_component.dart';
@@ -105,18 +103,7 @@ class _CondominioDetalhesScreenState extends State<CondominioDetalhesScreen> {
                   isSelected: _selectedTab == NavTab.analise,
                   onTap: () => setState(() => _selectedTab = NavTab.analise),
                 ),
-                NavButton(
-                  icon: Icons.man_sharp,
-                  label: "Ações",
-                  isSelected: _selectedTab == NavTab.acoes,
-                  onTap: () => setState(() => _selectedTab = NavTab.acoes),
-                ),
-                NavButton(
-                  icon: Icons.notifications,
-                  label: "Alarmes",
-                  isSelected: _selectedTab == NavTab.alarmes,
-                  onTap: () => setState(() => _selectedTab = NavTab.alarmes),
-                ),
+
                 NavButton(
                   icon: Icons.settings,
                   label: "Configurações",
@@ -140,12 +127,15 @@ class _CondominioDetalhesScreenState extends State<CondominioDetalhesScreen> {
         return ResumoScreen(condominio: widget.condominio);
       case NavTab.analise:
         return AnaliseComponent(condominio: widget.condominio);
-      case NavTab.acoes:
-        return AcoesComponent(condominio: widget.condominio);
-      case NavTab.alarmes:
-        return AlarmesComponent(condominio: widget.condominio);
+
       case NavTab.configuracoes:
         return ConfiguracoesComponent(condominio: widget.condominio);
+      case NavTab.alarmes:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case NavTab.acoes:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 }
