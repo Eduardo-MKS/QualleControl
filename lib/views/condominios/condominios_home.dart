@@ -256,17 +256,10 @@ class _CondoHomeState extends State<CondoHome> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Image(
-                  image: AssetImage('assets/ehoteste.png'),
-                  height: 40,
+                  image: AssetImage('assets/quallecond.png'),
+                  height: 90,
                 ),
                 const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  child: const Image(
-                    image: AssetImage('assets/simbolo-cond.png'),
-                    height: 80,
-                  ),
-                ),
               ],
             ),
             const SizedBox(height: 40),
@@ -321,26 +314,11 @@ class _CondoHomeState extends State<CondoHome> {
                     child: Row(
                       children: [
                         const Image(
-                          image: AssetImage('assets/ehoteste.png'),
-                          height: 20,
+                          image: AssetImage('assets/quallecond.png'),
+                          height: 85,
                         ),
                         const SizedBox(width: 4),
-                        Container(
-                          padding: const EdgeInsets.all(6),
-                          child: const Image(
-                            image: AssetImage('assets/simbolo-cond.png'),
-                            height: 50,
-                          ),
-                        ),
                       ],
-                    ),
-                  ),
-                  const Text(
-                    'Filtros',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
