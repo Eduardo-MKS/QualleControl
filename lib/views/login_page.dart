@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../controller/login_controller.dart';
 
@@ -66,13 +67,6 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 20),
 
-              const Text(
-                'Entrar',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 20),
-
               Card(
                 elevation: 1,
                 shape: RoundedRectangleBorder(
@@ -83,10 +77,10 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Nome de usuário ou e-mail',
-                        style: TextStyle(
-                          fontSize: 14,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -94,6 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextField(
                         controller: _usernameController,
                         onChanged: loginController.setLogin,
+                        style: GoogleFonts.montserrat(),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.blue[50],
@@ -110,10 +105,10 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 16),
 
-                      const Text(
+                      Text(
                         'Senha',
-                        style: TextStyle(
-                          fontSize: 14,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -122,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _passwordController,
                         onChanged: loginController.setSenha,
                         obscureText: _obscureText,
+                        style: GoogleFonts.montserrat(),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.blue[50],
@@ -164,26 +160,13 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             },
                           ),
-                          const Text('Mantenha-me conectado'),
+                          Text(
+                            'Mantenha-me conectado',
+                            style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ],
-                      ),
-
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextButton(
-                          onPressed: () {
-                            // TODO: Implement forgot password functionality
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            minimumSize: const Size(0, 30),
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          ),
-                          child: const Text(
-                            'Esqueceu sua senha?',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
                       ),
 
                       const SizedBox(height: 16),
@@ -246,9 +229,9 @@ class _LoginPageState extends State<LoginPage> {
                                             color: Colors.white,
                                           ),
                                         )
-                                        : const Text(
+                                        : Text(
                                           'Entrar',
-                                          style: TextStyle(
+                                          style: GoogleFonts.montserrat(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -259,10 +242,10 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 16),
 
-                      const Center(
+                      Center(
                         child: Text(
                           'Ou entre com',
-                          style: TextStyle(fontSize: 14),
+                          style: GoogleFonts.montserrat(fontSize: 14),
                         ),
                       ),
 
@@ -273,9 +256,9 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             // TODO: Implement alternative login method
                           },
-                          child: const Text(
+                          child: Text(
                             'Interno',
-                            style: TextStyle(
+                            style: GoogleFonts.montserrat(
                               color: Colors.brown,
                               fontWeight: FontWeight.bold,
                             ),
@@ -289,7 +272,7 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 30),
 
-              const Text('Clique aqui e saiba mais:'),
+              Text('Clique aqui e saiba mais:', style: GoogleFonts.raleway()),
 
               const SizedBox(height: 16),
 
@@ -344,11 +327,14 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Desenvolvido por'),
+                  Text(
+                    'Desenvolvido por',
+                    style: GoogleFonts.montserrat(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(width: 5),
                   Text(
                     'MKS',
-                    style: TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.bold,
                       color: Colors.blue[900],
                     ),
