@@ -3,17 +3,19 @@ import 'package:flutter_mks_app/controller/plantao_controller.dart';
 import 'package:flutter_mks_app/models/plantao_model.dart';
 import 'package:flutter_mks_app/views/widgets/custom_bottom_nav_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_mks_app/controller/login_controller.dart'; // Added import for LoginController
 
 class AlarmesScreen extends StatefulWidget {
   const AlarmesScreen({super.key});
-
   @override
   State<AlarmesScreen> createState() => _AlarmesScreenState();
 }
 
 class _AlarmesScreenState extends State<AlarmesScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  late LoginController _loginController; // Added LoginController
   int currentPage = 1;
   TextEditingController inicioController = TextEditingController(
     text: "15/04/2025 10:26",
@@ -26,6 +28,12 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
 
   void openDrawer(BuildContext context) {
     scaffoldKey.currentState?.openDrawer();
+  }
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Initialize the LoginController from the Provider
+    _loginController = Provider.of<LoginController>(context, listen: false);
   }
 
   void _showPlantaoDialog(BuildContext context) {
@@ -206,6 +214,10 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String userName =
+        _loginController.currentUser?.name ??
+        _loginController.currentUser?.username ??
+        'Admin';
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: const Color(0xFFF5F5F5),
@@ -245,34 +257,20 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                     child: Row(
                       children: [
                         const Image(
-                          image: AssetImage('assets/ehoteste.png'),
-                          height: 20,
+                          image: AssetImage('assets/quallecond.png'),
+                          height: 85,
                         ),
                         const SizedBox(width: 4),
-                        Container(
-                          padding: const EdgeInsets.all(6),
-                          child: const Image(
-                            image: AssetImage('assets/simbolo-cond.png'),
-                            height: 50,
-                          ),
-                        ),
                       ],
-                    ),
-                  ),
-                  const Text(
-                    'Filtros',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
               ),
             ),
+
             ListTile(
               leading: const Icon(Icons.person_2),
-              title: const Text('Admin'),
+              title: Text(userName),
               onTap: () {
                 Navigator.pop(context);
               },
