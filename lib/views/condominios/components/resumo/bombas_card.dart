@@ -118,24 +118,6 @@ class BombasCard extends StatelessWidget {
           const SizedBox(height: 10),
           Image.asset('assets/bomb1.png', height: 60),
           const SizedBox(height: 10),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                // Implementar lógica de controle futuramente
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  side: BorderSide(color: Colors.blue),
-                ),
-                minimumSize: const Size(100, 36),
-              ),
-              child: const Text('Controle'),
-            ),
-          ),
-          const SizedBox(height: 16),
           Text(
             '$rpm RPM',
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),

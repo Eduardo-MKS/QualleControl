@@ -253,9 +253,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       Center(
                         child: TextButton(
-                          onPressed: () {
-                            // TODO: Implement alternative login method
-                          },
+                          onPressed: () {},
                           child: Text(
                             'Interno',
                             style: GoogleFonts.montserrat(
@@ -276,7 +274,6 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 16),
 
-              // Four circular images with onTap
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -290,9 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: GestureDetector(
-                          onTap: () {
-                            // TODO: Implement info about each system
-                          },
+                          onTap: () {},
                           child: Container(
                             width: 50,
                             height: 50,
@@ -336,12 +331,11 @@ class _LoginPageState extends State<LoginPage> {
                     'MKS',
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.bold,
-                      color: Colors.blue[900],
+                      color: Colors.blue,
                     ),
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
             ],
           ),
