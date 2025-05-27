@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "291118496326",
+    "project_id": "qualle-control",
+    "storage_bucket": "qualle-control.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291118496326:android:7b78f7102006e3c4b3a847",
+        "android_client_info": {
+          "package_name": "com.mks.quallecontrol"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwjE9MvzMmLvR6Z5Z3HEiMGGTWmdxxcSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

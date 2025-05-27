@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // <-- IMPORTANTE
-import 'package:flutter_mks_app/controller/login_controller.dart'; // <-- Importe seu controller
+import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_mks_app/controller/login_controller.dart';
+import 'package:flutter_mks_app/service/firebase_messaging_service.dart';
 
 import 'package:flutter_mks_app/views/NotificationTestPage.dart';
 import 'package:flutter_mks_app/views/azas/home_azas.dart';
@@ -12,7 +15,18 @@ import 'package:flutter_mks_app/views/login_page.dart';
 import 'package:flutter_mks_app/views/saneamento/home_sanea.dart';
 import 'package:flutter_mks_app/views/teste_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializar Firebase
+  await Firebase.initializeApp();
+
+  // Configurar handler para mensagens em background
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+  // Inicializar serviço de notificações
+  await FirebaseMessagingService.initialize();
+
   runApp(
     ChangeNotifierProvider(
       create: (_) => LoginController(),
@@ -43,4 +57,11 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+// Handler para mensagens em background (deve estar fora da classe)
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Mensagem em background: ${message.messageId}');
 }
