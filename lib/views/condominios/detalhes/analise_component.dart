@@ -26,6 +26,11 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     'bateria': true,
     'bomba1_rpm': true,
     'bomba2_rpm': true,
+    'vazao': true,
+    'bomba1_corrente': true,
+    'bateria_tensao': true,
+    'reservatorio1_nivel': true,
+    'reservatorio_bateria_v': true,
   };
 
   // Cores das séries
@@ -36,6 +41,13 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     'bateria': Colors.red,
     'bomba1_rpm': Colors.purple,
     'bomba2_rpm': const Color.fromARGB(255, 222, 33, 255),
+    'vazao': const Color.fromARGB(255, 116, 21, 61),
+    'corrente': const Color.fromARGB(255, 22, 255, 243),
+    'bateria_tensao': const Color.fromARGB(255, 150, 82, 20),
+    'bomba1_corrente': const Color.fromARGB(255, 133, 111, 255),
+    'cisterna1_nivel': const Color.fromARGB(255, 84, 13, 197),
+    'reservatorio1_nivel': const Color.fromARGB(255, 244, 111, 3),
+    'reservatorio_bateria_v': const Color.fromARGB(255, 59, 212, 105),
   };
 
   // Labels para cada série
@@ -46,6 +58,12 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     'bateria': 'Bateria',
     'bomba1_rpm': 'bomba1_rpm',
     'bomba2_rpm': 'bomba2_rpm',
+    'vazao': 'Vazão',
+    'corrente': 'Corrente',
+    'bateria_tensao': 'Bateria',
+    'bomba1_corrente': 'bomba1_corrente',
+    'cisterna1_nivel': 'Cisterna 1',
+    'reservatorio_bateria_v': 'Bateria',
   };
 
   // Valores máximos esperados para cada série (para evitar normalização excessiva)
@@ -55,6 +73,13 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     'pressao_saida': 10.0,
     'bateria': 100.0,
     'bomba1_rpm': 4000.0,
+    'bomba2_rpm': 4000.0,
+    'vazao': 10.0,
+    'corrente': 10.0,
+    'bateria_tensao': 10.0,
+    'bomba1_corrente': 10.0,
+    'cisterna1_nivel': 1.0,
+    'reservatorio_bateria_v': 10.0,
   };
 
   DateTime _startDate = DateTime.now().subtract(const Duration(days: 1));
@@ -393,6 +418,18 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     if (firstRecord.containsKey('pressao_saida'))
       available.add('pressao_saida');
     if (firstRecord.containsKey('bateria')) available.add('bateria');
+    if (firstRecord.containsKey('vazao')) available.add('vazao');
+    if (firstRecord.containsKey('corrente')) available.add('corrente');
+    if (firstRecord.containsKey('bateria_tensao'))
+      available.add('bateria_tensao');
+    if (firstRecord.containsKey('bomba1_corrente'))
+      available.add('bomba1_corrente');
+    if (firstRecord.containsKey('cisterna1_nivel'))
+      available.add('cisterna1_nivel');
+    if (firstRecord.containsKey('reservatorio1_nivel'))
+      available.add('reservatorio1_nivel');
+    if (firstRecord.containsKey('reservatorio_bateria_v'))
+      available.add('reservatorio_bateria_v');
 
     return available;
   }
@@ -477,12 +514,25 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                     valueDisplay = originalValue > 0 ? "Ligado" : "Desligado";
                   } else if (seriesName.contains('nivel')) {
                     // Mostrar como percentual
-                    valueDisplay =
-                        "${(originalValue * 100).toStringAsFixed(0)}%";
+                    valueDisplay = (originalValue * 100).toStringAsFixed(0);
                   } else if (seriesName == 'bateria') {
-                    valueDisplay = "${originalValue.toStringAsFixed(0)}%";
+                    valueDisplay = originalValue.toStringAsFixed(0);
                   } else if (seriesName == 'pressao_saida') {
-                    valueDisplay = "${originalValue.toStringAsFixed(2)} bar";
+                    valueDisplay = "${originalValue.toStringAsFixed(2)} ";
+                  } else if (seriesName == 'vazao') {
+                    valueDisplay = "${originalValue.toStringAsFixed(2)} ";
+                  } else if (seriesName == 'bateria_tensao') {
+                    valueDisplay = "${originalValue.toStringAsFixed(2)} ";
+                  } else if (seriesName == 'bomba1_corrente') {
+                    valueDisplay = "${originalValue.toStringAsFixed(2)} ";
+                  } else if (seriesName == 'corrente') {
+                    valueDisplay = "${originalValue.toStringAsFixed(2)} ";
+                  } else if (seriesName == 'cisterna1_nivel') {
+                    valueDisplay = "${originalValue.toStringAsFixed(2)} ";
+                  } else if (seriesName == 'reservatorio1_nivel') {
+                    valueDisplay = "${originalValue.toStringAsFixed(2)} ";
+                  } else if (seriesName == 'reservatorio_bateria_v') {
+                    valueDisplay = originalValue.toStringAsFixed(2);
                   } else {
                     // Mostrar com 2 casas decimais
                     valueDisplay = originalValue.toStringAsFixed(2);
