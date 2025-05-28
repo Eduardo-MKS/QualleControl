@@ -1,5 +1,4 @@
 // ignore_for_file: curly_braces_in_flow_control_structures
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
@@ -23,19 +22,20 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
   final Map<String, bool> _seriesVisibility = {
     'reservatorio_nivel': true,
     'pressao_saida': true,
-    'bomba1_li': true,
-    'bomba2_li': true,
     'cisterna_nivel': true,
     'bateria': true,
+    'bomba1_rpm': true,
+    'bomba2_rpm': true,
   };
 
+  // Cores das séries
   final Map<String, Color> _seriesColors = {
     'reservatorio_nivel': const Color.fromARGB(255, 244, 111, 3),
     'pressao_saida': Colors.green,
     'cisterna_nivel': Colors.blue,
-    'bomba1_li': Colors.purple.withOpacity(0.5),
-    'bomba2_li': Colors.deepPurple,
     'bateria': Colors.red,
+    'bomba1_rpm': Colors.purple,
+    'bomba2_rpm': const Color.fromARGB(255, 222, 33, 255),
   };
 
   // Labels para cada série
@@ -43,9 +43,9 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     'cisterna_nivel': 'Cisterna 1',
     'reservatorio_nivel': 'Reservatório',
     'pressao_saida': 'Pressão',
-    'bomba1_li': 'Bomba 1 Ligada',
-    'bomba2_li': 'Bomba 2 Ligada',
     'bateria': 'Bateria',
+    'bomba1_rpm': 'bomba1_rpm',
+    'bomba2_rpm': 'bomba2_rpm',
   };
 
   // Valores máximos esperados para cada série (para evitar normalização excessiva)
@@ -53,9 +53,8 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     'cisterna_nivel': 1.0,
     'reservatorio_nivel': 1.0,
     'pressao_saida': 10.0,
-    'bomba1_li': 1.0,
-    'bomba2_li': 1.0,
     'bateria': 100.0,
+    'bomba1_rpm': 4000.0,
   };
 
   DateTime _startDate = DateTime.now().subtract(const Duration(days: 1));
@@ -75,6 +74,7 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
 
     // Filtrar dados históricos iniciais
     _filtrarHistorico();
+    print(_filteredHistorico);
   }
 
   @override
@@ -386,12 +386,12 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
 
     if (firstRecord.containsKey('cisterna_nivel'))
       available.add('cisterna_nivel');
+    if (firstRecord.containsKey('bomba1_rpm')) available.add('bomba1_rpm');
+    if (firstRecord.containsKey('bomba2_rpm')) available.add('bomba2_rpm');
     if (firstRecord.containsKey('reservatorio_nivel'))
       available.add('reservatorio_nivel');
     if (firstRecord.containsKey('pressao_saida'))
       available.add('pressao_saida');
-    if (firstRecord.containsKey('bomba1_li')) available.add('bomba1_li');
-    if (firstRecord.containsKey('bomba2_li')) available.add('bomba2_li');
     if (firstRecord.containsKey('bateria')) available.add('bateria');
 
     return available;
@@ -466,7 +466,13 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                   final originalValue =
                       _originalValues[seriesName]![spot.spotIndex];
 
-                  if (seriesName.contains('bomba') ||
+                  // Para RPM das bombas, mostrar o valor numérico
+                  if (seriesName.contains('bomba') &&
+                      seriesName.contains('rpm')) {
+                    valueDisplay = "${originalValue.toStringAsFixed(0)} RPM";
+                  }
+                  // Para outros status de bomba (ligado/desligado)
+                  else if (seriesName.contains('bomba') ||
                       seriesName.contains('li')) {
                     valueDisplay = originalValue > 0 ? "Ligado" : "Desligado";
                   } else if (seriesName.contains('nivel')) {
@@ -611,11 +617,25 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
         if (item.containsKey(series)) {
           final rawValue = item[series];
 
-          if (rawValue is bool) {
+          // Para séries de RPM das bombas, sempre tratar como número
+          if (series.contains('bomba') && series.contains('rpm')) {
+            if (rawValue is num) {
+              _originalValues[series]!.add(rawValue.toDouble());
+            } else {
+              // Se não for número, assumir 0 (bomba desligada)
+              _originalValues[series]!.add(0.0);
+            }
+          }
+          // Para outras séries booleanas (status de ligado/desligado)
+          else if (rawValue is bool) {
             _originalValues[series]!.add(rawValue ? 1.0 : 0.0);
-          } else if (rawValue is num) {
+          }
+          // Para valores numéricos em geral
+          else if (rawValue is num) {
             _originalValues[series]!.add(rawValue.toDouble());
-          } else {
+          }
+          // Valor padrão
+          else {
             _originalValues[series]!.add(0.0);
           }
         } else {
@@ -650,10 +670,23 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
       if (item.containsKey(series)) {
         final rawValue = item[series];
 
-        if (rawValue is bool) {
+        // Para séries de RPM das bombas, sempre tratar como número
+        if (series.contains('bomba') && series.contains('rpm')) {
+          if (rawValue is num) {
+            // Normalizar valores numéricos com base no valor máximo pré-definido
+            yValue = (rawValue / maxValue).clamp(0.0, 1.0);
+          } else {
+            // Se não for número, assumir 0 (bomba desligada)
+            yValue = 0.0;
+          }
+        }
+        // Para outras séries booleanas (status de ligado/desligado)
+        else if (rawValue is bool) {
           // Valores booleanos vão para 0 (false) ou 1 (true)
           yValue = rawValue ? 1.0 : 0.0;
-        } else if (rawValue is num) {
+        }
+        // Para valores numéricos em geral
+        else if (rawValue is num) {
           // Normalizar valores numéricos com base no valor máximo pré-definido
           yValue = (rawValue / maxValue).clamp(0.0, 1.0);
         }
