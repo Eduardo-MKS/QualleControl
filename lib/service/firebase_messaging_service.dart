@@ -22,6 +22,8 @@ class FirebaseMessagingService {
 
     // Obter e imprimir o token FCM
     await _getTokenAndPrint();
+
+    _firebaseMessaging.subscribeToTopic('TESTE-NOTIFICACOES');
   }
 
   // Solicitar permissões
