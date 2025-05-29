@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/info_row.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class InfoGeraisCard extends StatelessWidget {
   final String titulo;
@@ -34,10 +35,9 @@ class InfoGeraisCard extends StatelessWidget {
           children: [
             Text(
               titulo,
-              style: TextStyle(
+              style: GoogleFonts.quicksand(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.black87,
               ),
             ),
             const SizedBox(height: 12),

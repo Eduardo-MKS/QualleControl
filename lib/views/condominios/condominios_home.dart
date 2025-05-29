@@ -11,6 +11,7 @@ import 'components/condo_card.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart'; // Added import for Provider
+import 'package:google_fonts/google_fonts.dart';
 
 class CondoHome extends StatefulWidget {
   const CondoHome({super.key});
@@ -112,9 +113,9 @@ class _CondoHomeState extends State<CondoHome> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             'Técnicos de Plantão',
-                            style: TextStyle(
+                            style: GoogleFonts.quicksand(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -131,7 +132,10 @@ class _CondoHomeState extends State<CondoHome> {
                       ),
                       Text(
                         '$dataInicioFormatada - $dataFinalFormatada',
-                        style: const TextStyle(fontSize: 14),
+                        style: GoogleFonts.quicksand(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       if (plantao.contatoSuporte != null &&
@@ -139,9 +143,9 @@ class _CondoHomeState extends State<CondoHome> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Contatos - Suporte TI',
-                              style: TextStyle(
+                              style: GoogleFonts.quicksand(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -163,9 +167,9 @@ class _CondoHomeState extends State<CondoHome> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 8),
-                            const Text(
+                            Text(
                               'Contatos - Campo',
-                              style: TextStyle(
+                              style: GoogleFonts.quicksand(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -326,14 +330,26 @@ class _CondoHomeState extends State<CondoHome> {
             ),
             ListTile(
               leading: const Icon(Icons.person_2),
-              title: Text(userName), // Updated to show user's name
+              title: Text(
+                userName,
+                style: GoogleFonts.quicksand(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ), // Updated to show user's name
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.phone_callback),
-              title: const Text('Plantão'),
+              title: Text(
+                'Plantão',
+                style: GoogleFonts.quicksand(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _showPlantaoDialog(context);
@@ -341,7 +357,13 @@ class _CondoHomeState extends State<CondoHome> {
             ),
             ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text('Sair'),
+              title: Text(
+                'Sair',
+                style: GoogleFonts.quicksand(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               onTap: () {
                 // Call logout method before navigating
                 _loginController.logout().then((_) {
@@ -385,10 +407,10 @@ class _CondoHomeState extends State<CondoHome> {
                         padding: const EdgeInsets.all(9.0),
                         child: Text(
                           "Olá,\n$userName!", // Updated to show user's name
-                          style: const TextStyle(
+                          style: GoogleFonts.quicksand(
                             fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white
                           ),
                         ),
                       ),

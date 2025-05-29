@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
 import 'package:intl/intl.dart';
 
+
 class AnaliseComponent extends StatefulWidget {
   final CondominioModel condominio;
 

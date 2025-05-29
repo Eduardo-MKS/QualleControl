@@ -3,6 +3,7 @@ import '../../../models/condominio_model.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
+import 'package:google_fonts/google_fonts.dart';
 
 class CondoCard extends StatelessWidget {
   final CondominioModel condominio;
@@ -51,7 +52,7 @@ class CondoCard extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 condominio.nome,
-                style: const TextStyle(
+                style: GoogleFonts.quicksand(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
@@ -67,16 +68,22 @@ class CondoCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     formattedDate,
-                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                    style: GoogleFonts.quicksand(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
               _buildMetricsRow(condominio),
               const SizedBox(height: 8),
-              const Text(
+               Text(
                 'Toque para ver detalhes',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
+                style: GoogleFonts.quicksand(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
               const SizedBox(height: 4),
             ],
