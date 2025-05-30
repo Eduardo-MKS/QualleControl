@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/vazao_chart.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class VazaoCard extends StatelessWidget {
   final String titulo;
@@ -32,18 +33,16 @@ class VazaoCard extends StatelessWidget {
               children: [
                 Text(
                   titulo,
-                  style: TextStyle(
+                  style: GoogleFonts.quicksand(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 Text(
                   vazaoValue,
-                  style: TextStyle(
+                  style: GoogleFonts.quicksand(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: color,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
@@ -65,9 +64,9 @@ class VazaoCard extends StatelessWidget {
                     children: [
                       Text(
                         "Vazão (l/s)",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 14,
+                        style: GoogleFonts.quicksand(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       const SizedBox(height: 4),
