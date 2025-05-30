@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/cisterna_chart.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CisternaCard extends StatelessWidget {
   final String titulo;
@@ -41,27 +42,27 @@ class CisternaCard extends StatelessWidget {
               children: [
                 Text(
                   titulo,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.quicksand(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
                   "$percentDisplay ",
-                  style: const TextStyle(
-                    fontSize: 18,
+                  style: GoogleFonts.quicksand(
+                    fontSize: 17,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
             const SizedBox(height: 16),
 
             // Adiciona o gráfico de histórico apenas se tivermos dados históricos
             CisternaChart(historicoData: historicoData),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
             const SizedBox(height: 16),
             Row(
@@ -72,12 +73,15 @@ class CisternaCard extends StatelessWidget {
                   children: [
                     Text(
                       'Nível (m³)',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                        style: GoogleFonts.quicksand(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       nivelVolume,
-                      style: const TextStyle(
+                      style: GoogleFonts.quicksand(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -89,12 +93,15 @@ class CisternaCard extends StatelessWidget {
                   children: [
                     Text(
                       'Nível (m)',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      style: GoogleFonts.quicksand(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       metrosValue,
-                      style: const TextStyle(
+                      style: GoogleFonts.quicksand(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BombasCard extends StatelessWidget {
   final String titulo;
@@ -50,7 +51,10 @@ class BombasCard extends StatelessWidget {
           children: [
             Text(
               titulo,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: GoogleFonts.quicksand(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
             ),
             const SizedBox(height: 16),
             Row(

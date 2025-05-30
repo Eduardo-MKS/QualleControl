@@ -34,15 +34,15 @@ class VazaoCard extends StatelessWidget {
                 Text(
                   titulo,
                   style: GoogleFonts.quicksand(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
                   vazaoValue,
                   style: GoogleFonts.quicksand(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
@@ -72,7 +72,7 @@ class VazaoCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         "0.36",
-                        style: const TextStyle(
+                        style: GoogleFonts.quicksand(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -89,19 +89,18 @@ class VazaoCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Totalizador (m³)",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 0, 0, 0),
-                            fontSize: 14,
+                          "Totalizador ",
+                          style: GoogleFonts.quicksand(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           totalizadorValue,
-                          style: TextStyle(
+                          style: GoogleFonts.quicksand(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: color,
                           ),
                         ),
                       ],
