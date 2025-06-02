@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/info_row.dart'; // Importe o InfoRow
+import 'package:google_fonts/google_fonts.dart';
 
 class CasaBombasCard extends StatelessWidget {
   final String titulo;
@@ -33,10 +34,9 @@ class CasaBombasCard extends StatelessWidget {
           children: [
             Text(
               titulo,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 0, 0, 0),
+              style: GoogleFonts.quicksand(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 12),

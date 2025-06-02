@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
 import 'package:flutter_mks_app/views/condominios/components/resumo/info_row.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PainelReservatorioCard extends StatelessWidget {
   final String titulo;
@@ -30,10 +31,9 @@ class PainelReservatorioCard extends StatelessWidget {
           children: [
             Text(
               titulo,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+              style: GoogleFonts.quicksand(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
               ),
             ),
 
