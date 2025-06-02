@@ -7,6 +7,7 @@ import 'package:flutter_mks_app/views/condominios/detalhes/configuracoes_compone
 import 'package:flutter_mks_app/views/condominios/detalhes/resumo_component.dart';
 import '../../models/condominio_model.dart';
 import 'components/nav_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 enum NavTab { resumo, analise, acoes, alarmes, configuracoes }
 
@@ -63,21 +64,26 @@ class _CondominioDetalhesScreenState extends State<CondominioDetalhesScreen> {
               children: [
                 Text(
                   widget.condominio.nome,
-                  style: const TextStyle(
-                    fontSize: 28,
+                  style: GoogleFonts.quicksand(
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
                   ),
                 ),
                 Row(
                   children: [
-                    const Text(
-                      "Última Atualização ",
-                      style: TextStyle(fontSize: 14, color: Colors.black54),
+                    Text(
+                      "Última Atualização: ",
+                      style: GoogleFonts.quicksand(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     Text(
                       formattedDate,
-                      style: const TextStyle(fontSize: 14, color: Colors.black),
+                      style: GoogleFonts.quicksand(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final bool showLabels;
@@ -16,7 +17,16 @@ class CustomBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: currentIndex,
-      selectedItemColor: const Color.fromARGB(255, 49, 145, 148),
+      selectedItemColor: const Color.fromARGB(255, 49, 67, 148),
+      selectedLabelStyle: GoogleFonts.quicksand(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedLabelStyle: GoogleFonts.quicksand(
+        fontSize: 13,
+        fontWeight: FontWeight.w600,
+        color: Colors.black,
+      ),
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.menu_outlined),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NavButton extends StatelessWidget {
   final IconData icon;
@@ -19,33 +20,34 @@ class NavButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(right: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 5),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color:
-              isSelected
-                  ? const Color.fromARGB(255, 28, 73, 105)
-                  : Colors.transparent,
+          color: isSelected ? Colors.blue : const Color.fromARGB(0, 0, 0, 0),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.shade300,
-            width: 1,
+            color:
+                isSelected ? Colors.blue : const Color.fromARGB(255, 0, 0, 0),
           ),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
-              size: 20,
-              color: isSelected ? Colors.blue : Colors.grey.shade600,
+              size: 18,
+              color: isSelected ? Colors.white : Colors.blue.shade800,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 6),
             Text(
               label,
-              style: TextStyle(
+              style: GoogleFonts.quicksand(
                 fontSize: 14,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                color: isSelected ? Colors.blue : Colors.grey.shade600,
+                fontWeight: FontWeight.w500,
+                color:
+                    isSelected
+                        ? Colors.white
+                        : const Color.fromARGB(255, 0, 0, 0),
               ),
             ),
           ],

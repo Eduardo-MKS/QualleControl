@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
 import 'package:intl/intl.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 
 class AnaliseComponent extends StatefulWidget {
   final CondominioModel condominio;
@@ -204,11 +204,6 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Título
-            const Text(
-              "Histórico",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-
             const SizedBox(height: 16),
 
             // Gráfico
@@ -227,11 +222,11 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                       children: [
                         const Icon(Icons.show_chart, color: Colors.blue),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           "Gráfico",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
+                          style: GoogleFonts.quicksand(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         const Spacer(),
@@ -282,11 +277,11 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Período da Consulta",
-                      style: TextStyle(
+                      style: GoogleFonts.quicksand(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -298,7 +293,13 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text("Início"),
+                              Text(
+                                "Início",
+                                style: GoogleFonts.quicksand(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                               const SizedBox(height: 8),
                               _buildDateField(_inicioController, true),
                             ],
@@ -309,13 +310,19 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text("Final"),
+                              Text(
+                                "Final",
+                                style: GoogleFonts.quicksand(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                               const SizedBox(height: 8),
                               _buildDateField(_finalController, false),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 10),
                         SizedBox(
                           height: 48,
                           child: ElevatedButton(
@@ -326,9 +333,13 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               "Buscar",
-                              style: TextStyle(color: Colors.white),
+                              style: GoogleFonts.quicksand(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
@@ -387,10 +398,11 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
             Flexible(
               child: Text(
                 label,
-                style: TextStyle(
-                  color: isVisible ? Colors.black87 : Colors.grey,
+                style: GoogleFonts.quicksand(
+                  color: isVisible ? Colors.black : Colors.grey,
                   decoration: isVisible ? null : TextDecoration.lineThrough,
-                  fontSize: 12,
+                  fontWeight: isVisible ? FontWeight.w600 : FontWeight.normal,
+                  fontSize: 13,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),

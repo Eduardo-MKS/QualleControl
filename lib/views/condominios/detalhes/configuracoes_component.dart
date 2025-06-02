@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/condominio_model.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ConfiguracoesComponent extends StatelessWidget {
   final CondominioModel condominio;
@@ -25,12 +26,11 @@ class ConfiguracoesComponent extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Configurações do Sistema",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                      style: GoogleFonts.quicksand(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -41,10 +41,10 @@ class ConfiguracoesComponent extends StatelessWidget {
                       "Notificações",
                       "Gerenciar notificações do sistema",
                       Icons.notifications_on,
-                      () {
+                          () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                           '/notificacao_teste',
-                          (route) => false,
+                              (route) => false,
                         );
                       },
                     ),
@@ -55,7 +55,7 @@ class ConfiguracoesComponent extends StatelessWidget {
                       "Usuarios",
                       "Gerenciar usuários do sistema",
                       Icons.person,
-                      () {},
+                          () {},
                     ),
 
                     const Divider(),
@@ -70,18 +70,24 @@ class ConfiguracoesComponent extends StatelessWidget {
   }
 
   Widget _buildSettingItem(
-    String title,
-    String description,
-    IconData icon,
-    VoidCallback onTap,
-  ) {
+      String title,
+      String description,
+      IconData icon,
+      VoidCallback onTap,
+      ) {
     return ListTile(
       leading: Icon(icon, color: Colors.blue, size: 30),
       title: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        style: GoogleFonts.quicksand(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
       ),
-      subtitle: Text(description),
+      subtitle: Text(
+        description,
+        style: GoogleFonts.quicksand(),
+      ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,
     );
