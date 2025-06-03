@@ -87,18 +87,15 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
   DateTime _endDate = DateTime.now();
   List<Map<String, dynamic>> _filteredHistorico = [];
 
-  // Armazenar valores originais para mostrar corretamente nos tooltips
   Map<String, List<double>> _originalValues = {};
 
   @override
   void initState() {
     super.initState();
 
-    // Inicializar controllers com datas padrão
     _inicioController.text = DateFormat('dd/MM/yyyy HH:mm').format(_startDate);
     _finalController.text = DateFormat('dd/MM/yyyy HH:mm').format(_endDate);
 
-    // Filtrar dados históricos iniciais
     _filtrarHistorico();
     print(_filteredHistorico);
   }
@@ -121,29 +118,35 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     setState(() {
       _filteredHistorico =
           widget.condominio.historico!.where((registro) {
-            // Converter a string de data para DateTime
             final dataRegistro = DateTime.tryParse(registro['data_hora']);
             if (dataRegistro == null) return false;
 
-            // Verificar se está dentro do intervalo selecionado
-            return dataRegistro.isAfter(_startDate) &&
-                dataRegistro.isBefore(_endDate.add(const Duration(days: 1)));
+            return dataRegistro.isAfter(
+                  _startDate.subtract(const Duration(seconds: 1)),
+                ) &&
+                dataRegistro.isBefore(_endDate.add(const Duration(seconds: 1)));
           }).toList();
 
-      // Ordenar por data
       _filteredHistorico.sort((a, b) {
         final dateA = DateTime.tryParse(a['data_hora']) ?? DateTime(1970);
         final dateB = DateTime.tryParse(b['data_hora']) ?? DateTime(1970);
         return dateA.compareTo(dateB);
       });
     });
+
+    print(
+      'Período selecionado: ${DateFormat('dd/MM/yyyy HH:mm').format(_startDate)} até ${DateFormat('dd/MM/yyyy HH:mm').format(_endDate)}',
+    );
+    print('Registros filtrados: ${_filteredHistorico.length}');
+    if (_filteredHistorico.isNotEmpty) {
+      print('Primeiro registro: ${_filteredHistorico.first['data_hora']}');
+      print('Último registro: ${_filteredHistorico.last['data_hora']}');
+    }
   }
 
   Future<void> _selecionarData(BuildContext context, bool isInicio) async {
     final controller = isInicio ? _inicioController : _finalController;
     final initialDate = isInicio ? _startDate : _endDate;
-
-    // Selecionar data
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
@@ -152,15 +155,12 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     );
 
     if (picked != null) {
-      // Selecionar hora
       final TimeOfDay? pickedTime = await showTimePicker(
-        // ignore: use_build_context_synchronously
         context: context,
         initialTime: TimeOfDay.fromDateTime(initialDate),
       );
 
       if (pickedTime != null) {
-        // Combinar data e hora
         final newDateTime = DateTime(
           picked.year,
           picked.month,
@@ -169,7 +169,6 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
           pickedTime.minute,
         );
 
-        // Atualizar controller e variável de estado
         setState(() {
           controller.text = DateFormat('dd/MM/yyyy HH:mm').format(newDateTime);
           if (isInicio) {
@@ -182,12 +181,10 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     }
   }
 
-  // Função para realizar a busca
   void _realizarBusca() {
     _filtrarHistorico();
   }
 
-  // Função para alternar a visibilidade de uma série do gráfico (serie, label, color)
   void _toggleSeries(String series) {
     setState(() {
       _seriesVisibility[series] = !(_seriesVisibility[series] ?? true);
@@ -196,17 +193,13 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
 
   @override
   Widget build(BuildContext context) {
-    // Envolver todo o conteúdo em um SingleChildScrollView para permitir rolagem
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Título
             const SizedBox(height: 16),
-
-            // Gráfico
             Card(
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -234,18 +227,14 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                     ),
 
                     const Divider(),
-
-                    // Gráfico principal
                     SizedBox(height: 350, child: _buildChart()),
-
                     const Divider(),
 
-                    // Wrap com as séries visíveis na legenda
                     Wrap(
                       spacing: 20,
                       runSpacing: 12,
                       children:
-                          _getAvailableSeries() // Mostrar todas as séries disponíveis na legenda
+                          _getAvailableSeries()
                               .map(
                                 (seriesKey) => SizedBox(
                                   width: 120,
@@ -265,9 +254,8 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
 
             const SizedBox(height: 16),
 
-            // Período de consulta
             Card(
-              elevation: 0,
+              elevation: 4,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
                 side: BorderSide(color: Colors.grey.shade300, width: 1),
@@ -286,7 +274,6 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Campos de data
                     Row(
                       children: [
                         Expanded(
@@ -300,12 +287,12 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 1),
                               _buildDateField(_inicioController, true),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,12 +304,18 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 1),
                               _buildDateField(_finalController, false),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 1),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         SizedBox(
                           height: 48,
                           child: ElevatedButton(
@@ -413,15 +406,11 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
     );
   }
 
-  // Mantemos esta função para identificar todas as séries disponíveis
   List<String> _getAvailableSeries() {
     final List<String> available = [];
 
     if (_filteredHistorico.isEmpty) return available;
-
-    // Verificar quais séries estão disponíveis nos dados
     final firstRecord = _filteredHistorico.first;
-
     if (firstRecord.containsKey('cisterna_nivel'))
       available.add('cisterna_nivel');
     if (firstRecord.containsKey('bomba1_rpm')) available.add('bomba1_rpm');
@@ -456,35 +445,25 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
         ),
       );
     }
-
-    // Obtemos todas as séries disponíveis primeiro
     final availableSeries = _getAvailableSeries();
 
-    // Preparamos os valores originais para todas as séries disponíveis
     _prepareOriginalValues(availableSeries);
-
-    // Filtramos apenas aquelas que estão marcadas como visíveis para o gráfico
     final visibleSeries =
         availableSeries
             .where((series) => _seriesVisibility[series] == true)
             .toList();
-
-    // Se não há nenhuma série visível, mostramos uma mensagem
     if (visibleSeries.isEmpty) {
-      // Tornar todas visíveis para evitar que o gráfico fique em branco
       for (final series in availableSeries) {
         _seriesVisibility[series] = true;
       }
-      // Atualizar a lista de séries visíveis
       visibleSeries.addAll(availableSeries);
     }
 
     double minY = 0;
-    double maxY = 0.1; // Valor mínimo para o maxY para evitar gráfico em branco
+    double maxY = 0.1;
 
     for (final series in visibleSeries) {
       for (final value in _originalValues[series] ?? []) {
-        // Normalizar o valor com base no valor máximo da série
         final normalizedValue = value / (_seriesMaxValues[series] ?? 1.0);
 
         if (normalizedValue > maxY) {
@@ -771,7 +750,7 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
         show: false, // Não mostrar pontos
       ),
       belowBarData: BarAreaData(
-        show: false, // Remover área preenchida abaixo das linhas
+        show: false,
         spotsLine: BarAreaSpotsLine(show: false),
       ),
     );
