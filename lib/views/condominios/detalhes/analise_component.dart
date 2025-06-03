@@ -1,4 +1,4 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: curly_braces_in_flow_control_structures, avoid_print
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_mks_app/models/condominio_model.dart';
@@ -156,6 +156,7 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
 
     if (picked != null) {
       final TimeOfDay? pickedTime = await showTimePicker(
+        // ignore: use_build_context_synchronously
         context: context,
         initialTime: TimeOfDay.fromDateTime(initialDate),
       );
