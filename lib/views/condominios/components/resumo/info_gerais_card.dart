@@ -41,7 +41,7 @@ class InfoGeraisCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            const Divider(color: Colors.grey),
+            const Divider(color: Colors.black),
             const SizedBox(height: 8),
 
             if (condominio.faseStatusBomba != null)

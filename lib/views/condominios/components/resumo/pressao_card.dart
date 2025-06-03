@@ -50,11 +50,8 @@ class PressaoCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-
             // Gráfico de pressão
             PressaoChart(historicoData: historicoData),
-
-            const Divider(color: Colors.grey),
             const SizedBox(height: 8),
           ],
         ),

@@ -38,7 +38,7 @@ class PainelReservatorioCard extends StatelessWidget {
             ),
 
             const SizedBox(height: 12),
-            const Divider(color: Color.fromARGB(255, 0, 0, 0)),
+            const Divider(color: Colors.black),
             const SizedBox(height: 8),
 
             if (condominio.painelEnergia != null)

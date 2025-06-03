@@ -48,8 +48,6 @@ class VazaoCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-
-            const Divider(color: Colors.grey),
             const SizedBox(height: 8),
 
             VazaoChart(historicoData: historicoData),

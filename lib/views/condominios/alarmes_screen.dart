@@ -5,7 +5,8 @@ import 'package:flutter_mks_app/views/widgets/custom_bottom_nav_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_mks_app/controller/login_controller.dart'; // Added import for LoginController
+import 'package:flutter_mks_app/controller/login_controller.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AlarmesScreen extends StatefulWidget {
   const AlarmesScreen({super.key});
@@ -15,7 +16,7 @@ class AlarmesScreen extends StatefulWidget {
 
 class _AlarmesScreenState extends State<AlarmesScreen> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  late LoginController _loginController; // Added LoginController
+  late LoginController _loginController;
   int currentPage = 1;
   TextEditingController inicioController = TextEditingController(
     text: "15/04/2025 10:26",
@@ -88,9 +89,9 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             'Técnicos de Plantão',
-                            style: TextStyle(
+                            style: GoogleFonts.quicksand(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -107,7 +108,10 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                       ),
                       Text(
                         '$dataInicioFormatada - $dataFinalFormatada',
-                        style: const TextStyle(fontSize: 14),
+                        style: GoogleFonts.quicksand(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       if (plantao.contatoSuporte != null &&
@@ -115,9 +119,9 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Contatos - Suporte TI',
-                              style: TextStyle(
+                              style: GoogleFonts.quicksand(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -139,9 +143,9 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 8),
-                            const Text(
+                            Text(
                               'Contatos - Campo',
-                              style: TextStyle(
+                              style: GoogleFonts.quicksand(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -186,7 +190,10 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
             children: [
               Text(
                 contato.telefone ?? '',
-                style: const TextStyle(fontSize: 14),
+                style: GoogleFonts.quicksand(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               const SizedBox(width: 4),
               InkWell(
@@ -270,14 +277,26 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
 
             ListTile(
               leading: const Icon(Icons.person_2),
-              title: Text(userName),
+              title: Text(
+                userName,
+                style: GoogleFonts.quicksand(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.phone_callback),
-              title: const Text('Plantão'),
+              title: Text(
+                'Plantão',
+                style: GoogleFonts.quicksand(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               onTap: () {
                 Navigator.pop(context);
                 _showPlantaoDialog(context);
@@ -285,7 +304,13 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text('Sair'),
+              title: Text(
+                'Sair',
+                style: GoogleFonts.quicksand(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               onTap: () {
                 Navigator.pushNamed(context, '/home');
               },
@@ -330,34 +355,30 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                         children: [
                           Text(
                             'Data',
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                            style: GoogleFonts.quicksand(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           Text(
                             'Alarme',
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                            style: GoogleFonts.quicksand(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           Text(
                             'Valor Atual',
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                            style: GoogleFonts.quicksand(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                           Text(
                             'Setpoint',
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                            style: GoogleFonts.quicksand(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
@@ -480,18 +501,24 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Período da Consulta',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
+                    style: GoogleFonts.quicksand(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 16.0),
                   Row(
                     children: [
                       const SizedBox(width: 8.0),
-                      const Text('Início'),
+                      Text(
+                        'Início',
+                        style: GoogleFonts.quicksand(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const Spacer(),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.6,
@@ -512,7 +539,13 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
                   Row(
                     children: [
                       const SizedBox(width: 8.0),
-                      const Text('Final'),
+                      Text(
+                        'Final',
+                        style: GoogleFonts.quicksand(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const Spacer(),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.6,
@@ -598,7 +631,10 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
               child: Text(
                 data,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 13.0),
+                style: GoogleFonts.quicksand(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             Expanded(
@@ -606,7 +642,10 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
               child: Text(
                 alarme,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 13.0),
+                style: GoogleFonts.quicksand(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             Expanded(
@@ -614,7 +653,10 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
               child: Text(
                 valorAtual,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 13.0),
+                style: GoogleFonts.quicksand(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             Expanded(
@@ -622,7 +664,10 @@ class _AlarmesScreenState extends State<AlarmesScreen> {
               child: Text(
                 setpoint,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 13.0),
+                style: GoogleFonts.quicksand(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],
