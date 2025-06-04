@@ -121,10 +121,10 @@ class _AnaliseComponentState extends State<AnaliseComponent> {
             final dataRegistro = DateTime.tryParse(registro['data_hora']);
             if (dataRegistro == null) return false;
 
-            return dataRegistro.isAfter(
-                  _startDate.subtract(const Duration(seconds: 1)),
-                ) &&
-                dataRegistro.isBefore(_endDate.add(const Duration(seconds: 1)));
+            return (dataRegistro.isAfter(_startDate) ||
+                    dataRegistro.isAtSameMomentAs(_startDate)) &&
+                (dataRegistro.isBefore(_endDate) ||
+                    dataRegistro.isAtSameMomentAs(_endDate));
           }).toList();
 
       _filteredHistorico.sort((a, b) {
