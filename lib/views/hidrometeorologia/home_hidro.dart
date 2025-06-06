@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'widgets/filter_sidebar.dart';
+import 'widgets/map_view.dart';
+import 'widgets/cameras_view.dart';
+import 'widgets/profile_view.dart';
 
 class HomeHidro extends StatefulWidget {
   const HomeHidro({super.key});
@@ -14,8 +16,6 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
   bool _isFilterSidebarOpen = false;
   late AnimationController _sidebarAnimationController;
   late Animation<double> _sidebarAnimation;
-
-  final LatLng _scCenter = LatLng(-27.5954, -48.5480);
 
   @override
   void initState() {
@@ -96,7 +96,7 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
 
     items.addAll([
       const BottomNavigationBarItem(
-        icon: Icon(Icons.video_camera_front),
+        icon: Icon(Icons.videocam),
         label: 'Cameras',
       ),
       const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
@@ -114,11 +114,7 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
         children: [
           IndexedStack(
             index: _currentIndex,
-            children: [
-              _buildMapView(),
-              _buildReportsView(),
-              _buildProfileView(),
-            ],
+            children: const [MapView(), CamerasView(), ProfileView()],
           ),
 
           // Overlay escuro quando sidebar está aberto
@@ -140,7 +136,7 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
               builder: (context, child) {
                 return Transform.translate(
                   offset: Offset(_sidebarAnimation.value, 0),
-                  child: _buildFilterSidebar(),
+                  child: FilterSidebar(onClose: _toggleFilterSidebar),
                 );
               },
             ),
@@ -167,153 +163,6 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
         selectedItemColor: Colors.blue[600],
         unselectedItemColor: Colors.grey[600],
         items: _buildBottomNavItems(),
-      ),
-    );
-  }
-
-  Widget _buildFilterSidebar() {
-    return Positioned(
-      left: 0,
-      top: 0,
-      bottom: 0,
-      child: Material(
-        elevation: 1, // Adiciona sombra para ficar claramente por cima
-        child: Container(
-          width: 300,
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 0, 0, 0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10,
-                offset: Offset(2, 0),
-              ),
-            ],
-          ),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header do sidebar
-                Container(
-                  padding: const EdgeInsets.all(16),
-
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 12),
-
-                      const Spacer(),
-                      IconButton(
-                        onPressed: _toggleFilterSidebar,
-                        icon: const Icon(Icons.close, color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                ),
-                // Conteúdo dos filtros
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 16),
-
-                        const Spacer(),
-
-                        // Botões de ação
-                        SizedBox(child: Text('Desenvolvido por')),
-                        const SizedBox(height: 8),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMapView() {
-    return FlutterMap(
-      options: MapOptions(
-        initialCenter: _scCenter,
-        initialZoom: 7.0,
-        minZoom: 5.0,
-        maxZoom: 18.0,
-      ),
-      children: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: 'com.example.hidrometeorologia',
-          maxZoom: 18,
-        ),
-
-        Positioned(
-          top: 20,
-          right: 20,
-          child: Column(
-            children: [
-              FloatingActionButton.small(
-                heroTag: "zoom_in",
-                onPressed: () {},
-                backgroundColor: Colors.white,
-                child: const Icon(Icons.add, color: Colors.black87),
-              ),
-              const SizedBox(height: 8),
-              FloatingActionButton.small(
-                heroTag: "zoom_out",
-                onPressed: () {},
-                backgroundColor: Colors.white,
-                child: const Icon(Icons.remove, color: Colors.black87),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildReportsView() {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.videocam, size: 64, color: Colors.grey),
-          SizedBox(height: 16),
-          Text(
-            'Cameras',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'EmMMM...',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProfileView() {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.video_camera_front, size: 64, color: Colors.grey),
-          SizedBox(height: 16),
-          Text(
-            'Cameras',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Em desenvolvimento...',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
-          ),
-        ],
       ),
     );
   }
