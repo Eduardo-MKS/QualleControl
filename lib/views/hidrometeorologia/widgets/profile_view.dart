@@ -12,7 +12,7 @@ class ProfileView extends StatelessWidget {
           Icon(Icons.person, size: 64, color: Colors.grey),
           SizedBox(height: 16),
           Text(
-            'Perfil',
+            'profile',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8),

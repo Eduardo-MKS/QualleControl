@@ -50,29 +50,41 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
     }
   }
 
-  void _onBottomNavTap(int index) {
-    // Se não estiver no mapa e tentar acessar filtros, não faz nada
-    if (index == 1 && _currentIndex != 0) {
-      return;
+  void _onBottomNavTap(int navIndex) {
+    int realIndex;
+
+    if (_currentIndex == 0) {
+      if (navIndex == 1) {
+        _toggleFilterSidebar();
+        return;
+      } else if (navIndex == 2) {
+        realIndex = 1;
+      } else if (navIndex == 3) {
+        realIndex = 2;
+      } else {
+        realIndex = 0;
+      }
+    } else {
+      if (navIndex == 0) {
+        realIndex = 0;
+      } else if (navIndex == 1) {
+        realIndex = 1;
+      } else {
+        realIndex = 2;
+      }
     }
 
-    if (index == 1) {
-      // Filtros - só funciona quando está no mapa (_currentIndex == 0)
+    if (_isFilterSidebarOpen) {
       _toggleFilterSidebar();
-    } else {
-      // Se o sidebar estiver aberto e navegarmos para outra aba, fechamos o sidebar
-      if (_isFilterSidebarOpen) {
-        _toggleFilterSidebar();
-      }
-      setState(() {
-        _currentIndex = index;
-      });
     }
+
+    setState(() {
+      _currentIndex = realIndex;
+    });
   }
 
-  // Função para determinar se deve mostrar o botão de filtros
   bool _shouldShowFiltersButton() {
-    return _currentIndex == 0; // Só mostra quando estiver no mapa
+    return _currentIndex == 0;
   }
 
   // Função para construir os itens da bottom navigation
@@ -81,7 +93,6 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
       const BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Mapa'),
     ];
 
-    // Só adiciona o botão de filtros se estiver no mapa
     if (_shouldShowFiltersButton()) {
       items.add(
         BottomNavigationBarItem(
@@ -105,10 +116,20 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
     return items;
   }
 
+  int _getBottomNavIndex() {
+    if (_currentIndex == 0) {
+      return 0;
+    } else if (_currentIndex == 1) {
+      return _shouldShowFiltersButton() ? 2 : 1;
+    } else if (_currentIndex == 2) {
+      return _shouldShowFiltersButton() ? 3 : 2;
+    }
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Importante: extendBody permite que o sidebar fique por cima da bottom navigation
       extendBody: true,
       body: Stack(
         children: [
@@ -117,7 +138,6 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
             children: const [MapView(), CamerasView(), ProfileView()],
           ),
 
-          // Overlay escuro quando sidebar está aberto
           if (_isFilterSidebarOpen)
             GestureDetector(
               onTap: _toggleFilterSidebar,
@@ -127,10 +147,7 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
                 height: double.infinity,
               ),
             ),
-
-          // Sidebar de filtros - movido para o final para ficar por cima
-          if (_currentIndex ==
-              0) // Só renderiza o sidebar quando estiver no mapa
+          if (_currentIndex == 0)
             AnimatedBuilder(
               animation: _sidebarAnimation,
               builder: (context, child) {
@@ -144,22 +161,8 @@ class _HomeHidroState extends State<HomeHidro> with TickerProviderStateMixin {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex:
-            _shouldShowFiltersButton()
-                ? _currentIndex
-                : (_currentIndex > 0 ? _currentIndex - 1 : 0),
-        onTap: (index) {
-          if (_shouldShowFiltersButton()) {
-            _onBottomNavTap(index);
-          } else {
-            // Ajustar índices quando filtros não estiver visível
-            if (index >= 1) {
-              _onBottomNavTap(index + 1);
-            } else {
-              _onBottomNavTap(index);
-            }
-          }
-        },
+        currentIndex: _getBottomNavIndex(),
+        onTap: _onBottomNavTap,
         selectedItemColor: Colors.blue[600],
         unselectedItemColor: Colors.grey[600],
         items: _buildBottomNavItems(),
